@@ -53,7 +53,7 @@ export const games = pgTable("games", {
     .notNull(),
   title: text("title").notNull(),
   studio: text("studio"),
-  genre: text("genre"),
+  genre: jsonb("genre").default([]),
   platform: platformEnum("platform"),
   status: gameStatusEnum("status").default("playing"),
   coverImageUrl: text("cover_image_url"),
@@ -146,6 +146,7 @@ export const analyses = pgTable("analyses", {
   overallTargetAudience: text("overall_target_audience"),
   overallLearnings: text("overall_learnings"),
 
+  genreSpecificFields: jsonb("genre_specific_fields").default({}),
   aiFilledFields: jsonb("ai_filled_fields").default([]),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),

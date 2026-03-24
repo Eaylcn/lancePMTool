@@ -1,0 +1,95 @@
+{
+  "common": {
+    "appName": "Lance",
+    "tagline": "Gaming PM Analysis & Growth Platform",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "close": "Close"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "library": "Library",
+    "analyze": "Analyze",
+    "compare": "Compare",
+    "growth": "PM Growth",
+    "interview": "Interview",
+    "tasks": "Tasks",
+    "metrics": "Metrics",
+    "survey": "Survey",
+    "guide": "PM Guide",
+    "profile": "Profile",
+    "settings": "Settings",
+    "signOut": "Sign Out"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signInWith": "Sign in with {provider}",
+    "signOut": "Sign Out",
+    "welcomeBack": "Welcome Back",
+    "signInDescription": "Continue your Gaming PM journey",
+    "authError": "An error occurred during sign in. Please try again."
+  },
+  "landing": {
+    "hero": {
+      "title": "Analyze Games. Learn from AI. Grow as a PM.",
+      "subtitle": "Structurally analyze mobile games, get feedback from your AI mentor, and level up your Gaming PM career.",
+      "cta": "Get Started",
+      "learnMore": "Learn More"
+    },
+    "features": {
+      "analysis": {
+        "title": "Structured Game Analysis",
+        "description": "Detailed game analysis across 50+ fields in 8 categories"
+      },
+      "ai": {
+        "title": "AI Mentor",
+        "description": "Analysis evaluation and PM lessons powered by Claude AI"
+      },
+      "growth": {
+        "title": "PM Growth Tracking",
+        "description": "Level system, skill radar chart, and action plans"
+      },
+      "interview": {
+        "title": "Interview Simulator",
+        "description": "AI-powered interview practice across 7 topics"
+      },
+      "metrics": {
+        "title": "Metrics Framework",
+        "description": "KPI education, calculation tools, and benchmarking"
+      },
+      "portfolio": {
+        "title": "PM Portfolio",
+        "description": "Auto-generate your portfolio and timeline from analyses"
+      }
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome, {name}!",
+    "totalGames": "Total Games",
+    "totalAnalyses": "Total Analyses",
+    "avgScore": "Average Score",
+    "pmLevel": "PM Level",
+    "recentGames": "Recent Games",
+    "viewAll": "View All",
+    "noGames": "No games yet",
+    "noGamesDescription": "Start your PM journey by creating your first game analysis. Analyze across 8 categories and get AI mentor feedback."
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": {
+    "tr": "Türkçe",
+    "en": "English"
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "common": {
+    "appName": "Lance",
+    "tagline": "Gaming PM Analysis & Growth Platform",
+    "loading": "Yükleniyor...",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "search": "Ara",
+    "filter": "Filtrele",
+    "export": "Dışa Aktar",
+    "back": "Geri",
+    "next": "İleri",
+    "submit": "Gönder",
+    "close": "Kapat"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "library": "Kütüphane",
+    "analyze": "Analiz",
+    "compare": "Karşılaştır",
+    "growth": "PM Gelişim",
+    "interview": "Mülakat",
+    "tasks": "Görevler",
+    "metrics": "Metrikler",
+    "survey": "Anket",
+    "guide": "PM Rehberi",
+    "profile": "Profil",
+    "settings": "Ayarlar",
+    "signOut": "Çıkış Yap"
+  },
+  "auth": {
+    "signIn": "Giriş Yap",
+    "signInWith": "{provider} ile Giriş Yap",
+    "signOut": "Çıkış Yap",
+    "welcomeBack": "Tekrar Hoşgeldin",
+    "signInDescription": "Gaming PM yolculuğuna devam et",
+    "authError": "Giriş sırasında bir hata oluştu. Lütfen tekrar dene."
+  },
+  "landing": {
+    "hero": {
+      "title": "Oyun Analiz Et. AI'dan Öğren. PM Olarak Büyü.",
+      "subtitle": "Mobil oyunları yapısal olarak analiz et, AI mentordan geri bildirim al ve Gaming PM kariyerinde yüksel.",
+      "cta": "Hemen Başla",
+      "learnMore": "Daha Fazla Bilgi"
+    },
+    "features": {
+      "analysis": {
+        "title": "Yapısal Oyun Analizi",
+        "description": "8 kategoride 50+ alanda detaylı oyun analizi"
+      },
+      "ai": {
+        "title": "AI Mentor",
+        "description": "Claude AI ile analiz değerlendirmesi ve PM dersleri"
+      },
+      "growth": {
+        "title": "PM Gelişim Takibi",
+        "description": "Seviye sistemi, beceri radar grafiği ve eylem planı"
+      },
+      "interview": {
+        "title": "Mülakat Simülasyonu",
+        "description": "7 konuda AI destekli mülakat pratiği"
+      },
+      "metrics": {
+        "title": "Metrik Framework",
+        "description": "KPI eğitimi, hesaplama ve benchmark karşılaştırma"
+      },
+      "portfolio": {
+        "title": "PM Portfolyosu",
+        "description": "Analizlerinden otomatik portfolyo ve timeline oluştur"
+      }
+    }
+  },
+  "dashboard": {
+    "welcome": "Hoşgeldin, {name}!",
+    "totalGames": "Toplam Oyun",
+    "totalAnalyses": "Toplam Analiz",
+    "avgScore": "Ortalama Skor",
+    "pmLevel": "PM Seviyesi",
+    "recentGames": "Son Oyunlar",
+    "viewAll": "Tümünü Gör",
+    "noGames": "Henüz oyun yok",
+    "noGamesDescription": "İlk oyun analizini oluşturarak PM yolculuğuna başla. 8 kategoride detaylı analiz yap, AI mentordan geri bildirim al."
+  },
+  "theme": {
+    "light": "Açık Tema",
+    "dark": "Koyu Tema",
+    "system": "Sistem"
+  },
+  "language": {
+    "tr": "Türkçe",
+    "en": "English"
+  }
+}
