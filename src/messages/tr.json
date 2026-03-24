@@ -70,6 +70,7 @@
   "library": {
     "title": "Oyun Kütüphanesi",
     "description": "Analiz ettiğin tüm oyunları buradan yönet.",
+    "gamesCount": "oyun",
     "addGame": "Yeni Oyun Ekle",
     "editGame": "Oyunu Düzenle",
     "noGames": "Henüz oyun yok",
@@ -287,6 +288,7 @@
     "delete": "Sil",
     "deleteConfirmTitle": "Oyunu Sil",
     "deleteConfirmDescription": "Bu oyunu ve tüm analizlerini silmek istediğine emin misin? Bu işlem geri alınamaz.",
+    "overallRating": "Genel Puan",
     "notFound": "Oyun bulunamadı.",
     "noAnalysis": "Henüz analiz yapılmamış.",
     "noKpis": "KPI verisi yok.",

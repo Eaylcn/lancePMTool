@@ -3,7 +3,10 @@
 import { use } from "react";
 import { useTranslations } from "next-intl";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2 } from "lucide-react";
+import {
+  Loader2, Eye, Repeat, DollarSign, Heart, Layout,
+  Layers, BarChart3, Swords, TrendingUp, Sparkles,
+} from "lucide-react";
 
 import { useGame } from "@/hooks/use-games";
 import { useGameAnalysis } from "@/hooks/use-analyses";
@@ -20,6 +23,7 @@ const CATEGORY_CONFIGS = [
   {
     tabKey: "ftue",
     label: "FTUE",
+    icon: Eye,
     fields: [
       { key: "ftueFirstImpression", labelKey: "ftueFirstImpression" },
       { key: "ftueOnboardingType", labelKey: "ftueOnboardingType" },
@@ -33,6 +37,7 @@ const CATEGORY_CONFIGS = [
   {
     tabKey: "coreLoop",
     label: "Core Loop",
+    icon: Repeat,
     fields: [
       { key: "coreLoopDefinition", labelKey: "coreLoopDefinition" },
       { key: "coreLoopSessionLength", labelKey: "coreLoopSessionLength" },
@@ -45,6 +50,7 @@ const CATEGORY_CONFIGS = [
   {
     tabKey: "monetization",
     label: "Monetization",
+    icon: DollarSign,
     fields: [
       { key: "monetizationModel", labelKey: "monetizationModel" },
       { key: "monetizationIap", labelKey: "monetizationIap" },
@@ -58,6 +64,7 @@ const CATEGORY_CONFIGS = [
   {
     tabKey: "retention",
     label: "Retention",
+    icon: Heart,
     fields: [
       { key: "retentionRewards", labelKey: "retentionRewards" },
       { key: "retentionEnergy", labelKey: "retentionEnergy" },
@@ -72,6 +79,7 @@ const CATEGORY_CONFIGS = [
   {
     tabKey: "uxui",
     label: "UX/UI",
+    icon: Layout,
     fields: [
       { key: "uxMenu", labelKey: "uxMenu" },
       { key: "uxButtons", labelKey: "uxButtons" },
@@ -85,6 +93,7 @@ const CATEGORY_CONFIGS = [
   {
     tabKey: "metaTech",
     label: "Meta & Tech",
+    icon: Layers,
     fields: [
       { key: "metaSystems", labelKey: "metaSystems" },
       { key: "metaLongTerm", labelKey: "metaLongTerm" },
@@ -138,18 +147,46 @@ export default function GameDetailPage({
 
       {/* Tabs */}
       <Tabs defaultValue="overview">
-        <TabsList className="flex flex-wrap h-auto gap-1">
-          <TabsTrigger value="overview">{t("tabs.overview")}</TabsTrigger>
-          {CATEGORY_CONFIGS.map((cat) => (
-            <TabsTrigger key={cat.tabKey} value={cat.tabKey}>
-              {cat.label}
-            </TabsTrigger>
-          ))}
-          <TabsTrigger value="kpi">{t("tabs.kpi")}</TabsTrigger>
-          <TabsTrigger value="competitors">{t("tabs.competitors")}</TabsTrigger>
-          <TabsTrigger value="trends">{t("tabs.trends")}</TabsTrigger>
-          <TabsTrigger value="ai">{t("tabs.aiAnalysis")}</TabsTrigger>
-        </TabsList>
+        <div className="relative">
+          <div className="overflow-x-auto scrollbar-hide">
+            <TabsList className="inline-flex h-auto gap-1 p-1 bg-muted/50 rounded-xl border border-border/50 w-auto min-w-full sm:min-w-0">
+              <TabsTrigger value="overview" className="gap-1.5 rounded-lg text-xs sm:text-sm">
+                <BarChart3 className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">{t("tabs.overview")}</span>
+                <span className="sm:hidden">Overview</span>
+              </TabsTrigger>
+              {CATEGORY_CONFIGS.map((cat) => {
+                const Icon = cat.icon;
+                return (
+                  <TabsTrigger key={cat.tabKey} value={cat.tabKey} className="gap-1.5 rounded-lg text-xs sm:text-sm">
+                    <Icon className="h-3.5 w-3.5" />
+                    <span className="hidden sm:inline">{cat.label}</span>
+                  </TabsTrigger>
+                );
+              })}
+              <TabsTrigger value="kpi" className="gap-1.5 rounded-lg text-xs sm:text-sm">
+                <BarChart3 className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">{t("tabs.kpi")}</span>
+                <span className="sm:hidden">KPI</span>
+              </TabsTrigger>
+              <TabsTrigger value="competitors" className="gap-1.5 rounded-lg text-xs sm:text-sm">
+                <Swords className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">{t("tabs.competitors")}</span>
+              </TabsTrigger>
+              <TabsTrigger value="trends" className="gap-1.5 rounded-lg text-xs sm:text-sm">
+                <TrendingUp className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">{t("tabs.trends")}</span>
+              </TabsTrigger>
+              <TabsTrigger value="ai" className="gap-1.5 rounded-lg text-xs sm:text-sm">
+                <Sparkles className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">{t("tabs.aiAnalysis")}</span>
+                <span className="sm:hidden">AI</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
+          {/* Fade edges for scroll */}
+          <div className="absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent pointer-events-none sm:hidden" />
+        </div>
 
         <TabsContent value="overview" className="mt-6">
           <OverviewTab analysis={analysis} />

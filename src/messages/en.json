@@ -70,6 +70,7 @@
   "library": {
     "title": "Game Library",
     "description": "Manage all the games you've analyzed.",
+    "gamesCount": "games",
     "addGame": "Add Game",
     "editGame": "Edit Game",
     "noGames": "No games yet",
@@ -287,6 +288,7 @@
     "delete": "Delete",
     "deleteConfirmTitle": "Delete Game",
     "deleteConfirmDescription": "Are you sure you want to delete this game and all its analyses? This cannot be undone.",
+    "overallRating": "Overall Rating",
     "notFound": "Game not found.",
     "noAnalysis": "No analysis yet.",
     "noKpis": "No KPI data.",

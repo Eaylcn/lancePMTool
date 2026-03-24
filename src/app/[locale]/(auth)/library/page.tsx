@@ -41,22 +41,31 @@ export default function LibraryPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
-          <p className="text-muted-foreground mt-1">{t("description")}</p>
+        <div className="flex items-center gap-4">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
+            <p className="text-muted-foreground mt-1">
+              {t("description")}
+              {games && games.length > 0 && (
+                <span className="ml-2 inline-flex items-center rounded-full bg-primary/10 text-primary px-2 py-0.5 text-xs font-medium">
+                  {games.length} {t("gamesCount")}
+                </span>
+              )}
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           {/* View toggle */}
-          <div className="flex items-center rounded-lg border border-border p-1">
+          <div className="flex items-center rounded-lg bg-muted p-1">
             <button
               onClick={() => setViewMode("grid")}
-              className={`p-1.5 rounded-md transition-colors ${viewMode === "grid" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+              className={`p-1.5 rounded-md transition-all duration-200 ${viewMode === "grid" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             >
               <LayoutGrid className="h-4 w-4" />
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`p-1.5 rounded-md transition-colors ${viewMode === "list" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+              className={`p-1.5 rounded-md transition-all duration-200 ${viewMode === "list" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             >
               <List className="h-4 w-4" />
             </button>
@@ -69,13 +78,15 @@ export default function LibraryPage() {
       </div>
 
       {/* Filters */}
-      <GameFilters
-        search={search} onSearchChange={setSearch}
-        genre={genre} onGenreChange={setGenre}
-        status={status} onStatusChange={setStatus}
-        platform={platform} onPlatformChange={setPlatform}
-        sort={sort} onSortChange={setSort}
-      />
+      <div className="rounded-xl bg-muted/30 p-4 border border-border/50">
+        <GameFilters
+          search={search} onSearchChange={setSearch}
+          genre={genre} onGenreChange={setGenre}
+          status={status} onStatusChange={setStatus}
+          platform={platform} onPlatformChange={setPlatform}
+          sort={sort} onSortChange={setSort}
+        />
+      </div>
 
       {/* Content */}
       {isLoading ? (
