@@ -94,7 +94,13 @@ export function AddGameDialog({ open, onOpenChange }: AddGameDialogProps) {
             <Label>{t("platform")}</Label>
             <Select value={platform} onValueChange={(v) => setPlatform(v ?? "")}>
               <SelectTrigger>
-                <SelectValue placeholder={t("selectPlatform")} />
+                <SelectValue placeholder={t("selectPlatform")}>
+                  {(v: string | null) => {
+                    if (!v) return t("selectPlatform");
+                    const labels: Record<string, string> = { ios: "iOS", android: "Android", both: t("bothPlatforms") };
+                    return labels[v] ?? t("selectPlatform");
+                  }}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="ios">iOS</SelectItem>
@@ -108,7 +114,12 @@ export function AddGameDialog({ open, onOpenChange }: AddGameDialogProps) {
             <Label>{t("gameStatus")}</Label>
             <Select value={status} onValueChange={(v) => setStatus(v ?? "playing")}>
               <SelectTrigger>
-                <SelectValue />
+                <SelectValue>
+                  {(v: string | null) => {
+                    const labels: Record<string, string> = { playing: t("status.playing"), completed: t("status.completed"), dropped: t("status.dropped") };
+                    return labels[v ?? "playing"] ?? t("status.playing");
+                  }}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="playing">{t("status.playing")}</SelectItem>

@@ -352,7 +352,13 @@ export default function AnalyzeNewPage() {
                   <Label>{t("selectGame")}</Label>
                   <Select value={selectedGameId} onValueChange={(v) => setSelectedGameId(v ?? "")}>
                     <SelectTrigger>
-                      <SelectValue placeholder={t("selectGamePlaceholder")} />
+                      <SelectValue placeholder={t("selectGamePlaceholder")}>
+                        {(v: string | null) => {
+                          if (!v) return t("selectGamePlaceholder");
+                          const game = existingGames?.find((g: { id: string; title: string }) => g.id === v);
+                          return game?.title ?? t("selectGamePlaceholder");
+                        }}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {existingGames?.map((game: { id: string; title: string }) => (
@@ -387,7 +393,13 @@ export default function AnalyzeNewPage() {
                     <Label>{t("platform")}</Label>
                     <Select value={newGamePlatform} onValueChange={(v) => setNewGamePlatform(v ?? "")}>
                       <SelectTrigger>
-                        <SelectValue placeholder={t("selectPlatform")} />
+                        <SelectValue placeholder={t("selectPlatform")}>
+                          {(v: string | null) => {
+                            if (!v) return t("selectPlatform");
+                            const labels: Record<string, string> = { ios: "iOS", android: "Android", both: t("bothPlatforms") };
+                            return labels[v] ?? t("selectPlatform");
+                          }}
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="ios">iOS</SelectItem>

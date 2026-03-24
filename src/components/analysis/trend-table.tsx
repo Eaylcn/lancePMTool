@@ -63,7 +63,12 @@ export function TrendTable({ trends, onChange }: TrendTableProps) {
                   <div className="flex gap-2">
                     <Select value={trend.trendType} onValueChange={(v) => updateRow(i, "trendType", v ?? "market")}>
                       <SelectTrigger className="w-[150px]">
-                        <SelectValue />
+                        <SelectValue>
+                          {(v: string | null) => {
+                            const labels: Record<string, string> = { market: t("trends.market"), technology: t("trends.technology"), player_behavior: t("trends.playerBehavior") };
+                            return labels[v ?? "market"] ?? t("trends.market");
+                          }}
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="market">{t("trends.market")}</SelectItem>
@@ -79,7 +84,12 @@ export function TrendTable({ trends, onChange }: TrendTableProps) {
                     />
                     <Select value={trend.impact} onValueChange={(v) => updateRow(i, "impact", v ?? "neutral")}>
                       <SelectTrigger className="w-[120px]">
-                        <SelectValue />
+                        <SelectValue>
+                          {(v: string | null) => {
+                            const labels: Record<string, string> = { positive: t("trends.positive"), negative: t("trends.negative"), neutral: t("trends.neutral") };
+                            return labels[v ?? "neutral"] ?? t("trends.neutral");
+                          }}
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="positive">{t("trends.positive")}</SelectItem>

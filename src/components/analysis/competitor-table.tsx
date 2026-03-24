@@ -65,7 +65,12 @@ export function CompetitorTable({ competitors, onChange }: CompetitorTableProps)
                 <div className="flex gap-2">
                   <Select value={comp.relationship} onValueChange={(v) => updateRow(i, "relationship", v ?? "direct")}>
                     <SelectTrigger className="w-[140px]">
-                      <SelectValue />
+                      <SelectValue>
+                        {(v: string | null) => {
+                          const labels: Record<string, string> = { direct: t("competitors.direct"), indirect: t("competitors.indirect"), substitute: t("competitors.substitute") };
+                          return labels[v ?? "direct"] ?? t("competitors.direct");
+                        }}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="direct">{t("competitors.direct")}</SelectItem>
