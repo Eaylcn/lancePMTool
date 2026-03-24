@@ -63,7 +63,7 @@ export function CompetitorTable({ competitors, onChange }: CompetitorTableProps)
                   onChange={(e) => updateRow(i, "competitorName", e.target.value)}
                 />
                 <div className="flex gap-2">
-                  <Select value={comp.relationship} onValueChange={(v) => updateRow(i, "relationship", v)}>
+                  <Select value={comp.relationship} onValueChange={(v) => updateRow(i, "relationship", v ?? "direct")}>
                     <SelectTrigger className="w-[140px]">
                       <SelectValue />
                     </SelectTrigger>

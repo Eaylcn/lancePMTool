@@ -42,7 +42,7 @@ export function CategoryTab({ categoryKey, fields, ratingKey, notesKey, analysis
       {/* Fields */}
       <div className="grid gap-4 sm:grid-cols-2">
         {fields.map(({ key, labelKey }) => {
-          const value = analysis[key] as string;
+          const value = String(analysis[key] ?? "");
           if (!value) return null;
           return (
             <Card key={key}>
@@ -60,7 +60,7 @@ export function CategoryTab({ categoryKey, fields, ratingKey, notesKey, analysis
       </div>
 
       {/* Notes */}
-      {notesKey && analysis[notesKey] && (
+      {notesKey && !!analysis[notesKey] && (
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -68,7 +68,7 @@ export function CategoryTab({ categoryKey, fields, ratingKey, notesKey, analysis
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm whitespace-pre-wrap">{analysis[notesKey] as string}</p>
+            <p className="text-sm whitespace-pre-wrap">{String(analysis[notesKey])}</p>
           </CardContent>
         </Card>
       )}

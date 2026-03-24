@@ -92,7 +92,7 @@ export function AddGameDialog({ open, onOpenChange }: AddGameDialogProps) {
 
           <div className="space-y-2">
             <Label>{t("platform")}</Label>
-            <Select value={platform} onValueChange={setPlatform}>
+            <Select value={platform} onValueChange={(v) => setPlatform(v ?? "")}>
               <SelectTrigger>
                 <SelectValue placeholder={t("selectPlatform")} />
               </SelectTrigger>
@@ -106,7 +106,7 @@ export function AddGameDialog({ open, onOpenChange }: AddGameDialogProps) {
 
           <div className="space-y-2">
             <Label>{t("gameStatus")}</Label>
-            <Select value={status} onValueChange={setStatus}>
+            <Select value={status} onValueChange={(v) => setStatus(v ?? "playing")}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>

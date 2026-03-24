@@ -49,7 +49,7 @@ export function GameFilters({
       </div>
 
       {/* Genre */}
-      <Select value={genre} onValueChange={onGenreChange}>
+      <Select value={genre} onValueChange={(v) => onGenreChange(v ?? "all")}>
         <SelectTrigger className="w-[150px]">
           <SelectValue placeholder={t("allGenres")} />
         </SelectTrigger>
@@ -62,7 +62,7 @@ export function GameFilters({
       </Select>
 
       {/* Status */}
-      <Select value={status} onValueChange={onStatusChange}>
+      <Select value={status} onValueChange={(v) => onStatusChange(v ?? "all")}>
         <SelectTrigger className="w-[140px]">
           <SelectValue placeholder={t("allStatuses")} />
         </SelectTrigger>
@@ -75,7 +75,7 @@ export function GameFilters({
       </Select>
 
       {/* Platform */}
-      <Select value={platform} onValueChange={onPlatformChange}>
+      <Select value={platform} onValueChange={(v) => onPlatformChange(v ?? "all")}>
         <SelectTrigger className="w-[130px]">
           <SelectValue placeholder={t("allPlatforms")} />
         </SelectTrigger>
@@ -88,7 +88,7 @@ export function GameFilters({
       </Select>
 
       {/* Sort */}
-      <Select value={sort} onValueChange={onSortChange}>
+      <Select value={sort} onValueChange={(v) => onSortChange(v ?? "created_at:desc")}>
         <SelectTrigger className="w-[160px]">
           <SelectValue placeholder={t("sortBy")} />
         </SelectTrigger>

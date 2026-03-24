@@ -16,7 +16,10 @@ export function RatingInput({ value, onChange, className }: RatingInputProps) {
     <div className={cn("flex items-center gap-3", className)}>
       <Slider
         value={[value]}
-        onValueChange={([v]) => onChange(Math.round(v * 10) / 10)}
+        onValueChange={(val) => {
+          const v = Array.isArray(val) ? val[0] : val;
+          onChange(Math.round(v * 10) / 10);
+        }}
         min={0}
         max={10}
         step={0.5}

@@ -61,7 +61,7 @@ export function TrendTable({ trends, onChange }: TrendTableProps) {
               <div className="flex items-start gap-2">
                 <div className="flex-1 space-y-2">
                   <div className="flex gap-2">
-                    <Select value={trend.trendType} onValueChange={(v) => updateRow(i, "trendType", v)}>
+                    <Select value={trend.trendType} onValueChange={(v) => updateRow(i, "trendType", v ?? "market")}>
                       <SelectTrigger className="w-[150px]">
                         <SelectValue />
                       </SelectTrigger>
@@ -77,7 +77,7 @@ export function TrendTable({ trends, onChange }: TrendTableProps) {
                       onChange={(e) => updateRow(i, "title", e.target.value)}
                       className="flex-1"
                     />
-                    <Select value={trend.impact} onValueChange={(v) => updateRow(i, "impact", v)}>
+                    <Select value={trend.impact} onValueChange={(v) => updateRow(i, "impact", v ?? "neutral")}>
                       <SelectTrigger className="w-[120px]">
                         <SelectValue />
                       </SelectTrigger>

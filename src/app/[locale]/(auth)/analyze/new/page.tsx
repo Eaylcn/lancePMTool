@@ -353,7 +353,7 @@ export default function AnalyzeNewPage() {
             {gameMode === "existing" ? (
               <div className="space-y-2">
                 <Label>{t("selectGame")}</Label>
-                <Select value={selectedGameId} onValueChange={setSelectedGameId}>
+                <Select value={selectedGameId} onValueChange={(v) => setSelectedGameId(v ?? "")}>
                   <SelectTrigger>
                     <SelectValue placeholder={t("selectGamePlaceholder")} />
                   </SelectTrigger>
@@ -388,7 +388,7 @@ export default function AnalyzeNewPage() {
                 </div>
                 <div className="space-y-2">
                   <Label>{t("platform")}</Label>
-                  <Select value={newGamePlatform} onValueChange={setNewGamePlatform}>
+                  <Select value={newGamePlatform} onValueChange={(v) => setNewGamePlatform(v ?? "")}>
                     <SelectTrigger>
                       <SelectValue placeholder={t("selectPlatform")} />
                     </SelectTrigger>
@@ -447,7 +447,7 @@ export default function AnalyzeNewPage() {
       {step === 2 && (
         <Card>
           <CardContent className="p-6 space-y-4">
-            <Accordion type="multiple" defaultValue={["ftue"]} className="space-y-2">
+            <Accordion multiple defaultValue={["ftue"]} className="space-y-2">
               {CATEGORIES.map((cat) => (
                 <CategoryAccordion
                   key={cat.key}
