@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Accordion } from "@/components/ui/accordion";
-import { Separator } from "@/components/ui/separator";
 import {
   Select,
   SelectContent,
@@ -17,16 +16,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Sparkles, ArrowLeft, ArrowRight, Save, Loader2 } from "lucide-react";
 import {
-  Eye,
-  Repeat,
-  DollarSign,
-  Heart,
-  Layout,
-  Layers,
-  Cpu,
-  Star,
+  Sparkles, ArrowLeft, ArrowRight, Save, Loader2,
+  Eye, Repeat, DollarSign, Heart, Layout, Layers, Cpu, Star, Gamepad2,
 } from "lucide-react";
 
 import { WizardSteps } from "@/components/analysis/wizard-steps";
@@ -327,12 +319,18 @@ export default function AnalyzeNewPage() {
 
       {/* Step 1: Note Input */}
       {step === 1 && (
-        <Card>
-          <CardContent className="p-6 space-y-6">
-            {/* Game selection mode */}
-            <div className="space-y-3">
-              <Label>{t("gameSelection")}</Label>
-              <div className="flex gap-3">
+        <div className="space-y-6">
+          {/* Game Info Section */}
+          <Card className="border-t-2 border-t-primary/40">
+            <CardContent className="p-6 space-y-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-primary/10 text-primary">
+                  <Gamepad2 className="h-4 w-4" />
+                </div>
+                <h3 className="font-semibold">{t("gameSelection")}</h3>
+              </div>
+
+              <div className="flex gap-2">
                 <Button
                   variant={gameMode === "new" ? "default" : "outline"}
                   onClick={() => setGameMode("new")}
@@ -348,208 +346,213 @@ export default function AnalyzeNewPage() {
                   {t("existingGame")}
                 </Button>
               </div>
-            </div>
 
-            {gameMode === "existing" ? (
-              <div className="space-y-2">
-                <Label>{t("selectGame")}</Label>
-                <Select value={selectedGameId} onValueChange={(v) => setSelectedGameId(v ?? "")}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("selectGamePlaceholder")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {existingGames?.map((game: { id: string; title: string }) => (
-                      <SelectItem key={game.id} value={game.id}>{game.title}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            ) : (
-              <div className="grid gap-4 sm:grid-cols-2">
+              {gameMode === "existing" ? (
                 <div className="space-y-2">
-                  <Label>{t("gameTitle")} *</Label>
-                  <Input
-                    value={newGameTitle}
-                    onChange={(e) => setNewGameTitle(e.target.value)}
-                    placeholder={t("gameTitlePlaceholder")}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>{t("studio")}</Label>
-                  <Input
-                    value={newGameStudio}
-                    onChange={(e) => setNewGameStudio(e.target.value)}
-                    placeholder={t("studioPlaceholder")}
-                  />
-                </div>
-                <div className="space-y-2 sm:col-span-2">
-                  <Label>{t("genre")}</Label>
-                  <GenreSelect value={newGameGenre} onChange={setNewGameGenre} />
-                </div>
-                <div className="space-y-2">
-                  <Label>{t("platform")}</Label>
-                  <Select value={newGamePlatform} onValueChange={(v) => setNewGamePlatform(v ?? "")}>
+                  <Label>{t("selectGame")}</Label>
+                  <Select value={selectedGameId} onValueChange={(v) => setSelectedGameId(v ?? "")}>
                     <SelectTrigger>
-                      <SelectValue placeholder={t("selectPlatform")} />
+                      <SelectValue placeholder={t("selectGamePlaceholder")} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="ios">iOS</SelectItem>
-                      <SelectItem value="android">Android</SelectItem>
-                      <SelectItem value="both">{t("bothPlatforms")}</SelectItem>
+                      {existingGames?.map((game: { id: string; title: string }) => (
+                        <SelectItem key={game.id} value={game.id}>{game.title}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
+              ) : (
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label>{t("gameTitle")} *</Label>
+                    <Input
+                      value={newGameTitle}
+                      onChange={(e) => setNewGameTitle(e.target.value)}
+                      placeholder={t("gameTitlePlaceholder")}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>{t("studio")}</Label>
+                    <Input
+                      value={newGameStudio}
+                      onChange={(e) => setNewGameStudio(e.target.value)}
+                      placeholder={t("studioPlaceholder")}
+                    />
+                  </div>
+                  <div className="space-y-2 sm:col-span-2">
+                    <Label>{t("genre")}</Label>
+                    <GenreSelect value={newGameGenre} onChange={setNewGameGenre} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>{t("platform")}</Label>
+                    <Select value={newGamePlatform} onValueChange={(v) => setNewGamePlatform(v ?? "")}>
+                      <SelectTrigger>
+                        <SelectValue placeholder={t("selectPlatform")} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="ios">iOS</SelectItem>
+                        <SelectItem value="android">Android</SelectItem>
+                        <SelectItem value="both">{t("bothPlatforms")}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Raw Notes Section */}
+          <div className="space-y-3">
+            <Label className="text-base font-semibold">{t("rawNotes")}</Label>
+            <div className="rounded-xl bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 p-[1px]">
+              <div className="rounded-xl bg-background">
+                <Textarea
+                  value={rawNotes}
+                  onChange={(e) => setRawNotes(e.target.value)}
+                  placeholder={t("rawNotesPlaceholder")}
+                  rows={16}
+                  className="font-mono text-sm border-0 rounded-xl focus-visible:ring-0 resize-y min-h-[300px]"
+                />
               </div>
-            )}
-
-            <Separator />
-
-            {/* Raw notes */}
-            <div className="space-y-2">
-              <Label>{t("rawNotes")}</Label>
-              <Textarea
-                value={rawNotes}
-                onChange={(e) => setRawNotes(e.target.value)}
-                placeholder={t("rawNotesPlaceholder")}
-                rows={12}
-                className="font-mono text-sm"
-              />
-              <p className="text-xs text-muted-foreground">{t("rawNotesHint")}</p>
             </div>
+            <p className="text-xs text-muted-foreground">{t("rawNotesHint")}</p>
+          </div>
 
-            {/* Actions */}
-            <div className="flex justify-end gap-3">
-              <Button
-                variant="outline"
-                onClick={() => { setStep(2); saveDraft(); }}
-              >
-                {t("manualFill")}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button
-                onClick={handleDraftFill}
-                disabled={draftFill.isPending || (!newGameTitle && !selectedGameId) || !rawNotes}
-                className="gap-2"
-              >
-                {draftFill.isPending ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <Sparkles className="h-4 w-4" />
-                )}
-                {t("aiDraftFill")}
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+          {/* Actions */}
+          <div className="flex justify-end gap-3">
+            <Button
+              variant="outline"
+              onClick={() => { setStep(2); saveDraft(); }}
+              className="gap-2"
+            >
+              {t("manualFill")}
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+            <Button
+              onClick={handleDraftFill}
+              disabled={draftFill.isPending || (!newGameTitle && !selectedGameId) || !rawNotes}
+              className="gap-2 bg-gradient-to-r from-primary to-accent text-white hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
+            >
+              {draftFill.isPending ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Sparkles className="h-4 w-4" />
+              )}
+              {t("aiDraftFill")}
+            </Button>
+          </div>
+        </div>
       )}
 
       {/* Step 2: Review & Edit */}
       {step === 2 && (
-        <Card>
-          <CardContent className="p-6 space-y-4">
-            <Accordion multiple defaultValue={["ftue"]} className="space-y-2">
-              {CATEGORIES.map((cat) => (
+        <div className="space-y-4">
+          <Accordion multiple defaultValue={["ftue"]} className="space-y-3">
+            {CATEGORIES.map((cat) => (
+              <CategoryAccordion
+                key={cat.key}
+                categoryKey={cat.key}
+                icon={cat.icon}
+                fields={cat.fields}
+                values={analysisFields}
+                onChange={handleFieldChange}
+                ratingKey={cat.ratingKey}
+                notesKey={cat.notesKey}
+                aiFilledFields={aiFilledFields}
+                extraNotes={cat.extraNotes}
+              />
+            ))}
+
+            {/* Genre-specific accordions */}
+            {genres.map((genre) => {
+              const genreFields = GENRE_SPECIFIC_FIELDS[genre];
+              if (!genreFields) return null;
+              return (
                 <CategoryAccordion
-                  key={cat.key}
-                  categoryKey={cat.key}
-                  icon={cat.icon}
-                  fields={cat.fields}
-                  values={analysisFields}
-                  onChange={handleFieldChange}
-                  ratingKey={cat.ratingKey}
-                  notesKey={cat.notesKey}
+                  key={`genre-${genre}`}
+                  categoryKey={genre}
+                  icon={Star}
+                  fields={genreFields}
+                  values={genreSpecificFields[genre] || {}}
+                  onChange={(key, value) => handleGenreFieldChange(genre, key, String(value))}
+                  ratingKey=""
+                  notesKey=""
                   aiFilledFields={aiFilledFields}
-                  extraNotes={cat.extraNotes}
                 />
-              ))}
+              );
+            })}
+          </Accordion>
 
-              {/* Genre-specific accordions */}
-              {genres.map((genre) => {
-                const genreFields = GENRE_SPECIFIC_FIELDS[genre];
-                if (!genreFields) return null;
-                return (
-                  <CategoryAccordion
-                    key={`genre-${genre}`}
-                    categoryKey={genre}
-                    icon={Star}
-                    fields={genreFields}
-                    values={genreSpecificFields[genre] || {}}
-                    onChange={(key, value) => handleGenreFieldChange(genre, key, String(value))}
-                    ratingKey=""
-                    notesKey=""
-                    aiFilledFields={aiFilledFields}
-                  />
-                );
-              })}
-            </Accordion>
-
-            <div className="flex justify-between pt-4">
-              <Button variant="outline" onClick={() => setStep(1)}>
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                {tCommon("back")}
-              </Button>
-              <Button onClick={() => { setStep(3); saveDraft(); }}>
-                {tCommon("next")}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+          <div className="flex justify-between pt-2">
+            <Button variant="outline" onClick={() => setStep(1)} className="gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              {tCommon("back")}
+            </Button>
+            <Button onClick={() => { setStep(3); saveDraft(); }} className="gap-2">
+              {tCommon("next")}
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
       )}
 
       {/* Step 3: KPI, Competitors, Trends & Save */}
       {step === 3 && (
-        <Card>
-          <CardContent className="p-6 space-y-6">
-            <KpiForm
-              values={kpis}
-              onChange={(key, value) => setKpis((prev) => ({ ...prev, [key]: value }))}
-              aiFilledFields={aiFilledFields}
-            />
+        <div className="space-y-6">
+          <Card className="border-border/50">
+            <CardContent className="p-6">
+              <KpiForm
+                values={kpis}
+                onChange={(key, value) => setKpis((prev) => ({ ...prev, [key]: value }))}
+                aiFilledFields={aiFilledFields}
+              />
+            </CardContent>
+          </Card>
 
-            <Separator />
+          <Card className="border-border/50">
+            <CardContent className="p-6">
+              <CompetitorTable competitors={competitors} onChange={setCompetitors} />
+            </CardContent>
+          </Card>
 
-            <CompetitorTable competitors={competitors} onChange={setCompetitors} />
+          <Card className="border-border/50">
+            <CardContent className="p-6">
+              <TrendTable trends={trends} onChange={setTrends} />
+            </CardContent>
+          </Card>
 
-            <Separator />
-
-            <TrendTable trends={trends} onChange={setTrends} />
-
-            <Separator />
-
-            <div className="flex justify-between pt-4">
-              <Button variant="outline" onClick={() => setStep(2)}>
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                {tCommon("back")}
+          <div className="flex justify-between pt-2">
+            <Button variant="outline" onClick={() => setStep(2)} className="gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              {tCommon("back")}
+            </Button>
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                onClick={() => handleSave(false)}
+                disabled={createAnalysis.isPending || createGame.isPending}
+                className="gap-2"
+              >
+                {(createAnalysis.isPending || createGame.isPending) && (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                )}
+                <Save className="h-4 w-4" />
+                {t("saveOnly")}
               </Button>
-              <div className="flex gap-3">
-                <Button
-                  variant="outline"
-                  onClick={() => handleSave(false)}
-                  disabled={createAnalysis.isPending || createGame.isPending}
-                  className="gap-2"
-                >
-                  {(createAnalysis.isPending || createGame.isPending) && (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  )}
-                  <Save className="h-4 w-4" />
-                  {t("saveOnly")}
-                </Button>
-                <Button
-                  onClick={() => handleSave(true)}
-                  disabled={createAnalysis.isPending || createGame.isPending || aiAnalyze.isPending}
-                  className="gap-2"
-                >
-                  {(createAnalysis.isPending || aiAnalyze.isPending) && (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  )}
-                  <Sparkles className="h-4 w-4" />
-                  {t("saveAndAnalyze")}
-                </Button>
-              </div>
+              <Button
+                onClick={() => handleSave(true)}
+                disabled={createAnalysis.isPending || createGame.isPending || aiAnalyze.isPending}
+                className="gap-2 bg-gradient-to-r from-primary to-accent text-white hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
+              >
+                {(createAnalysis.isPending || aiAnalyze.isPending) && (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                )}
+                <Sparkles className="h-4 w-4" />
+                {t("saveAndAnalyze")}
+              </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
     </div>
   );
