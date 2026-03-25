@@ -513,5 +513,107 @@
       "advanced": "İleri",
       "professional": "Profesyonel"
     }
+  },
+  "interview": {
+    "title": "Mülakat Simülasyonu",
+    "description": "AI destekli mülakat pratiği yaparak PM mülakatlarına hazırlan",
+    "startSession": "Mülakata Başla",
+    "newSession": "Yeni Mülakat",
+    "selectTopic": "Konu Seç",
+    "selectDifficulty": "Zorluk Seviyesi",
+    "difficulty": {
+      "beginner": "Başlangıç",
+      "intermediate": "Orta",
+      "advanced": "İleri"
+    },
+    "topics": {
+      "general_pm": "Genel PM",
+      "monetization": "Monetization",
+      "ftue": "FTUE & Onboarding",
+      "case_study": "Vaka Çalışması",
+      "behavioral": "Davranışsal",
+      "metrics_kpi": "Metrik & KPI",
+      "live_ops": "Live Ops"
+    },
+    "topicDescriptions": {
+      "general_pm": "Ürün stratejisi, yol haritası, önceliklendirme",
+      "monetization": "IAP, reklam, battle pass, fiyatlandırma",
+      "ftue": "Onboarding, tutma, sürtünme noktaları",
+      "case_study": "Gerçek oyun vakaları, pazar analizi",
+      "behavioral": "Liderlik, çatışma, başarısızlık, takım",
+      "metrics_kpi": "KPI tanımlama, A/B test, veri odaklı karar",
+      "live_ops": "Etkinlik tasarımı, güncelleme stratejisi"
+    },
+    "sessionHistory": "Geçmiş Mülakatlar",
+    "noSessions": "Henüz mülakat yok",
+    "noSessionsDescription": "Bir konu seçerek ilk mülakatına başla",
+    "chatPlaceholder": "Cevabınızı yazın...",
+    "send": "Gönder",
+    "sending": "Gönderiliyor...",
+    "thinking": "AI düşünüyor...",
+    "questionOf": "Soru {current}/{total}",
+    "score": "Skor",
+    "feedback": "Geri Bildirim",
+    "strengths": "Güçlü Yönler",
+    "improvements": "Gelişim Alanları",
+    "keyTakeaway": "Anahtar Çıkarım",
+    "finalEvaluation": "Final Değerlendirme",
+    "overallReadiness": "Genel Hazırlık",
+    "readiness": {
+      "low": "Düşük",
+      "medium": "Orta",
+      "high": "Yüksek"
+    },
+    "nextSteps": "Sonraki Adımlar",
+    "summary": "Özet",
+    "avgScore": "Ortalama Skor",
+    "completed": "Tamamlandı",
+    "active": "Aktif",
+    "sessionCompleted": "Mülakat tamamlandı!",
+    "backToTopics": "Konulara Dön"
+  },
+  "tasks": {
+    "title": "Günlük Görevler",
+    "description": "Her gün PM becerilerini geliştiren görevleri tamamla",
+    "todaysTasks": "Bugünün Görevleri",
+    "generateTasks": "Görev Oluştur",
+    "generating": "AI görev oluşturuyor...",
+    "noTasks": "Bugün için görev yok",
+    "noTasksDescription": "Görevler otomatik oluşturulacak",
+    "submitResponse": "Yanıtı Gönder",
+    "submitting": "Değerlendiriliyor...",
+    "responsePlaceholder": "Yanıtınızı buraya yazın...",
+    "characterCount": "{count} karakter",
+    "minCharacters": "En az 50 karakter yazın",
+    "types": {
+      "analysis": "Analiz",
+      "learning": "Öğrenme",
+      "practice": "Pratik",
+      "reflection": "Yansıma"
+    },
+    "difficulty": {
+      "beginner": "Başlangıç",
+      "intermediate": "Orta",
+      "advanced": "İleri"
+    },
+    "status": {
+      "pending": "Bekliyor",
+      "completed": "Tamamlandı"
+    },
+    "evaluation": "AI Değerlendirmesi",
+    "score": "Skor",
+    "strengths": "Güçlü Yönler",
+    "improvements": "Gelişim Alanları",
+    "keyTakeaway": "Anahtar Çıkarım",
+    "streak": {
+      "title": "Streak",
+      "current": "Mevcut Streak",
+      "longest": "En Uzun Streak",
+      "total": "Toplam Tamamlanan",
+      "days": "gün",
+      "tasks": "görev"
+    },
+    "allCompleted": "Tüm görevler tamamlandı!",
+    "completedCount": "{completed}/{total} tamamlandı"
   }
 }

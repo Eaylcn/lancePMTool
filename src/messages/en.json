@@ -513,5 +513,107 @@
       "advanced": "Advanced",
       "professional": "Professional"
     }
+  },
+  "interview": {
+    "title": "Interview Simulation",
+    "description": "Practice for PM interviews with AI-powered mock sessions",
+    "startSession": "Start Interview",
+    "newSession": "New Interview",
+    "selectTopic": "Select Topic",
+    "selectDifficulty": "Difficulty Level",
+    "difficulty": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "topics": {
+      "general_pm": "General PM",
+      "monetization": "Monetization",
+      "ftue": "FTUE & Onboarding",
+      "case_study": "Case Study",
+      "behavioral": "Behavioral",
+      "metrics_kpi": "Metrics & KPI",
+      "live_ops": "Live Ops"
+    },
+    "topicDescriptions": {
+      "general_pm": "Product strategy, roadmap, prioritization",
+      "monetization": "IAP, ads, battle pass, pricing",
+      "ftue": "Onboarding, retention, friction points",
+      "case_study": "Real game cases, market analysis",
+      "behavioral": "Leadership, conflict, failure, teamwork",
+      "metrics_kpi": "KPI definition, A/B testing, data-driven decisions",
+      "live_ops": "Event design, update strategy"
+    },
+    "sessionHistory": "Past Interviews",
+    "noSessions": "No interviews yet",
+    "noSessionsDescription": "Select a topic to start your first interview",
+    "chatPlaceholder": "Type your answer...",
+    "send": "Send",
+    "sending": "Sending...",
+    "thinking": "AI is thinking...",
+    "questionOf": "Question {current}/{total}",
+    "score": "Score",
+    "feedback": "Feedback",
+    "strengths": "Strengths",
+    "improvements": "Areas for Improvement",
+    "keyTakeaway": "Key Takeaway",
+    "finalEvaluation": "Final Evaluation",
+    "overallReadiness": "Overall Readiness",
+    "readiness": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "nextSteps": "Next Steps",
+    "summary": "Summary",
+    "avgScore": "Average Score",
+    "completed": "Completed",
+    "active": "Active",
+    "sessionCompleted": "Interview completed!",
+    "backToTopics": "Back to Topics"
+  },
+  "tasks": {
+    "title": "Daily Tasks",
+    "description": "Complete daily tasks to sharpen your PM skills",
+    "todaysTasks": "Today's Tasks",
+    "generateTasks": "Generate Tasks",
+    "generating": "AI is generating tasks...",
+    "noTasks": "No tasks for today",
+    "noTasksDescription": "Tasks will be auto-generated",
+    "submitResponse": "Submit Response",
+    "submitting": "Evaluating...",
+    "responsePlaceholder": "Write your response here...",
+    "characterCount": "{count} characters",
+    "minCharacters": "Write at least 50 characters",
+    "types": {
+      "analysis": "Analysis",
+      "learning": "Learning",
+      "practice": "Practice",
+      "reflection": "Reflection"
+    },
+    "difficulty": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "status": {
+      "pending": "Pending",
+      "completed": "Completed"
+    },
+    "evaluation": "AI Evaluation",
+    "score": "Score",
+    "strengths": "Strengths",
+    "improvements": "Areas for Improvement",
+    "keyTakeaway": "Key Takeaway",
+    "streak": {
+      "title": "Streak",
+      "current": "Current Streak",
+      "longest": "Longest Streak",
+      "total": "Total Completed",
+      "days": "days",
+      "tasks": "tasks"
+    },
+    "allCompleted": "All tasks completed!",
+    "completedCount": "{completed}/{total} completed"
   }
 }

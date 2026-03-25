@@ -244,3 +244,55 @@ export const growthReportAiResultSchema = z.object({
 });
 
 export type GrowthReportAiResult = z.infer<typeof growthReportAiResultSchema>;
+
+// ============================================
+// Interview Schemas
+// ============================================
+export const interviewResponseSchema = z.object({
+  question: z.string().default(""),
+  feedback: z.object({
+    score: z.number().min(0).max(10).default(0),
+    strengths: z.array(z.string()).default([]),
+    improvements: z.array(z.string()).default([]),
+    keyTakeaway: z.string().default(""),
+  }).optional(),
+  isLastQuestion: z.boolean().default(false),
+  questionNumber: z.number().default(1),
+  totalQuestions: z.number().default(7),
+});
+
+export type InterviewResponse = z.infer<typeof interviewResponseSchema>;
+
+export const interviewFinalFeedbackSchema = z.object({
+  overallReadiness: z.enum(["low", "medium", "high"]).default("low"),
+  avgScore: z.number().min(0).max(10).default(0),
+  strengths: z.array(z.string()).default([]),
+  improvements: z.array(z.string()).default([]),
+  nextSteps: z.array(z.string()).default([]),
+  summary: z.string().default(""),
+});
+
+export type InterviewFinalFeedback = z.infer<typeof interviewFinalFeedbackSchema>;
+
+// ============================================
+// Daily Tasks Schemas
+// ============================================
+export const taskGenerationResultSchema = z.object({
+  tasks: z.array(z.object({
+    type: z.enum(["analysis", "learning", "practice", "reflection"]),
+    title: z.string(),
+    description: z.string(),
+    difficulty: z.enum(["beginner", "intermediate", "advanced"]),
+  })).default([]),
+});
+
+export type TaskGenerationResult = z.infer<typeof taskGenerationResultSchema>;
+
+export const taskEvaluationResultSchema = z.object({
+  score: z.number().min(1).max(10).default(1),
+  strengths: z.array(z.string()).default([]),
+  improvements: z.array(z.string()).default([]),
+  keyTakeaway: z.string().default(""),
+});
+
+export type TaskEvaluationResult = z.infer<typeof taskEvaluationResultSchema>;
