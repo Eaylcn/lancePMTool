@@ -247,10 +247,10 @@ export const comparisons = pgTable("comparisons", {
     .references(() => profiles.id)
     .notNull(),
   game1Id: uuid("game1_id")
-    .references(() => games.id)
+    .references(() => games.id, { onDelete: "cascade" })
     .notNull(),
   game2Id: uuid("game2_id")
-    .references(() => games.id)
+    .references(() => games.id, { onDelete: "cascade" })
     .notNull(),
   aiResult: jsonb("ai_result"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
