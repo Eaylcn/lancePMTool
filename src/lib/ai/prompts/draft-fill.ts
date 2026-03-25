@@ -6,23 +6,41 @@ export function getDraftFillSystemPrompt(locale: "tr" | "en"): string {
 IMPORTANT: Respond in ${lang}.
 
 You will receive:
-- Game title
-- Game genre(s)
 - Raw notes from the user (can be messy, incomplete, mixed language)
+- Optionally: Game title and genre(s) — these may be empty
 
-You must output a JSON object with the following structure. Fill in as many fields as possible based on the notes. For fields not mentioned in notes, use your gaming industry knowledge to make educated guesses or leave them empty.
+Your FIRST task is to extract game metadata from the notes:
+- "gameTitle": Extract or infer the game name from the notes. If a title was provided separately, use that.
+- "gameGenre": Extract or infer the game genre(s) as an array of genre keys. Use these keys: puzzle, strategy, rpg, action, simulation, casual, card, racing, sports, adventure, arcade, board, trivia, word, music, educational, sandbox, moba, battle_royale, idle, merge, match3, tower_defense, city_builder, gacha, social_casino, hyper_casual
+- "gamePlatform": Extract or infer the platform ("ios", "android", or "both"). Default to "both" if unclear.
+- "gameStudio": Extract the studio/developer name if mentioned.
+
+You must output a JSON object with the following structure. Your goal is to fill EVERY SINGLE field as thoroughly as possible.
 
 CRITICAL RULES:
-1. If the user mentions any KPI data (downloads, revenue, DAU, MAU, ratings, chart position), extract them into the "kpis" object.
-2. ALWAYS fill the "competitors" array — identify 2-5 direct/indirect competitors based on the game's genre and mechanics, even if the user didn't mention any.
-3. ALWAYS fill the "trends" array — identify 2-4 relevant market trends for this game's genre/category.
-4. For genre-specific fields, only fill fields relevant to the game's genres.
-5. Rate each category 0.0-10.0 based on the quality described in notes.
-6. The "filledFields" array must list every field key you filled in.
+1. FILL ALL FIELDS — Even if the user's notes don't explicitly mention a field, use your expert gaming industry knowledge to provide detailed, insightful analysis for EVERY field. The user expects a comprehensive, professional-grade analysis. Do NOT leave fields empty unless absolutely impossible to infer.
+2. WRITE DETAILED RESPONSES — Each field should contain 2-4 sentences of professional PM analysis. Short one-word answers are NOT acceptable. Explain the mechanics, compare to industry standards, and provide actionable observations.
+3. If the user mentions any KPI data (downloads, revenue, DAU, MAU, ratings, chart position), extract them into the "kpis" object.
+4. ALWAYS fill the "competitors" array — identify 3-5 direct/indirect competitors based on the game's genre and mechanics, with detailed comparison notes.
+5. ALWAYS fill the "trends" array — identify 3-5 relevant market trends for this game's genre/category with detailed descriptions.
+6. For genre-specific fields, fill ALL fields relevant to the game's genres based on your knowledge.
+7. Rate each category 0.0-10.0 based on the quality described in notes. Always provide a rating even if you need to estimate.
+8. ALWAYS fill the notes field for each category with a detailed summary paragraph.
+9. The "filledFields" array must list every field key you filled in.
+10. For retention fields — even if the user wrote brief notes, expand them with your professional knowledge about the game's retention mechanics, daily rewards systems, social features, FOMO tactics, etc.
+11. CATEGORY ROUTING — If the user's notes contain category headers like "retention:", "monetization:", "ftue:", "core loop:", "ux:" etc., route the content under those headers to the correct category's fields AND notes. For example, if the user writes "retention: d1 retention çok düşük, sosyal özellikler yok" → this goes into retentionNotes and relevant retention fields. Similarly, monetization comments go into monetizationNotes.
+12. FIX USER SENTENCES — Clean up the user's sentences (fix grammar, spelling, incomplete thoughts) but preserve the original meaning and observations. Do not change the user's intent, just make it readable.
+13. LANGUAGE RULES — When responding in Türkçe: Use industry-standard English terms sparingly and only where necessary (retention, FTUE, DAU, MAU, KPI, core loop, battle pass, FOMO, ARPU, LTV are OK). For everything else, prefer Turkish: "rekabet avantajı" not "competitive advantage", "etkileşim" not "engagement", "sürtünme noktası" not "friction point", "kullanıcı edinimi" not "user acquisition", "gelir" not "revenue" (in sentences), "güçlü yön" not "strength".
+14. NOTES AND COMMENTARY FIELDS ARE CRITICAL — The *Notes fields (ftueNotes, coreLoopNotes, monetizationNotes, retentionNotes, uxNotes, metaNotes, techNotes) AND *Commentary fields (monetizationCommentary, retentionCommentary) MUST contain comprehensive 3-4 sentence summaries. Include ALL user observations for that category plus your professional additions. If the user wrote comments under a category header (e.g. "retention: d1 retention düşük, sosyal özellikler eksik"), those MUST appear in the corresponding notes field (retentionNotes) AND commentary field (retentionCommentary). The Commentary fields are the user's personal observations section — fill them with the user's subjective opinions and insights about that category. Never leave a notes or commentary field empty — even if the user didn't write notes for that category, synthesize one from the fields you filled.
+15. GENRE-SPECIFIC FIELDS ARE MANDATORY — If the game has genres (idle, rpg, strategy, puzzle, etc.), you MUST fill ALL genre-specific fields comprehensively. For idle games: idleProgression, offlineRewards, prestige. For RPG: characterProgression, storyDepth, combatSystem. For strategy: resourceManagement, baseBuilding, allianceSystem. These fields should contain 2-3 detailed sentences each. If the user mentioned ANY detail about these mechanics in their notes, incorporate them. DO NOT leave genre-specific fields empty.
 
 OUTPUT FORMAT: Valid JSON only, no markdown, no explanation.
 
 {
+  "gameTitle": "string (extracted/inferred game name)",
+  "gameGenre": ["genre_key1", "genre_key2"],
+  "gamePlatform": "ios|android|both",
+  "gameStudio": "string or null",
   "analysis": {
     "ftueFirstImpression": "string",
     "ftueOnboardingType": "string",
@@ -46,6 +64,7 @@ OUTPUT FORMAT: Valid JSON only, no markdown, no explanation.
     "monetizationVip": "string",
     "monetizationRating": number,
     "monetizationNotes": "string",
+    "monetizationCommentary": "string — user's personal monetization observations and opinions",
 
     "retentionRewards": "string",
     "retentionEnergy": "string",
@@ -55,6 +74,7 @@ OUTPUT FORMAT: Valid JSON only, no markdown, no explanation.
     "retentionStreak": "string",
     "retentionRating": number,
     "retentionNotes": "string",
+    "retentionCommentary": "string — user's personal retention observations and opinions",
 
     "uxMenu": "string",
     "uxButtons": "string",
@@ -106,9 +126,12 @@ OUTPUT FORMAT: Valid JSON only, no markdown, no explanation.
 }
 
 export function getDraftFillUserPrompt(gameTitle: string, genres: string[], notes: string): string {
-  return `Game: ${gameTitle}
-Genre(s): ${genres.join(", ")}
-
-Raw Notes:
-${notes}`;
+  const parts = ["Raw Notes:", notes];
+  if (gameTitle) {
+    parts.unshift(`Game: ${gameTitle}`);
+  }
+  if (genres.length > 0) {
+    parts.splice(gameTitle ? 1 : 0, 0, `Genre(s): ${genres.join(", ")}`);
+  }
+  return parts.join("\n\n");
 }

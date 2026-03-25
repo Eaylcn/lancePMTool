@@ -24,7 +24,11 @@ export function CompetitorsTab({ competitors }: CompetitorsTabProps) {
   const t = useTranslations("game");
 
   if (!competitors || competitors.length === 0) {
-    return <p className="text-muted-foreground">{t("noCompetitors")}</p>;
+    return (
+      <div className="flex items-center justify-center py-16">
+        <p className="text-muted-foreground">{t("noCompetitors")}</p>
+      </div>
+    );
   }
 
   return (

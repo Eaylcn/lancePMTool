@@ -47,47 +47,111 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Analysis not found" }, { status: 404 });
     }
 
-    const kpis = await db.select().from(gameKpis)
-      .where(and(eq(gameKpis.gameId, gameId), eq(gameKpis.userId, user.id)));
+    // Minimum data validation
+    const hasFtue = !!(analysis.ftueFirstImpression?.trim());
+    const hasCoreLoop = !!(analysis.coreLoopDefinition?.trim());
+    const hasOverall = !!(analysis.overallLearnings?.trim());
+    const hasBestFeature = !!(analysis.overallBestFeature?.trim());
 
-    const competitors = await db.select().from(gameCompetitors)
-      .where(and(eq(gameCompetitors.gameId, gameId), eq(gameCompetitors.userId, user.id)));
+    if (!hasFtue && !hasCoreLoop && !hasOverall && !hasBestFeature) {
+      return NextResponse.json(
+        { error: "Önce bazı analiz notları doldurmalısın." },
+        { status: 400 }
+      );
+    }
 
-    const trends = await db.select().from(gameTrends)
-      .where(and(eq(gameTrends.gameId, gameId), eq(gameTrends.userId, user.id)));
+    const [kpis, competitors, trends] = await Promise.all([
+      db.select().from(gameKpis)
+        .where(and(eq(gameKpis.gameId, gameId), eq(gameKpis.userId, user.id))),
+      db.select().from(gameCompetitors)
+        .where(and(eq(gameCompetitors.gameId, gameId), eq(gameCompetitors.userId, user.id))),
+      db.select().from(gameTrends)
+        .where(and(eq(gameTrends.gameId, gameId), eq(gameTrends.userId, user.id))),
+    ]);
 
     const client = getAnthropicClient();
 
-    const message = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 8000,
-      system: getAnalyzeSystemPrompt(validLocale),
-      messages: [
-        {
-          role: "user",
-          content: getAnalyzeUserPrompt(game, analysis, kpis, competitors, trends),
-        },
-      ],
-    });
+    // Retry with backoff for overloaded/rate-limit errors
+    let message;
+    const maxRetries = 3;
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        message = await client.messages.create({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 16000,
+          system: getAnalyzeSystemPrompt(validLocale),
+          messages: [
+            {
+              role: "user",
+              content: getAnalyzeUserPrompt(game, analysis, kpis, competitors, trends),
+            },
+          ],
+        });
+        break;
+      } catch (err: unknown) {
+        const status = (err as { status?: number }).status;
+        if ((status === 529 || status === 429) && attempt < maxRetries - 1) {
+          const wait = (attempt + 1) * 5000;
+          console.log(`[AI Analyze] Retry ${attempt + 1}/${maxRetries} after ${wait}ms (status ${status})`);
+          await new Promise(r => setTimeout(r, wait));
+          continue;
+        }
+        throw err;
+      }
+    }
+
+    if (!message) {
+      return NextResponse.json({ error: "AI servisi yanıt vermedi" }, { status: 502 });
+    }
+
+    // Token usage logging
+    console.log(`[AI Analyze] game=${game.title} | input=${message.usage.input_tokens} output=${message.usage.output_tokens}`);
 
     const textContent = message.content.find((c) => c.type === "text");
     if (!textContent || textContent.type !== "text") {
       return NextResponse.json({ error: "No text response from AI" }, { status: 500 });
     }
 
-    const parsed = JSON.parse(textContent.text);
+    // 3-stage JSON parse
+    let parsed: unknown;
+    const rawText = textContent.text;
+
+    try {
+      // Stage 1: Direct parse
+      parsed = JSON.parse(rawText.trim());
+    } catch {
+      try {
+        // Stage 2: Strip markdown code fences
+        let jsonText = rawText.trim();
+        if (jsonText.startsWith("```")) {
+          jsonText = jsonText.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
+        }
+        parsed = JSON.parse(jsonText);
+      } catch {
+        // Stage 3: Regex extract JSON object
+        const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) {
+          return NextResponse.json({ error: "AI yanıtı işlenemedi" }, { status: 502 });
+        }
+        parsed = JSON.parse(jsonMatch[0]);
+      }
+    }
+
     const validated = aiAnalysisResponseSchema.parse(parsed);
 
-    // Save to DB
-    const [aiAnalysis] = await db.insert(aiAnalyses).values({
-      gameId,
-      userId: user.id,
+    // Upsert: check if existing analysis exists
+    const [existing] = await db.select({ id: aiAnalyses.id }).from(aiAnalyses)
+      .where(and(eq(aiAnalyses.gameId, gameId), eq(aiAnalyses.userId, user.id)));
+
+    const aiData = {
       executiveSummary: validated.executiveSummary,
+      overallScoreJustification: validated.overallScoreJustification,
       strengths: validated.strengths,
       weaknesses: validated.weaknesses,
       categoryScores: validated.categoryScores,
       verdicts: validated.verdicts,
       fieldReviews: validated.fieldReviews,
+      kpiTrendsInsight: validated.kpiTrendsInsight,
       observationLevel: validated.observationLevel,
       observationFeedback: validated.observationFeedback,
       pmLearnings: validated.pmLearnings,
@@ -95,13 +159,31 @@ export async function POST(request: NextRequest) {
       benchmarkComparison: validated.benchmarkComparison,
       pmScenario: validated.pmScenario,
       mechanicSuggestions: validated.mechanicSuggestions,
-    }).returning();
+    };
 
-    return NextResponse.json(aiAnalysis, { status: 201 });
+    let aiAnalysis;
+
+    if (existing) {
+      // UPDATE
+      [aiAnalysis] = await db.update(aiAnalyses)
+        .set(aiData)
+        .where(eq(aiAnalyses.id, existing.id))
+        .returning();
+    } else {
+      // INSERT
+      [aiAnalysis] = await db.insert(aiAnalyses).values({
+        gameId,
+        userId: user.id,
+        ...aiData,
+      }).returning();
+    }
+
+    return NextResponse.json(aiAnalysis, { status: existing ? 200 : 201 });
   } catch (error) {
     console.error("AI analyze error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "AI analysis failed" },
+      { error: `AI analysis failed: ${message}` },
       { status: 500 }
     );
   }

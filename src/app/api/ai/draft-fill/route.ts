@@ -15,8 +15,8 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const { notes, genre, gameTitle, locale } = body;
 
-  if (!notes || !gameTitle) {
-    return NextResponse.json({ error: "notes and gameTitle are required" }, { status: 400 });
+  if (!notes) {
+    return NextResponse.json({ error: "notes are required" }, { status: 400 });
   }
 
   const validLocale = locale === "en" ? "en" : "tr";
@@ -33,12 +33,12 @@ export async function POST(request: NextRequest) {
 
     const message = await client.messages.create({
       model: "claude-sonnet-4-20250514",
-      max_tokens: 8000,
+      max_tokens: 16000,
       system: getDraftFillSystemPrompt(validLocale),
       messages: [
         {
           role: "user",
-          content: getDraftFillUserPrompt(gameTitle, genre || [], notes),
+          content: getDraftFillUserPrompt(gameTitle || "", genre || [], notes),
         },
       ],
     });
@@ -48,14 +48,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No text response from AI" }, { status: 500 });
     }
 
-    const parsed = JSON.parse(textContent.text);
+    // Strip markdown code blocks if present
+    let jsonText = textContent.text.trim();
+    if (jsonText.startsWith("```")) {
+      jsonText = jsonText.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
+    }
+
+    const parsed = JSON.parse(jsonText);
     const validated = draftFillResponseSchema.parse(parsed);
 
     return NextResponse.json(validated);
   } catch (error) {
     console.error("Draft fill error:", error);
+    const message = error instanceof Error ? error.message : "AI draft fill failed";
     return NextResponse.json(
-      { error: "AI draft fill failed" },
+      { error: message },
       { status: 500 }
     );
   }

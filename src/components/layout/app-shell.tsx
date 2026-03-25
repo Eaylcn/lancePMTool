@@ -16,7 +16,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         {/* Mobile Header */}
         <header className="flex h-14 items-center gap-4 border-b border-border bg-background px-4 lg:hidden">
           <MobileSidebar />
-          <span className="text-lg font-bold">Lance</span>
+          <div className="flex items-center gap-2">
+            <img src="/icon.svg" alt="Lance" className="h-5 w-5" />
+            <span className="text-lg font-bold">Lance</span>
+          </div>
         </header>
 
         {/* Page Content */}

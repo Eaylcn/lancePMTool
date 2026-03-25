@@ -24,7 +24,11 @@ export function KpiTab({ kpis }: KpiTabProps) {
   const t = useTranslations("game");
 
   if (!kpis || kpis.length === 0) {
-    return <p className="text-muted-foreground">{t("noKpis")}</p>;
+    return (
+      <div className="flex items-center justify-center py-16">
+        <p className="text-muted-foreground">{t("noKpis")}</p>
+      </div>
+    );
   }
 
   const chartData = kpis.map((k) => ({

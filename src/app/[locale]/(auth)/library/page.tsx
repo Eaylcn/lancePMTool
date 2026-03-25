@@ -41,51 +41,50 @@ export default function LibraryPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
-            <p className="text-muted-foreground mt-1">
-              {t("description")}
-              {games && games.length > 0 && (
-                <span className="ml-2 inline-flex items-center rounded-full bg-primary/10 text-primary px-2 py-0.5 text-xs font-medium">
-                  {games.length} {t("gamesCount")}
-                </span>
-              )}
-            </p>
-          </div>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">
+            {t("title")}
+            {games && games.length > 0 && (
+              <span className="ml-2 text-base font-normal text-muted-foreground">
+                {games.length}
+              </span>
+            )}
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">{t("description")}</p>
         </div>
+        <Button onClick={() => setAddDialogOpen(true)} size="sm" className="gap-1.5 h-8">
+          <Plus className="h-3.5 w-3.5" />
+          {t("addGame")}
+        </Button>
+      </div>
+
+      {/* Toolbar: Filters + View Toggle */}
+      <div className="rounded-lg border border-border bg-muted/30 px-3 py-2.5">
         <div className="flex items-center gap-2">
-          {/* View toggle */}
-          <div className="flex items-center rounded-lg bg-muted p-1">
+          <div className="flex-1 min-w-0">
+            <GameFilters
+              search={search} onSearchChange={setSearch}
+              genre={genre} onGenreChange={setGenre}
+              status={status} onStatusChange={setStatus}
+              platform={platform} onPlatformChange={setPlatform}
+              sort={sort} onSortChange={setSort}
+            />
+          </div>
+          <div className="flex items-center rounded-md bg-muted p-0.5 shrink-0">
             <button
               onClick={() => setViewMode("grid")}
-              className={`p-1.5 rounded-md transition-all duration-200 ${viewMode === "grid" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+              className={`p-1.5 rounded transition-colors duration-150 ${viewMode === "grid" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             >
-              <LayoutGrid className="h-4 w-4" />
+              <LayoutGrid className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`p-1.5 rounded-md transition-all duration-200 ${viewMode === "list" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+              className={`p-1.5 rounded transition-colors duration-150 ${viewMode === "list" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             >
-              <List className="h-4 w-4" />
+              <List className="h-3.5 w-3.5" />
             </button>
           </div>
-          <Button onClick={() => setAddDialogOpen(true)} className="gap-2">
-            <Plus className="h-4 w-4" />
-            {t("addGame")}
-          </Button>
         </div>
-      </div>
-
-      {/* Filters */}
-      <div className="rounded-xl bg-muted/30 p-4 border border-border/50">
-        <GameFilters
-          search={search} onSearchChange={setSearch}
-          genre={genre} onGenreChange={setGenre}
-          status={status} onStatusChange={setStatus}
-          platform={platform} onPlatformChange={setPlatform}
-          sort={sort} onSortChange={setSort}
-        />
       </div>
 
       {/* Content */}

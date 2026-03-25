@@ -5,8 +5,8 @@ import type { DraftFillResponse } from "@/lib/ai/types";
 
 interface DraftFillInput {
   notes: string;
-  genre: string[];
-  gameTitle: string;
+  genre?: string[];
+  gameTitle?: string;
   locale: string;
 }
 

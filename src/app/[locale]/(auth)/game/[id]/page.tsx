@@ -1,15 +1,14 @@
 "use client";
 
-import { use } from "react";
-import { useTranslations } from "next-intl";
+import { use, useState, useEffect, useRef } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Loader2, Eye, Repeat, DollarSign, Heart, Layout,
-  Layers, BarChart3, Swords, TrendingUp, Sparkles,
-} from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 import { useGame } from "@/hooks/use-games";
 import { useGameAnalysis } from "@/hooks/use-analyses";
+import { useAiAnalyze } from "@/hooks/use-ai";
+import { AiLoadingModal } from "@/components/shared/ai-loading-modal";
 import { GameHero } from "@/components/game/game-hero";
 import { OverviewTab } from "@/components/game/tabs/overview-tab";
 import { CategoryTab } from "@/components/game/tabs/category-tab";
@@ -18,12 +17,11 @@ import { CompetitorsTab } from "@/components/game/tabs/competitors-tab";
 import { TrendsTab } from "@/components/game/tabs/trends-tab";
 import { AiAnalysisTab } from "@/components/game/tabs/ai-analysis-tab";
 
-// Category field configs (same as wizard)
+// Category field configs
 const CATEGORY_CONFIGS = [
   {
     tabKey: "ftue",
     label: "FTUE",
-    icon: Eye,
     fields: [
       { key: "ftueFirstImpression", labelKey: "ftueFirstImpression" },
       { key: "ftueOnboardingType", labelKey: "ftueOnboardingType" },
@@ -37,7 +35,6 @@ const CATEGORY_CONFIGS = [
   {
     tabKey: "coreLoop",
     label: "Core Loop",
-    icon: Repeat,
     fields: [
       { key: "coreLoopDefinition", labelKey: "coreLoopDefinition" },
       { key: "coreLoopSessionLength", labelKey: "coreLoopSessionLength" },
@@ -50,7 +47,6 @@ const CATEGORY_CONFIGS = [
   {
     tabKey: "monetization",
     label: "Monetization",
-    icon: DollarSign,
     fields: [
       { key: "monetizationModel", labelKey: "monetizationModel" },
       { key: "monetizationIap", labelKey: "monetizationIap" },
@@ -64,7 +60,6 @@ const CATEGORY_CONFIGS = [
   {
     tabKey: "retention",
     label: "Retention",
-    icon: Heart,
     fields: [
       { key: "retentionRewards", labelKey: "retentionRewards" },
       { key: "retentionEnergy", labelKey: "retentionEnergy" },
@@ -79,7 +74,6 @@ const CATEGORY_CONFIGS = [
   {
     tabKey: "uxui",
     label: "UX/UI",
-    icon: Layout,
     fields: [
       { key: "uxMenu", labelKey: "uxMenu" },
       { key: "uxButtons", labelKey: "uxButtons" },
@@ -93,7 +87,6 @@ const CATEGORY_CONFIGS = [
   {
     tabKey: "metaTech",
     label: "Meta & Tech",
-    icon: Layers,
     fields: [
       { key: "metaSystems", labelKey: "metaSystems" },
       { key: "metaLongTerm", labelKey: "metaLongTerm" },
@@ -108,6 +101,12 @@ const CATEGORY_CONFIGS = [
   },
 ];
 
+function scoreColor(value: number) {
+  if (value >= 7) return "text-emerald-400";
+  if (value >= 4) return "text-yellow-400";
+  return "text-red-400";
+}
+
 export default function GameDetailPage({
   params,
 }: {
@@ -115,8 +114,52 @@ export default function GameDetailPage({
 }) {
   const { id } = use(params);
   const t = useTranslations("game");
+  const locale = useLocale();
   const { data: game, isLoading: gameLoading } = useGame(id);
   const { data: analysisData, isLoading: analysisLoading } = useGameAnalysis(id);
+  const aiAnalyze = useAiAnalyze();
+
+  // AI Loading Modal state
+  const [aiModalOpen, setAiModalOpen] = useState(false);
+  const [aiModalStep, setAiModalStep] = useState(0);
+  const [aiModalElapsed, setAiModalElapsed] = useState(0);
+  const stepIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const elapsedIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (stepIntervalRef.current) clearInterval(stepIntervalRef.current);
+      if (elapsedIntervalRef.current) clearInterval(elapsedIntervalRef.current);
+    };
+  }, []);
+
+  const aiModalSteps = [
+    "AI mentör incelemesi başlatılıyor...",
+    "Kapsamlı değerlendirme yapılıyor...",
+    "Kategori puanları hesaplanıyor...",
+    "Sonuçlar kaydediliyor...",
+  ];
+
+  const handleAnalyze = async () => {
+    setAiModalStep(0);
+    setAiModalElapsed(0);
+    setAiModalOpen(true);
+
+    elapsedIntervalRef.current = setInterval(() => {
+      setAiModalElapsed((prev) => prev + 1);
+    }, 1000);
+    stepIntervalRef.current = setInterval(() => {
+      setAiModalStep((prev) => (prev < aiModalSteps.length - 1 ? prev + 1 : prev));
+    }, 35000);
+
+    try {
+      await aiAnalyze.mutateAsync({ gameId: id, locale });
+    } finally {
+      if (stepIntervalRef.current) clearInterval(stepIntervalRef.current);
+      if (elapsedIntervalRef.current) clearInterval(elapsedIntervalRef.current);
+      setAiModalOpen(false);
+    }
+  };
 
   if (gameLoading || analysisLoading) {
     return (
@@ -140,56 +183,66 @@ export default function GameDetailPage({
   const trends = analysisData?.trends || [];
   const aiAnalysis = analysisData?.aiAnalysis || null;
 
+  // Get AI comment for a category tab
+  const getAiComment = (tabKey: string): string | null => {
+    if (!aiAnalysis?.categoryScores) return null;
+    const scores = aiAnalysis.categoryScores as Record<string, { comment?: string }>;
+    return scores[tabKey]?.comment || null;
+  };
+
+  // Get rating for a category
+  const getRating = (ratingKey: string): number | null => {
+    if (!analysis) return null;
+    const val = Number(analysis[ratingKey]);
+    return isNaN(val) || val === 0 ? null : val;
+  };
+
   return (
     <div className="space-y-6">
-      {/* Hero */}
-      <GameHero game={game} />
+      {/* Hero — compute overall rating from analysis if not on game */}
+      <GameHero game={game} computedRating={(() => {
+        if (game.overallRating) return null; // game already has rating
+        if (!analysis) return null;
+        const ratingKeys = ["ftueRating", "coreLoopRating", "monetizationRating", "retentionRating", "uxRating", "metaRating"];
+        const ratings = ratingKeys.map(k => Number(analysis[k])).filter(v => !isNaN(v) && v > 0);
+        return ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : null;
+      })()} />
 
       {/* Tabs */}
       <Tabs defaultValue="overview">
-        <div className="relative">
-          <div className="overflow-x-auto scrollbar-hide">
-            <TabsList className="inline-flex h-auto gap-1 p-1 bg-muted/50 rounded-xl border border-border/50 w-auto min-w-full sm:min-w-0">
-              <TabsTrigger value="overview" className="gap-1.5 rounded-lg text-xs sm:text-sm">
-                <BarChart3 className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">{t("tabs.overview")}</span>
-                <span className="sm:hidden">Overview</span>
+        <TabsList variant="line" className="flex flex-wrap gap-1">
+          <TabsTrigger value="overview" className="text-xs sm:text-sm px-3.5 py-2">
+            {t("tabs.overview")}
+          </TabsTrigger>
+          {CATEGORY_CONFIGS.map((cat) => {
+            const rating = getRating(cat.ratingKey);
+            return (
+              <TabsTrigger key={cat.tabKey} value={cat.tabKey} className="text-xs sm:text-sm px-3.5 py-2 gap-1.5">
+                {cat.label}
+                {rating !== null && (
+                  <span className={`text-[10px] font-semibold tabular-nums ${scoreColor(rating)}`}>
+                    {rating.toFixed(1)}
+                  </span>
+                )}
               </TabsTrigger>
-              {CATEGORY_CONFIGS.map((cat) => {
-                const Icon = cat.icon;
-                return (
-                  <TabsTrigger key={cat.tabKey} value={cat.tabKey} className="gap-1.5 rounded-lg text-xs sm:text-sm">
-                    <Icon className="h-3.5 w-3.5" />
-                    <span className="hidden sm:inline">{cat.label}</span>
-                  </TabsTrigger>
-                );
-              })}
-              <TabsTrigger value="kpi" className="gap-1.5 rounded-lg text-xs sm:text-sm">
-                <BarChart3 className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">{t("tabs.kpi")}</span>
-                <span className="sm:hidden">KPI</span>
-              </TabsTrigger>
-              <TabsTrigger value="competitors" className="gap-1.5 rounded-lg text-xs sm:text-sm">
-                <Swords className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">{t("tabs.competitors")}</span>
-              </TabsTrigger>
-              <TabsTrigger value="trends" className="gap-1.5 rounded-lg text-xs sm:text-sm">
-                <TrendingUp className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">{t("tabs.trends")}</span>
-              </TabsTrigger>
-              <TabsTrigger value="ai" className="gap-1.5 rounded-lg text-xs sm:text-sm">
-                <Sparkles className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">{t("tabs.aiAnalysis")}</span>
-                <span className="sm:hidden">AI</span>
-              </TabsTrigger>
-            </TabsList>
-          </div>
-          {/* Fade edges for scroll */}
-          <div className="absolute top-0 right-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent pointer-events-none sm:hidden" />
-        </div>
+            );
+          })}
+          <TabsTrigger value="kpi" className="text-xs sm:text-sm px-3.5 py-2">
+            {t("tabs.kpi")}
+          </TabsTrigger>
+          <TabsTrigger value="competitors" className="text-xs sm:text-sm px-3.5 py-2">
+            {t("tabs.competitors")}
+          </TabsTrigger>
+          <TabsTrigger value="trends" className="text-xs sm:text-sm px-3.5 py-2">
+            {t("tabs.trends")}
+          </TabsTrigger>
+          <TabsTrigger value="ai" className="text-xs sm:text-sm px-3.5 py-2">
+            {t("tabs.aiAnalysis")}
+          </TabsTrigger>
+        </TabsList>
 
-        <TabsContent value="overview" className="mt-6">
-          <OverviewTab analysis={analysis} />
+        <TabsContent value="overview" className="mt-6" keepMounted>
+          <OverviewTab analysis={analysis} aiSummary={aiAnalysis?.executiveSummary || null} />
         </TabsContent>
 
         {CATEGORY_CONFIGS.map((cat) => (
@@ -200,6 +253,7 @@ export default function GameDetailPage({
               ratingKey={cat.ratingKey}
               notesKey={cat.notesKey}
               analysis={analysis}
+              aiComment={getAiComment(cat.tabKey)}
             />
           </TabsContent>
         ))}
@@ -216,10 +270,23 @@ export default function GameDetailPage({
           <TrendsTab trends={trends} />
         </TabsContent>
 
-        <TabsContent value="ai" className="mt-6">
-          <AiAnalysisTab aiAnalysis={aiAnalysis} />
+        <TabsContent value="ai" className="mt-6" keepMounted>
+          <AiAnalysisTab
+            aiAnalysis={aiAnalysis}
+            onAnalyze={analysis ? handleAnalyze : undefined}
+            isAnalyzing={aiAnalyze.isPending}
+          />
         </TabsContent>
       </Tabs>
+
+      {/* AI Loading Modal */}
+      <AiLoadingModal
+        open={aiModalOpen}
+        title="AI Analiz"
+        steps={aiModalSteps}
+        currentStep={aiModalStep}
+        elapsedSeconds={aiModalElapsed}
+      />
     </div>
   );
 }

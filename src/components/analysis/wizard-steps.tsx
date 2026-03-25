@@ -6,50 +6,39 @@ import { cn } from "@/lib/utils";
 interface WizardStepsProps {
   currentStep: number;
   steps: string[];
+  onStepClick?: (step: number) => void;
 }
 
-export function WizardSteps({ currentStep, steps }: WizardStepsProps) {
+export function WizardSteps({ currentStep, steps, onStepClick }: WizardStepsProps) {
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center gap-1 border-b border-border">
       {steps.map((label, index) => {
         const step = index + 1;
         const isActive = step === currentStep;
         const isCompleted = step < currentStep;
+        const isClickable = isCompleted && onStepClick;
 
         return (
-          <div key={step} className="flex items-center">
-            <div className="flex flex-col items-center gap-1.5">
-              <div
-                className={cn(
-                  "flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold transition-all duration-300",
-                  isCompleted && "bg-primary text-primary-foreground shadow-md",
-                  isActive && "bg-primary text-primary-foreground ring-4 ring-primary/20 shadow-lg animate-pulse",
-                  !isActive && !isCompleted && "bg-muted text-muted-foreground border-2 border-border"
-                )}
-              >
-                {isCompleted ? <Check className="h-5 w-5" /> : step}
-              </div>
-              <span
-                className={cn(
-                  "text-xs font-medium transition-colors",
-                  isActive ? "text-primary" : isCompleted ? "text-foreground" : "text-muted-foreground"
-                )}
-              >
-                {label}
-              </span>
-            </div>
-            {index < steps.length - 1 && (
-              <div className="relative mx-3 sm:mx-6 flex-shrink-0">
-                <div className="h-[2px] w-12 sm:w-20 bg-muted rounded-full" />
-                <div
-                  className={cn(
-                    "absolute top-0 left-0 h-[2px] rounded-full bg-primary transition-all duration-500",
-                    step < currentStep ? "w-full" : "w-0"
-                  )}
-                />
-              </div>
+          <button
+            key={step}
+            type="button"
+            onClick={() => isClickable && onStepClick(step)}
+            disabled={!isClickable}
+            className={cn(
+              "flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors duration-150",
+              isActive && "border-primary text-foreground",
+              isCompleted && "border-transparent text-muted-foreground hover:text-foreground",
+              !isActive && !isCompleted && "border-transparent text-muted-foreground/60",
+              isClickable && "cursor-pointer"
             )}
-          </div>
+          >
+            {isCompleted ? (
+              <Check className="h-3.5 w-3.5 text-primary" />
+            ) : (
+              <span className="text-xs tabular-nums">{step}.</span>
+            )}
+            <span className="hidden sm:inline">{label}</span>
+          </button>
         );
       })}
     </div>

@@ -38,19 +38,19 @@ export function GameFilters({
   return (
     <div className="flex flex-wrap items-center gap-3">
       {/* Search */}
-      <div className="relative flex-1 min-w-[200px]">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <div className="relative flex-1 min-w-[180px]">
+        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
         <Input
           placeholder={t("searchPlaceholder")}
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="pl-9"
+          className="pl-8 h-8 text-sm bg-transparent border-border/50"
         />
       </div>
 
       {/* Genre */}
       <Select value={genre} onValueChange={(v) => onGenreChange(v ?? "all")}>
-        <SelectTrigger className="w-[150px]">
+        <SelectTrigger className="w-[140px] h-8 text-sm">
           <SelectValue placeholder={t("allGenres")}>
             {(v: string | null) => v && v !== "all" ? tGenre(v) : t("allGenres")}
           </SelectValue>
@@ -65,7 +65,7 @@ export function GameFilters({
 
       {/* Status */}
       <Select value={status} onValueChange={(v) => onStatusChange(v ?? "all")}>
-        <SelectTrigger className="w-[140px]">
+        <SelectTrigger className="w-[130px] h-8 text-sm">
           <SelectValue placeholder={t("allStatuses")}>
             {(v: string | null) => {
               const labels: Record<string, string> = { all: t("allStatuses"), playing: t("status.playing"), completed: t("status.completed"), dropped: t("status.dropped") };
@@ -83,7 +83,7 @@ export function GameFilters({
 
       {/* Platform */}
       <Select value={platform} onValueChange={(v) => onPlatformChange(v ?? "all")}>
-        <SelectTrigger className="w-[130px]">
+        <SelectTrigger className="w-[120px] h-8 text-sm">
           <SelectValue placeholder={t("allPlatforms")}>
             {(v: string | null) => {
               const labels: Record<string, string> = { all: t("allPlatforms"), ios: "iOS", android: "Android", both: t("bothPlatforms") };
@@ -101,7 +101,7 @@ export function GameFilters({
 
       {/* Sort */}
       <Select value={sort} onValueChange={(v) => onSortChange(v ?? "created_at:desc")}>
-        <SelectTrigger className="w-[160px]">
+        <SelectTrigger className="w-[150px] h-8 text-sm">
           <SelectValue placeholder={t("sortBy")}>
             {(v: string | null) => {
               const labels: Record<string, string> = { "created_at:desc": t("sort.newest"), "created_at:asc": t("sort.oldest"), "title:asc": t("sort.titleAZ"), "title:desc": t("sort.titleZA"), "overall_rating:desc": t("sort.ratingHigh"), "overall_rating:asc": t("sort.ratingLow") };

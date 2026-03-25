@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,8 @@ import {
 } from "@/components/ui/select";
 import {
   Sparkles, ArrowLeft, ArrowRight, Save, Loader2,
-  Eye, Repeat, DollarSign, Heart, Layout, Layers, Cpu, Star, Gamepad2,
+  Eye, Repeat, DollarSign, Heart, Layout, Layers, Cpu, Star,
+  ChevronDown,
 } from "lucide-react";
 
 import { WizardSteps } from "@/components/analysis/wizard-steps";
@@ -27,6 +28,7 @@ import { KpiForm } from "@/components/analysis/kpi-form";
 import { CompetitorTable } from "@/components/analysis/competitor-table";
 import { TrendTable } from "@/components/analysis/trend-table";
 import { GenreSelect } from "@/components/shared/genre-select";
+import { AiLoadingModal } from "@/components/shared/ai-loading-modal";
 import { useGames, useCreateGame } from "@/hooks/use-games";
 import { useCreateAnalysis } from "@/hooks/use-analyses";
 import { useDraftFill, useAiAnalyze } from "@/hooks/use-ai";
@@ -148,6 +150,7 @@ export default function AnalyzeNewPage() {
   const router = useRouter();
 
   const [step, setStep] = useState(1);
+  const [showGameInfo, setShowGameInfo] = useState(false);
 
   // Step 1 state
   const [gameMode, setGameMode] = useState<"existing" | "new">("new");
@@ -174,6 +177,49 @@ export default function AnalyzeNewPage() {
   const createAnalysis = useCreateAnalysis();
   const draftFill = useDraftFill();
   const aiAnalyze = useAiAnalyze();
+
+  // AI Loading Modal state
+  const [aiModalOpen, setAiModalOpen] = useState(false);
+  const [aiModalTitle, setAiModalTitle] = useState("");
+  const [aiModalSteps, setAiModalSteps] = useState<string[]>([]);
+  const [aiModalStep, setAiModalStep] = useState(0);
+  const [aiModalElapsed, setAiModalElapsed] = useState(0);
+  const stepIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const elapsedIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startModal = (title: string, steps: string[], stepIntervalMs = 35000) => {
+    setAiModalTitle(title);
+    setAiModalSteps(steps);
+    setAiModalStep(0);
+    setAiModalElapsed(0);
+    setAiModalOpen(true);
+
+    // Elapsed timer
+    elapsedIntervalRef.current = setInterval(() => {
+      setAiModalElapsed((prev) => prev + 1);
+    }, 1000);
+
+    // Simulated step progress
+    stepIntervalRef.current = setInterval(() => {
+      setAiModalStep((prev) => (prev < steps.length - 1 ? prev + 1 : prev));
+    }, stepIntervalMs);
+  };
+
+  const stopModal = () => {
+    if (stepIntervalRef.current) clearInterval(stepIntervalRef.current);
+    if (elapsedIntervalRef.current) clearInterval(elapsedIntervalRef.current);
+    stepIntervalRef.current = null;
+    elapsedIntervalRef.current = null;
+    setAiModalOpen(false);
+  };
+
+  // Cleanup intervals on unmount
+  useEffect(() => {
+    return () => {
+      if (stepIntervalRef.current) clearInterval(stepIntervalRef.current);
+      if (elapsedIntervalRef.current) clearInterval(elapsedIntervalRef.current);
+    };
+  }, []);
 
   // localStorage auto-save
   const saveDraft = useCallback(() => {
@@ -231,73 +277,107 @@ export default function AnalyzeNewPage() {
     const title = gameMode === "new" ? newGameTitle : existingGames?.find((g: { id: string }) => g.id === selectedGameId)?.title || "";
     const genre = gameMode === "new" ? newGameGenre : existingGames?.find((g: { id: string }) => g.id === selectedGameId)?.genre || [];
 
-    const result = await draftFill.mutateAsync({
-      notes: rawNotes,
-      genre: Array.isArray(genre) ? genre : [],
-      gameTitle: title,
-      locale,
-    });
+    startModal("AI Draft Fill", [
+      "Notlar analiz ediliyor...",
+      "Oyun bilgileri çıkarılıyor...",
+      "Kategoriler dolduruluyor...",
+      "Form hazırlanıyor...",
+    ], 15000);
 
-    // Populate analysis fields
-    setAnalysisFields(result.analysis as unknown as Record<string, string | number>);
-    setAiFilledFields(result.filledFields);
+    try {
+      const result = await draftFill.mutateAsync({
+        notes: rawNotes,
+        genre: Array.isArray(genre) ? genre : [],
+        gameTitle: title || undefined,
+        locale,
+      });
 
-    if (result.genreSpecificFields) {
-      setGenreSpecificFields(result.genreSpecificFields);
+      // Populate game info from AI if not already set
+      if (gameMode === "new") {
+        if (!newGameTitle && result.gameTitle) setNewGameTitle(result.gameTitle);
+        if (newGameGenre.length === 0 && result.gameGenre) setNewGameGenre(result.gameGenre);
+        if (!newGamePlatform && result.gamePlatform) setNewGamePlatform(result.gamePlatform);
+        if (!newGameStudio && result.gameStudio) setNewGameStudio(result.gameStudio);
+      }
+
+      // Populate analysis fields
+      setAnalysisFields(result.analysis as unknown as Record<string, string | number>);
+      setAiFilledFields(result.filledFields);
+
+      if (result.genreSpecificFields) {
+        setGenreSpecificFields(result.genreSpecificFields);
+      }
+
+      if (result.kpis) {
+        setKpis(result.kpis as unknown as Record<string, string | number>);
+      }
+
+      if (result.competitors) {
+        setCompetitors(result.competitors);
+      }
+
+      if (result.trends) {
+        setTrends(result.trends);
+      }
+
+      setStep(2);
+    } finally {
+      stopModal();
     }
-
-    if (result.kpis) {
-      setKpis(result.kpis as unknown as Record<string, string | number>);
-    }
-
-    if (result.competitors) {
-      setCompetitors(result.competitors);
-    }
-
-    if (result.trends) {
-      setTrends(result.trends);
-    }
-
-    setStep(2);
   };
 
   const handleSave = async (withAi: boolean) => {
-    let gameId = selectedGameId;
-
-    // Create game if new
-    if (gameMode === "new") {
-      const game = await createGame.mutateAsync({
-        title: newGameTitle,
-        studio: newGameStudio || undefined,
-        genre: newGameGenre,
-        platform: newGamePlatform || undefined,
-      });
-      gameId = game.id;
-    }
-
-    // Create analysis
-    await createAnalysis.mutateAsync({
-      gameId,
-      analysis: {
-        ...analysisFields,
-        genreSpecificFields,
-        aiFilledFields,
-      },
-      kpis: Object.keys(kpis).length > 0 ? kpis : undefined,
-      competitors: competitors.length > 0 ? competitors : undefined,
-      trends: trends.length > 0 ? trends : undefined,
-    });
-
-    // Request AI analysis if requested
     if (withAi) {
-      await aiAnalyze.mutateAsync({ gameId, locale });
+      startModal("AI Analiz & Kaydet", [
+        "Analiz kaydediliyor...",
+        "AI mentör incelemesi başlatılıyor...",
+        "Kapsamlı değerlendirme yapılıyor...",
+        "Sonuçlar kaydediliyor...",
+      ]);
     }
 
-    // Clear draft
-    localStorage.removeItem(STORAGE_KEY);
+    try {
+      let gameId = selectedGameId;
 
-    // Navigate to game detail
-    router.push(`/game/${gameId}`);
+      // Create game if new
+      if (gameMode === "new") {
+        const game = await createGame.mutateAsync({
+          title: newGameTitle,
+          studio: newGameStudio || undefined,
+          genre: newGameGenre,
+          platform: newGamePlatform || undefined,
+        });
+        gameId = game.id;
+      }
+
+      // Create analysis
+      await createAnalysis.mutateAsync({
+        gameId,
+        analysis: {
+          ...analysisFields,
+          genreSpecificFields,
+          aiFilledFields,
+        },
+        kpis: Object.keys(kpis).length > 0 ? kpis : undefined,
+        competitors: competitors.length > 0 ? competitors : undefined,
+        trends: trends.length > 0 ? trends : undefined,
+      });
+
+      // Request AI analysis if requested
+      if (withAi) {
+        await aiAnalyze.mutateAsync({ gameId, locale });
+      }
+
+      // Clear draft
+      localStorage.removeItem(STORAGE_KEY);
+
+      // Navigate to game detail
+      router.push(`/game/${gameId}`);
+    } finally {
+      if (withAi) {
+        stopModal();
+      }
+    }
   };
 
   const genres = gameMode === "new"
@@ -311,123 +391,131 @@ export default function AnalyzeNewPage() {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
-        <p className="text-muted-foreground mt-1">{t("description")}</p>
+        <p className="text-sm text-muted-foreground mt-1">{t("description")}</p>
       </div>
 
       {/* Steps indicator */}
-      <WizardSteps currentStep={step} steps={stepLabels} />
+      <WizardSteps
+        currentStep={step}
+        steps={stepLabels}
+        onStepClick={(s) => { setStep(s); saveDraft(); }}
+      />
 
-      {/* Step 1: Note Input */}
+      {/* Step 1: Notes First */}
       {step === 1 && (
-        <div className="space-y-6">
-          {/* Game Info Section */}
-          <Card className="border-t-2 border-t-primary/40">
-            <CardContent className="p-6 space-y-4">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-primary/10 text-primary">
-                  <Gamepad2 className="h-4 w-4" />
-                </div>
-                <h3 className="font-semibold">{t("gameSelection")}</h3>
-              </div>
+        <div className="space-y-5">
+          {/* Raw Notes — Primary */}
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">{t("rawNotes")}</Label>
+            <Textarea
+              value={rawNotes}
+              onChange={(e) => setRawNotes(e.target.value)}
+              placeholder={t("rawNotesPlaceholder")}
+              rows={16}
+              className="font-mono text-sm resize-y min-h-[300px]"
+            />
+            <p className="text-xs text-muted-foreground">{t("rawNotesHint")}</p>
+          </div>
 
-              <div className="flex gap-2">
-                <Button
-                  variant={gameMode === "new" ? "default" : "outline"}
-                  onClick={() => setGameMode("new")}
-                  size="sm"
-                >
-                  {t("newGame")}
-                </Button>
-                <Button
-                  variant={gameMode === "existing" ? "default" : "outline"}
-                  onClick={() => setGameMode("existing")}
-                  size="sm"
-                >
-                  {t("existingGame")}
-                </Button>
-              </div>
+          {/* Game Info — Collapsible, Optional */}
+          <div className="border border-border rounded-lg">
+            <button
+              type="button"
+              onClick={() => setShowGameInfo(!showGameInfo)}
+              className="flex items-center justify-between w-full px-4 py-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <span>{t("gameSelection")} ({tCommon("optional")})</span>
+              <ChevronDown className={`h-4 w-4 transition-transform duration-150 ${showGameInfo ? "rotate-180" : ""}`} />
+            </button>
 
-              {gameMode === "existing" ? (
-                <div className="space-y-2">
-                  <Label>{t("selectGame")}</Label>
-                  <Select value={selectedGameId} onValueChange={(v) => setSelectedGameId(v ?? "")}>
-                    <SelectTrigger>
-                      <SelectValue placeholder={t("selectGamePlaceholder")}>
-                        {(v: string | null) => {
-                          if (!v) return t("selectGamePlaceholder");
-                          const game = existingGames?.find((g: { id: string; title: string }) => g.id === v);
-                          return game?.title ?? t("selectGamePlaceholder");
-                        }}
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      {existingGames?.map((game: { id: string; title: string }) => (
-                        <SelectItem key={game.id} value={game.id}>{game.title}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+            {showGameInfo && (
+              <div className="px-4 pb-4 space-y-4 border-t border-border pt-4">
+                <div className="flex gap-2">
+                  <Button
+                    variant={gameMode === "new" ? "default" : "outline"}
+                    onClick={() => setGameMode("new")}
+                    size="sm"
+                    className="h-7 text-xs"
+                  >
+                    {t("newGame")}
+                  </Button>
+                  <Button
+                    variant={gameMode === "existing" ? "default" : "outline"}
+                    onClick={() => setGameMode("existing")}
+                    size="sm"
+                    className="h-7 text-xs"
+                  >
+                    {t("existingGame")}
+                  </Button>
                 </div>
-              ) : (
-                <div className="grid gap-4 sm:grid-cols-2">
+
+                {gameMode === "existing" ? (
                   <div className="space-y-2">
-                    <Label>{t("gameTitle")} *</Label>
-                    <Input
-                      value={newGameTitle}
-                      onChange={(e) => setNewGameTitle(e.target.value)}
-                      placeholder={t("gameTitlePlaceholder")}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>{t("studio")}</Label>
-                    <Input
-                      value={newGameStudio}
-                      onChange={(e) => setNewGameStudio(e.target.value)}
-                      placeholder={t("studioPlaceholder")}
-                    />
-                  </div>
-                  <div className="space-y-2 sm:col-span-2">
-                    <Label>{t("genre")}</Label>
-                    <GenreSelect value={newGameGenre} onChange={setNewGameGenre} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>{t("platform")}</Label>
-                    <Select value={newGamePlatform} onValueChange={(v) => setNewGamePlatform(v ?? "")}>
-                      <SelectTrigger>
-                        <SelectValue placeholder={t("selectPlatform")}>
+                    <Label className="text-sm">{t("selectGame")}</Label>
+                    <Select value={selectedGameId} onValueChange={(v) => setSelectedGameId(v ?? "")}>
+                      <SelectTrigger className="h-8 text-sm">
+                        <SelectValue placeholder={t("selectGamePlaceholder")}>
                           {(v: string | null) => {
-                            if (!v) return t("selectPlatform");
-                            const labels: Record<string, string> = { ios: "iOS", android: "Android", both: t("bothPlatforms") };
-                            return labels[v] ?? t("selectPlatform");
+                            if (!v) return t("selectGamePlaceholder");
+                            const game = existingGames?.find((g: { id: string; title: string }) => g.id === v);
+                            return game?.title ?? t("selectGamePlaceholder");
                           }}
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="ios">iOS</SelectItem>
-                        <SelectItem value="android">Android</SelectItem>
-                        <SelectItem value="both">{t("bothPlatforms")}</SelectItem>
+                        {existingGames?.map((game: { id: string; title: string }) => (
+                          <SelectItem key={game.id} value={game.id}>{game.title}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Raw Notes Section */}
-          <div className="space-y-3">
-            <Label className="text-base font-semibold">{t("rawNotes")}</Label>
-            <div className="rounded-xl bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 p-[1px]">
-              <div className="rounded-xl bg-background">
-                <Textarea
-                  value={rawNotes}
-                  onChange={(e) => setRawNotes(e.target.value)}
-                  placeholder={t("rawNotesPlaceholder")}
-                  rows={16}
-                  className="font-mono text-sm border-0 rounded-xl focus-visible:ring-0 resize-y min-h-[300px]"
-                />
+                ) : (
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="space-y-1.5">
+                      <Label className="text-sm">{t("gameTitle")}</Label>
+                      <Input
+                        value={newGameTitle}
+                        onChange={(e) => setNewGameTitle(e.target.value)}
+                        placeholder={t("gameTitlePlaceholder")}
+                        className="h-8 text-sm"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-sm">{t("studio")}</Label>
+                      <Input
+                        value={newGameStudio}
+                        onChange={(e) => setNewGameStudio(e.target.value)}
+                        placeholder={t("studioPlaceholder")}
+                        className="h-8 text-sm"
+                      />
+                    </div>
+                    <div className="space-y-1.5 sm:col-span-2">
+                      <Label className="text-sm">{t("genre")}</Label>
+                      <GenreSelect value={newGameGenre} onChange={setNewGameGenre} />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-sm">{t("platform")}</Label>
+                      <Select value={newGamePlatform} onValueChange={(v) => setNewGamePlatform(v ?? "")}>
+                        <SelectTrigger className="h-8 text-sm">
+                          <SelectValue placeholder={t("selectPlatform")}>
+                            {(v: string | null) => {
+                              if (!v) return t("selectPlatform");
+                              const labels: Record<string, string> = { ios: "iOS", android: "Android", both: t("bothPlatforms") };
+                              return labels[v] ?? t("selectPlatform");
+                            }}
+                          </SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="ios">iOS</SelectItem>
+                          <SelectItem value="android">Android</SelectItem>
+                          <SelectItem value="both">{t("bothPlatforms")}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-            <p className="text-xs text-muted-foreground">{t("rawNotesHint")}</p>
+            )}
           </div>
 
           {/* Actions */}
@@ -435,20 +523,20 @@ export default function AnalyzeNewPage() {
             <Button
               variant="outline"
               onClick={() => { setStep(2); saveDraft(); }}
-              className="gap-2"
+              className="gap-2 h-9"
             >
               {t("manualFill")}
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-3.5 w-3.5" />
             </Button>
             <Button
               onClick={handleDraftFill}
-              disabled={draftFill.isPending || (!newGameTitle && !selectedGameId) || !rawNotes}
-              className="gap-2 bg-gradient-to-r from-primary to-accent text-white hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
+              disabled={draftFill.isPending || !rawNotes.trim()}
+              className="gap-2 h-9"
             >
               {draftFill.isPending ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
               ) : (
-                <Sparkles className="h-4 w-4" />
+                <Sparkles className="h-3.5 w-3.5" />
               )}
               {t("aiDraftFill")}
             </Button>
@@ -459,7 +547,37 @@ export default function AnalyzeNewPage() {
       {/* Step 2: Review & Edit */}
       {step === 2 && (
         <div className="space-y-4">
-          <Accordion multiple defaultValue={["ftue"]} className="space-y-3">
+          {/* Show game info summary if AI filled it */}
+          {gameMode === "new" && newGameTitle && (
+            <Card className="border-border">
+              <CardContent className="p-4">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="space-y-1.5">
+                    <Label className="text-sm">{t("gameTitle")} *</Label>
+                    <Input
+                      value={newGameTitle}
+                      onChange={(e) => setNewGameTitle(e.target.value)}
+                      className="h-8 text-sm"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-sm">{t("studio")}</Label>
+                    <Input
+                      value={newGameStudio}
+                      onChange={(e) => setNewGameStudio(e.target.value)}
+                      className="h-8 text-sm"
+                    />
+                  </div>
+                  <div className="space-y-1.5 sm:col-span-2">
+                    <Label className="text-sm">{t("genre")}</Label>
+                    <GenreSelect value={newGameGenre} onChange={setNewGameGenre} />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          <Accordion multiple defaultValue={["ftue"]} className="space-y-2">
             {CATEGORIES.map((cat) => (
               <CategoryAccordion
                 key={cat.key}
@@ -496,13 +614,13 @@ export default function AnalyzeNewPage() {
           </Accordion>
 
           <div className="flex justify-between pt-2">
-            <Button variant="outline" onClick={() => setStep(1)} className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
+            <Button variant="outline" onClick={() => setStep(1)} className="gap-2 h-9">
+              <ArrowLeft className="h-3.5 w-3.5" />
               {tCommon("back")}
             </Button>
-            <Button onClick={() => { setStep(3); saveDraft(); }} className="gap-2">
+            <Button onClick={() => { setStep(3); saveDraft(); }} className="gap-2 h-9">
               {tCommon("next")}
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-3.5 w-3.5" />
             </Button>
           </div>
         </div>
@@ -510,9 +628,9 @@ export default function AnalyzeNewPage() {
 
       {/* Step 3: KPI, Competitors, Trends & Save */}
       {step === 3 && (
-        <div className="space-y-6">
-          <Card className="border-border/50">
-            <CardContent className="p-6">
+        <div className="space-y-5">
+          <Card className="border-border">
+            <CardContent className="p-5">
               <KpiForm
                 values={kpis}
                 onChange={(key, value) => setKpis((prev) => ({ ...prev, [key]: value }))}
@@ -521,21 +639,21 @@ export default function AnalyzeNewPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-border/50">
-            <CardContent className="p-6">
+          <Card className="border-border">
+            <CardContent className="p-5">
               <CompetitorTable competitors={competitors} onChange={setCompetitors} />
             </CardContent>
           </Card>
 
-          <Card className="border-border/50">
-            <CardContent className="p-6">
+          <Card className="border-border">
+            <CardContent className="p-5">
               <TrendTable trends={trends} onChange={setTrends} />
             </CardContent>
           </Card>
 
           <div className="flex justify-between pt-2">
-            <Button variant="outline" onClick={() => setStep(2)} className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
+            <Button variant="outline" onClick={() => setStep(2)} className="gap-2 h-9">
+              <ArrowLeft className="h-3.5 w-3.5" />
               {tCommon("back")}
             </Button>
             <div className="flex gap-3">
@@ -543,29 +661,38 @@ export default function AnalyzeNewPage() {
                 variant="outline"
                 onClick={() => handleSave(false)}
                 disabled={createAnalysis.isPending || createGame.isPending}
-                className="gap-2"
+                className="gap-2 h-9"
               >
                 {(createAnalysis.isPending || createGame.isPending) && (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 )}
-                <Save className="h-4 w-4" />
+                <Save className="h-3.5 w-3.5" />
                 {t("saveOnly")}
               </Button>
               <Button
                 onClick={() => handleSave(true)}
                 disabled={createAnalysis.isPending || createGame.isPending || aiAnalyze.isPending}
-                className="gap-2 bg-gradient-to-r from-primary to-accent text-white hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
+                className="gap-2 h-9"
               >
                 {(createAnalysis.isPending || aiAnalyze.isPending) && (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 )}
-                <Sparkles className="h-4 w-4" />
+                <Sparkles className="h-3.5 w-3.5" />
                 {t("saveAndAnalyze")}
               </Button>
             </div>
           </div>
         </div>
       )}
+
+      {/* AI Loading Modal */}
+      <AiLoadingModal
+        open={aiModalOpen}
+        title={aiModalTitle}
+        steps={aiModalSteps}
+        currentStep={aiModalStep}
+        elapsedSeconds={aiModalElapsed}
+      />
     </div>
   );
 }

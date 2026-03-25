@@ -164,11 +164,13 @@ export const aiAnalyses = pgTable("ai_analyses", {
     .references(() => profiles.id)
     .notNull(),
   executiveSummary: text("executive_summary"),
+  overallScoreJustification: text("overall_score_justification"),
   strengths: jsonb("strengths"),
   weaknesses: jsonb("weaknesses"),
   categoryScores: jsonb("category_scores"),
   verdicts: jsonb("verdicts"),
   fieldReviews: jsonb("field_reviews"),
+  kpiTrendsInsight: text("kpi_trends_insight"),
   observationLevel: text("observation_level"),
   observationFeedback: jsonb("observation_feedback"),
   pmLearnings: jsonb("pm_learnings"),

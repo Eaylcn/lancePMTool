@@ -2,7 +2,6 @@
 
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { Badge } from "@/components/ui/badge";
 import { Gamepad2 } from "lucide-react";
 
 interface GameListItemProps {
@@ -19,10 +18,10 @@ interface GameListItemProps {
   };
 }
 
-const statusDotColors: Record<string, string> = {
-  playing: "bg-emerald-400",
-  completed: "bg-blue-400",
-  dropped: "bg-red-400",
+const statusDots: Record<string, string> = {
+  playing: "bg-emerald-500",
+  completed: "bg-blue-500",
+  dropped: "bg-red-500",
 };
 
 export function GameListItem({ game }: GameListItemProps) {
@@ -31,19 +30,19 @@ export function GameListItem({ game }: GameListItemProps) {
   const genres = Array.isArray(game.genre) ? game.genre : [];
   const rating = game.overallRating ? parseFloat(game.overallRating) : null;
   const ratingColor = rating !== null
-    ? rating >= 7 ? "text-emerald-500 bg-emerald-500/10" : rating >= 4 ? "text-yellow-500 bg-yellow-500/10" : "text-red-500 bg-red-500/10"
+    ? rating >= 7 ? "text-emerald-500" : rating >= 4 ? "text-yellow-500" : "text-red-500"
     : "";
 
   return (
     <Link href={`/game/${game.id}`}>
-      <div className="flex items-center gap-4 rounded-xl border border-border/50 p-3 transition-all duration-200 hover:bg-muted/40 hover:border-primary/20 cursor-pointer group">
+      <div className="flex items-center gap-3 rounded-lg border border-border p-2.5 transition-colors duration-150 hover:bg-muted/50 hover:border-primary/20 cursor-pointer">
         {/* Thumbnail */}
-        <div className="h-14 w-20 rounded-lg bg-muted overflow-hidden shrink-0 relative">
+        <div className="h-12 w-16 rounded-md bg-muted overflow-hidden shrink-0">
           {game.coverImageUrl ? (
             <img src={game.coverImageUrl} alt={game.title} className="h-full w-full object-cover" />
           ) : (
-            <div className="h-full w-full bg-gradient-to-br from-primary/10 via-muted to-accent/10 flex items-center justify-center">
-              <Gamepad2 className="h-5 w-5 text-muted-foreground/20" />
+            <div className="h-full w-full flex items-center justify-center">
+              <Gamepad2 className="h-4 w-4 text-muted-foreground/20" />
             </div>
           )}
         </div>
@@ -52,36 +51,29 @@ export function GameListItem({ game }: GameListItemProps) {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             {game.status && (
-              <div className={`h-2 w-2 rounded-full shrink-0 ${statusDotColors[game.status] || "bg-gray-400"}`} />
+              <div className={`h-1.5 w-1.5 rounded-full shrink-0 ${statusDots[game.status] || "bg-gray-400"}`} />
             )}
-            <h3 className="font-medium truncate group-hover:text-primary transition-colors">{game.title}</h3>
-            {game.studio && (
-              <span className="text-xs text-muted-foreground hidden sm:inline">• {game.studio}</span>
-            )}
+            <h3 className="text-sm font-medium truncate">{game.title}</h3>
           </div>
-          <div className="flex items-center gap-1.5 mt-1">
-            {genres.slice(0, 3).map((genre) => (
-              <Badge key={genre} variant="secondary" className="text-[10px] px-1.5 py-0 font-normal">
-                {tGenre(genre)}
-              </Badge>
-            ))}
-            {genres.length > 3 && (
-              <span className="text-[10px] text-muted-foreground">+{genres.length - 3}</span>
-            )}
-          </div>
+          <p className="text-xs text-muted-foreground truncate mt-0.5">
+            {[
+              game.studio,
+              genres.slice(0, 2).map((g) => { try { return tGenre(g); } catch { return g; } }).join(", "),
+            ].filter(Boolean).join(" · ")}
+          </p>
         </div>
+
+        {/* Status */}
+        {game.status && (
+          <span className="text-xs text-muted-foreground shrink-0 hidden md:inline">
+            {tLib(`status.${game.status}`)}
+          </span>
+        )}
 
         {/* Rating */}
         {rating !== null && (
-          <div className={`shrink-0 flex items-center justify-center h-8 px-2.5 rounded-lg text-xs font-bold ${ratingColor}`}>
+          <span className={`text-sm font-semibold tabular-nums shrink-0 ${ratingColor}`}>
             {rating.toFixed(1)}
-          </div>
-        )}
-
-        {/* Status text */}
-        {game.status && (
-          <span className="text-[11px] text-muted-foreground shrink-0 hidden md:inline">
-            {tLib(`status.${game.status}`)}
           </span>
         )}
       </div>

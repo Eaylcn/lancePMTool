@@ -23,7 +23,6 @@ import {
   Moon,
   PanelLeftClose,
   PanelLeftOpen,
-  Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -146,14 +145,14 @@ export function Sidebar() {
         {collapsed ? (
           <button
             onClick={() => setCollapsed(false)}
-            className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+            className="flex h-7 w-7 items-center justify-center rounded-md hover:bg-muted transition-colors"
           >
-            <PanelLeftOpen className="h-4 w-4" />
+            <img src="/icon.svg" alt="Lance" className="h-5 w-5" />
           </button>
         ) : (
           <>
             <div className="flex items-center gap-2">
-              <Zap className="h-5 w-5 text-primary shrink-0" />
+              <img src="/icon.svg" alt="Lance" className="h-6 w-6 shrink-0" />
               <span className="text-lg font-bold tracking-tight">Lance</span>
             </div>
             <button
