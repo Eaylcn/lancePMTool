@@ -797,5 +797,59 @@
       "game": "Oyun",
       "viewDetails": "Detayları Gör"
     }
+  },
+  "profile": {
+    "title": "Profil",
+    "subtitle": "PM yolculuğunun özeti",
+    "editProfile": "Profili Düzenle",
+    "saveProfile": "Kaydet",
+    "cancel": "İptal",
+    "sharePortfolio": "Portfolyoyu Paylaş",
+    "copyLink": "Linki Kopyala",
+    "linkCopied": "Link kopyalandı!",
+    "setUsername": "Portfolyo linki için bir kullanıcı adı belirle",
+    "memberSince": "Üyelik tarihi",
+    "stats": {
+      "totalGames": "Analiz Edilen Oyun",
+      "totalAnalyses": "AI Analizi",
+      "interviewSessions": "Mülakat",
+      "totalTasks": "Tamamlanan Görev",
+      "currentStreak": "Mevcut Streak",
+      "observationLevel": "Gözlem Seviyesi"
+    },
+    "activity": {
+      "title": "Son Aktivite",
+      "gameAdded": "Kütüphaneye eklendi",
+      "analysisCompleted": "AI analizi tamamlandı",
+      "interviewCompleted": "Mülakat tamamlandı",
+      "noActivity": "Henüz aktivite yok"
+    },
+    "form": {
+      "fullName": "Ad Soyad",
+      "title": "Unvan",
+      "titlePlaceholder": "Örn: Junior Game PM",
+      "bio": "Hakkında",
+      "bioPlaceholder": "Kendini kısaca tanıt...",
+      "username": "Kullanıcı Adı",
+      "usernamePlaceholder": "kullaniciadi",
+      "usernameHint": "Portfolyo linkin: /portfolio/{username}",
+      "usernameTaken": "Bu kullanıcı adı zaten alınmış",
+      "saved": "Profil kaydedildi"
+    }
+  },
+  "portfolio": {
+    "title": "{name} — PM Portfolyo",
+    "subtitle": "Gaming PM Yolculuğu",
+    "gamesAnalyzed": "Analiz Edilen Oyun",
+    "aiAnalyses": "AI Analizi",
+    "interviews": "Mülakat",
+    "skills": "Beceri Haritası",
+    "gameShowcase": "Analiz Edilen Oyunlar",
+    "noGames": "Henüz oyun analizi yok",
+    "notFound": "Portfolyo bulunamadı",
+    "notFoundDescription": "Bu kullanıcı adıyla kayıtlı bir portfolyo bulunamadı.",
+    "signIn": "Giriş Yap",
+    "createOwn": "Kendi portfolyonu oluştur",
+    "poweredBy": "GameLens ile oluşturuldu"
   }
 }

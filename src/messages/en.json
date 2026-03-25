@@ -797,5 +797,59 @@
       "game": "Game",
       "viewDetails": "View Details"
     }
+  },
+  "profile": {
+    "title": "Profile",
+    "subtitle": "Your PM journey at a glance",
+    "editProfile": "Edit Profile",
+    "saveProfile": "Save",
+    "cancel": "Cancel",
+    "sharePortfolio": "Share Portfolio",
+    "copyLink": "Copy Link",
+    "linkCopied": "Link copied!",
+    "setUsername": "Set a username for your portfolio link",
+    "memberSince": "Member since",
+    "stats": {
+      "totalGames": "Games Analyzed",
+      "totalAnalyses": "AI Analyses",
+      "interviewSessions": "Interviews",
+      "totalTasks": "Tasks Completed",
+      "currentStreak": "Current Streak",
+      "observationLevel": "Observation Level"
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "gameAdded": "Added to library",
+      "analysisCompleted": "AI analysis completed",
+      "interviewCompleted": "Interview completed",
+      "noActivity": "No activity yet"
+    },
+    "form": {
+      "fullName": "Full Name",
+      "title": "Title",
+      "titlePlaceholder": "e.g. Junior Game PM",
+      "bio": "About",
+      "bioPlaceholder": "Tell us about yourself...",
+      "username": "Username",
+      "usernamePlaceholder": "username",
+      "usernameHint": "Your portfolio link: /portfolio/{username}",
+      "usernameTaken": "This username is already taken",
+      "saved": "Profile saved"
+    }
+  },
+  "portfolio": {
+    "title": "{name} — PM Portfolio",
+    "subtitle": "Gaming PM Journey",
+    "gamesAnalyzed": "Games Analyzed",
+    "aiAnalyses": "AI Analyses",
+    "interviews": "Interviews",
+    "skills": "Skill Map",
+    "gameShowcase": "Analyzed Games",
+    "noGames": "No game analyses yet",
+    "notFound": "Portfolio not found",
+    "notFoundDescription": "No portfolio found with this username.",
+    "signIn": "Sign In",
+    "createOwn": "Create your own portfolio",
+    "poweredBy": "Built with GameLens"
   }
 }
