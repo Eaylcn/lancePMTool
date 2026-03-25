@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import { MessageSquare, Loader2 } from "lucide-react";
-import { useInterviewSessions, useInterviewSession, useStartInterview, useSendMessage } from "@/hooks/use-interview";
+import { useInterviewSessions, useInterviewSession, useStartInterview, useSendMessage, useDeleteSession } from "@/hooks/use-interview";
 import { TopicSelector } from "@/components/interview/topic-selector";
 import { ChatMessage } from "@/components/interview/chat-message";
 import { ChatInput } from "@/components/interview/chat-input";
@@ -54,6 +54,7 @@ export default function InterviewPage() {
   const { data: sessionData } = useInterviewSession(selectedSessionId || "");
   const startInterview = useStartInterview();
   const sendMessage = useSendMessage();
+  const deleteSession = useDeleteSession();
 
   // Sync remote session data with local state
   useEffect(() => {
@@ -235,7 +236,12 @@ export default function InterviewPage() {
           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         </div>
       ) : sessions.length > 0 ? (
-        <SessionHistory sessions={sessions} onSelect={handleSelectSession} />
+        <SessionHistory
+          sessions={sessions}
+          onSelect={handleSelectSession}
+          onDelete={(id) => deleteSession.mutate(id)}
+          deleting={deleteSession.isPending}
+        />
       ) : (
         <EmptyState
           icon={MessageSquare}

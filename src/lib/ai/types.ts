@@ -255,7 +255,7 @@ export const interviewResponseSchema = z.object({
     strengths: z.array(z.string()).default([]),
     improvements: z.array(z.string()).default([]),
     keyTakeaway: z.string().default(""),
-  }).optional(),
+  }).nullable().optional(),
   isLastQuestion: z.boolean().default(false),
   questionNumber: z.number().default(1),
   totalQuestions: z.number().default(7),

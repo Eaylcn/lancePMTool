@@ -3,8 +3,9 @@
 import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Clock, CheckCircle2 } from "lucide-react";
+import { Clock, CheckCircle2, Trash2 } from "lucide-react";
 import type { InterviewTopic } from "@/lib/ai/prompts/interview";
 
 interface Session {
@@ -19,9 +20,11 @@ interface Session {
 interface SessionHistoryProps {
   sessions: Session[];
   onSelect: (sessionId: string) => void;
+  onDelete: (sessionId: string) => void;
+  deleting?: boolean;
 }
 
-export function SessionHistory({ sessions, onSelect }: SessionHistoryProps) {
+export function SessionHistory({ sessions, onSelect, onDelete, deleting }: SessionHistoryProps) {
   const t = useTranslations("interview");
 
   if (sessions.length === 0) return null;
@@ -33,7 +36,7 @@ export function SessionHistory({ sessions, onSelect }: SessionHistoryProps) {
         {sessions.map((session) => (
           <Card
             key={session.id}
-            className="cursor-pointer hover:shadow-md transition-shadow hover:border-primary/30"
+            className="cursor-pointer hover:shadow-md transition-shadow hover:border-primary/30 group"
             onClick={() => onSelect(session.id)}
           >
             <CardContent className="p-4">
@@ -41,11 +44,25 @@ export function SessionHistory({ sessions, onSelect }: SessionHistoryProps) {
                 <h4 className="font-medium text-sm">
                   {t(`topics.${session.topic as InterviewTopic}`)}
                 </h4>
-                {session.status === "completed" ? (
-                  <CheckCircle2 className="h-4 w-4 text-green-500" />
-                ) : (
-                  <Clock className="h-4 w-4 text-yellow-500" />
-                )}
+                <div className="flex items-center gap-1">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive"
+                    disabled={deleting}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete(session.id);
+                    }}
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </Button>
+                  {session.status === "completed" ? (
+                    <CheckCircle2 className="h-4 w-4 text-green-500" />
+                  ) : (
+                    <Clock className="h-4 w-4 text-yellow-500" />
+                  )}
+                </div>
               </div>
               <div className="flex items-center gap-2 flex-wrap">
                 <Badge variant="outline" className="text-xs">

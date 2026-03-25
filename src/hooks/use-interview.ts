@@ -46,6 +46,20 @@ export function useStartInterview() {
   });
 }
 
+export function useDeleteSession() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (sessionId: string) => {
+      const res = await fetch(`/api/interview/sessions/${sessionId}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete session");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["interview-sessions"] });
+    },
+  });
+}
+
 export function useSendMessage() {
   const queryClient = useQueryClient();
   return useMutation({

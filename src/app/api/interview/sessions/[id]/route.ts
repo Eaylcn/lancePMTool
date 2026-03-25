@@ -30,3 +30,29 @@ export async function GET(
 
   return NextResponse.json({ session, messages });
 }
+
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = await params;
+
+  const [session] = await db.select().from(interviewSessions)
+    .where(and(eq(interviewSessions.id, id), eq(interviewSessions.userId, user.id)));
+
+  if (!session) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  // Messages cascade-deleted via FK
+  await db.delete(interviewSessions).where(eq(interviewSessions.id, id));
+
+  return NextResponse.json({ success: true });
+}
