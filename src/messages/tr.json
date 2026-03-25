@@ -835,7 +835,12 @@
       "usernameHint": "Portfolyo linkin: /portfolio/{username}",
       "usernameTaken": "Bu kullanıcı adı zaten alınmış",
       "saved": "Profil kaydedildi"
-    }
+    },
+    "templateGames": "Şablon Oyunlar",
+    "templateBadge": "Şablon",
+    "showTemplates": "Şablonları Göster",
+    "hideTemplates": "Şablonları Gizle",
+    "templateDescription": "Bu oyunlar örnek analiz olarak eklenmiştir. İstatistiklere dahil edilmez."
   },
   "portfolio": {
     "title": "{name} — PM Portfolyo",
@@ -850,7 +855,12 @@
     "notFoundDescription": "Bu kullanıcı adıyla kayıtlı bir portfolyo bulunamadı.",
     "signIn": "Giriş Yap",
     "createOwn": "Kendi portfolyonu oluştur",
-    "poweredBy": "GameLens ile oluşturuldu"
+    "poweredBy": "GameLens ile oluşturuldu",
+    "templateGames": "Şablon Oyunlar",
+    "templateBadge": "Şablon",
+    "showTemplates": "Şablonları Göster",
+    "hideTemplates": "Şablonları Gizle",
+    "templateDescription": "Bu oyunlar örnek analiz olarak eklenmiştir."
   },
   "settings": {
     "title": "Ayarlar",

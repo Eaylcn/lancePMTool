@@ -10,7 +10,7 @@ import {
   taskStreaks,
   growthReports,
 } from "@/lib/db/schema";
-import { eq, desc, count } from "drizzle-orm";
+import { eq, desc, count, and, or, isNull } from "drizzle-orm";
 
 interface CategoryScore {
   gameScore: number;
@@ -29,16 +29,17 @@ export async function GET(_request: NextRequest) {
     const [
       profileResult,
       gamesCount,
-      userAiAnalyses,
+      allAiAnalyses,
       interviewCount,
       completedTaskCount,
       streakResult,
       latestReport,
       recentGamesList,
       recentInterviews,
+      templateGamesList,
     ] = await Promise.all([
       db.select().from(profiles).where(eq(profiles.id, user.id)),
-      db.select({ value: count() }).from(games).where(eq(games.userId, user.id)),
+      db.select({ value: count() }).from(games).where(and(eq(games.userId, user.id), or(eq(games.isTemplate, false), isNull(games.isTemplate)))),
       db.select().from(aiAnalyses).where(eq(aiAnalyses.userId, user.id)),
       db.select({ value: count() }).from(interviewSessions).where(eq(interviewSessions.userId, user.id)),
       db.select({ value: count() }).from(dailyTasks).where(eq(dailyTasks.userId, user.id)),
@@ -50,7 +51,7 @@ export async function GET(_request: NextRequest) {
         .limit(1),
       db.select({ id: games.id, title: games.title, genre: games.genre, createdAt: games.createdAt })
         .from(games)
-        .where(eq(games.userId, user.id))
+        .where(and(eq(games.userId, user.id), or(eq(games.isTemplate, false), isNull(games.isTemplate))))
         .orderBy(desc(games.createdAt))
         .limit(10),
       db.select({ id: interviewSessions.id, topic: interviewSessions.topic, createdAt: interviewSessions.createdAt })
@@ -58,7 +59,16 @@ export async function GET(_request: NextRequest) {
         .where(eq(interviewSessions.userId, user.id))
         .orderBy(desc(interviewSessions.createdAt))
         .limit(5),
+      // Template games (separate list)
+      db.select({ id: games.id, title: games.title, genre: games.genre, platform: games.platform })
+        .from(games)
+        .where(and(eq(games.userId, user.id), eq(games.isTemplate, true)))
+        .orderBy(desc(games.createdAt)),
     ]);
+
+    // Filter out AI analyses for template games
+    const templateGameIds = new Set(templateGamesList.map(g => g.id));
+    const userAiAnalyses = allAiAnalyses.filter(a => !templateGameIds.has(a.gameId));
 
     const profile = profileResult[0];
 
@@ -148,6 +158,10 @@ export async function GET(_request: NextRequest) {
       },
       skillRadar,
       recentActivity: activities.slice(0, 10),
+      templateGames: templateGamesList.map(g => {
+        const hasAnalysis = allAiAnalyses.some(a => a.gameId === g.id);
+        return { id: g.id, title: g.title, genre: g.genre, platform: g.platform, hasAnalysis };
+      }),
     });
   } catch (error) {
     console.error("Profile fetch error:", error);

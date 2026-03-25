@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { games, analyses, aiAnalyses } from "@/lib/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and, or, isNull } from "drizzle-orm";
 
 interface CategoryScore {
   gameScore: number;
@@ -20,11 +20,16 @@ export async function GET(_request: NextRequest) {
 
   try {
     // Fetch all user data in parallel
-    const [userGames, userAnalyses, userAiAnalyses] = await Promise.all([
-      db.select().from(games).where(eq(games.userId, user.id)).orderBy(desc(games.createdAt)),
+    const [userGames, userAnalyses, allAiAnalyses, templateGames] = await Promise.all([
+      db.select().from(games).where(and(eq(games.userId, user.id), or(eq(games.isTemplate, false), isNull(games.isTemplate)))).orderBy(desc(games.createdAt)),
       db.select().from(analyses).where(eq(analyses.userId, user.id)),
       db.select().from(aiAnalyses).where(eq(aiAnalyses.userId, user.id)),
+      db.select({ id: games.id }).from(games).where(and(eq(games.userId, user.id), eq(games.isTemplate, true))),
     ]);
+
+    // Filter out template game analyses
+    const templateGameIds = new Set(templateGames.map(g => g.id));
+    const userAiAnalyses = allAiAnalyses.filter(a => !templateGameIds.has(a.gameId));
 
     // Build analysis map (gameId -> analysis)
     const analysisMap = new Map(userAnalyses.map(a => [a.gameId, a]));

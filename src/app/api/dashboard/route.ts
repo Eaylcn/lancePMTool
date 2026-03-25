@@ -9,7 +9,7 @@ import {
   taskStreaks,
   growthReports,
 } from "@/lib/db/schema";
-import { eq, desc, count, avg } from "drizzle-orm";
+import { eq, desc, count, avg, and, or, isNull } from "drizzle-orm";
 
 export async function GET(_request: NextRequest) {
   const supabase = await createClient();
@@ -32,8 +32,8 @@ export async function GET(_request: NextRequest) {
       latestGrowthReport,
       recentGames,
     ] = await Promise.all([
-      // Total games count
-      db.select({ value: count() }).from(games).where(eq(games.userId, user.id)),
+      // Total games count (exclude templates)
+      db.select({ value: count() }).from(games).where(and(eq(games.userId, user.id), or(eq(games.isTemplate, false), isNull(games.isTemplate)))),
       // Total AI analyses count
       db.select({ value: count() }).from(aiAnalyses).where(eq(aiAnalyses.userId, user.id)),
       // Average observation level
@@ -57,7 +57,7 @@ export async function GET(_request: NextRequest) {
         .where(eq(growthReports.userId, user.id))
         .orderBy(desc(growthReports.createdAt))
         .limit(1),
-      // Recent 5 games with analysis flag
+      // Recent 5 games with analysis flag (exclude templates)
       db.select({
         id: games.id,
         title: games.title,
@@ -67,7 +67,7 @@ export async function GET(_request: NextRequest) {
         createdAt: games.createdAt,
       })
         .from(games)
-        .where(eq(games.userId, user.id))
+        .where(and(eq(games.userId, user.id), or(eq(games.isTemplate, false), isNull(games.isTemplate))))
         .orderBy(desc(games.createdAt))
         .limit(5),
     ]);

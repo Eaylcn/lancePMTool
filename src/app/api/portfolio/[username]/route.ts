@@ -8,7 +8,7 @@ import {
   taskStreaks,
   growthReports,
 } from "@/lib/db/schema";
-import { eq, desc, count } from "drizzle-orm";
+import { eq, desc, count, and, or, isNull } from "drizzle-orm";
 
 interface CategoryScore {
   gameScore: number;
@@ -39,13 +39,14 @@ export async function GET(
     // Parallel fetch public data
     const [
       gamesCount,
-      userAiAnalyses,
+      allAiAnalyses,
       interviewCount,
       streakResult,
       latestReport,
       userGames,
+      templateGamesList,
     ] = await Promise.all([
-      db.select({ value: count() }).from(games).where(eq(games.userId, userId)),
+      db.select({ value: count() }).from(games).where(and(eq(games.userId, userId), or(eq(games.isTemplate, false), isNull(games.isTemplate)))),
       db.select().from(aiAnalyses).where(eq(aiAnalyses.userId, userId)),
       db.select({ value: count() }).from(interviewSessions).where(eq(interviewSessions.userId, userId)),
       db.select().from(taskStreaks).where(eq(taskStreaks.userId, userId)),
@@ -56,10 +57,19 @@ export async function GET(
         .limit(1),
       db.select({ id: games.id, title: games.title, genre: games.genre, platform: games.platform })
         .from(games)
-        .where(eq(games.userId, userId))
+        .where(and(eq(games.userId, userId), or(eq(games.isTemplate, false), isNull(games.isTemplate))))
         .orderBy(desc(games.createdAt))
         .limit(20),
+      // Template games
+      db.select({ id: games.id, title: games.title, genre: games.genre, platform: games.platform })
+        .from(games)
+        .where(and(eq(games.userId, userId), eq(games.isTemplate, true)))
+        .orderBy(desc(games.createdAt)),
     ]);
+
+    // Filter out AI analyses for template games
+    const templateGameIds = new Set(templateGamesList.map(g => g.id));
+    const userAiAnalyses = allAiAnalyses.filter(a => !templateGameIds.has(a.gameId));
 
     // Skill radar
     const categories = ["ftue", "coreLoop", "monetization", "retention", "uxui", "metaGame", "technical"];
@@ -132,6 +142,13 @@ export async function GET(
         genre: g.genre,
         platform: g.platform,
         hasAnalysis: aiGameIds.has(g.id),
+      })),
+      templateGames: templateGamesList.map(g => ({
+        id: g.id,
+        title: g.title,
+        genre: g.genre,
+        platform: g.platform,
+        hasAnalysis: allAiAnalyses.some(a => a.gameId === g.id),
       })),
     });
   } catch (error) {

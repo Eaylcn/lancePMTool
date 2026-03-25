@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { games } from "@/lib/db/schema";
-import { eq, ilike, or, desc, asc, sql } from "drizzle-orm";
+import { eq, ilike, or, desc, asc, sql, isNull } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
   const supabase = await createClient();
@@ -20,7 +20,8 @@ export async function GET(request: NextRequest) {
   const sort = searchParams.get("sort") || "created_at";
   const order = searchParams.get("order") || "desc";
 
-  const conditions = [eq(games.userId, user.id)];
+  const notTemplate = sql`(${games.isTemplate} = false OR ${games.isTemplate} IS NULL)`;
+  const conditions = [eq(games.userId, user.id), notTemplate];
 
   if (status) {
     conditions.push(eq(games.status, status as "playing" | "completed" | "dropped"));

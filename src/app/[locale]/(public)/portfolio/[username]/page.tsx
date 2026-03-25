@@ -11,6 +11,7 @@ import { ProfileHeader } from "@/components/profile/profile-header";
 import { ProfileStats } from "@/components/profile/profile-stats";
 import { GameShowcase } from "@/components/portfolio/game-showcase";
 import { SkillRadar } from "@/components/growth/skill-radar";
+import { TemplateGames } from "@/components/profile/template-games";
 
 export default function PortfolioPage() {
   const t = useTranslations("portfolio");
@@ -86,6 +87,11 @@ export default function PortfolioPage() {
 
           {/* Game Showcase */}
           <GameShowcase games={data.games} />
+
+          {/* Template Games */}
+          {data.templateGames && data.templateGames.length > 0 && (
+            <TemplateGames games={data.templateGames} namespace="portfolio" />
+          )}
         </div>
       )}
     </PortfolioLayout>

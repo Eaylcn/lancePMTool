@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { games, aiAnalyses, growthReports } from "@/lib/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and, or, isNull } from "drizzle-orm";
 import { getAnthropicClient } from "@/lib/ai/client";
 import { getGrowthSystemPrompt, getGrowthUserPrompt } from "@/lib/ai/prompts/growth";
 import { growthReportAiResultSchema } from "@/lib/ai/types";
@@ -32,11 +32,15 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    // Fetch user's games and AI analyses
-    const [userGames, userAiAnalyses] = await Promise.all([
-      db.select().from(games).where(eq(games.userId, user.id)).orderBy(desc(games.createdAt)),
+    // Fetch user's games and AI analyses (exclude templates)
+    const [userGames, allAiAnalyses, templateGames] = await Promise.all([
+      db.select().from(games).where(and(eq(games.userId, user.id), or(eq(games.isTemplate, false), isNull(games.isTemplate)))).orderBy(desc(games.createdAt)),
       db.select().from(aiAnalyses).where(eq(aiAnalyses.userId, user.id)),
+      db.select({ id: games.id }).from(games).where(and(eq(games.userId, user.id), eq(games.isTemplate, true))),
     ]);
+
+    const templateGameIds = new Set(templateGames.map(g => g.id));
+    const userAiAnalyses = allAiAnalyses.filter(a => !templateGameIds.has(a.gameId));
 
     if (userAiAnalyses.length === 0) {
       return NextResponse.json(

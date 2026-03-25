@@ -12,6 +12,7 @@ import { ProfileStats } from "@/components/profile/profile-stats";
 import { ProfileActivity } from "@/components/profile/profile-activity";
 import { ProfileEditForm } from "@/components/profile/profile-edit-form";
 import { SkillRadar } from "@/components/growth/skill-radar";
+import { TemplateGames } from "@/components/profile/template-games";
 
 export default function ProfilePage() {
   const t = useTranslations("profile");
@@ -127,6 +128,11 @@ export default function ProfilePage() {
       {/* Skill Radar */}
       {data.skillRadar && data.skillRadar.some((s: { avgGameScore: number }) => s.avgGameScore > 0) && (
         <SkillRadar data={data.skillRadar} />
+      )}
+
+      {/* Template Games */}
+      {data.templateGames && data.templateGames.length > 0 && (
+        <TemplateGames games={data.templateGames} namespace="profile" />
       )}
 
       {/* Recent Activity */}

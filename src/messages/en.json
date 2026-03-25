@@ -835,7 +835,12 @@
       "usernameHint": "Your portfolio link: /portfolio/{username}",
       "usernameTaken": "This username is already taken",
       "saved": "Profile saved"
-    }
+    },
+    "templateGames": "Template Games",
+    "templateBadge": "Template",
+    "showTemplates": "Show Templates",
+    "hideTemplates": "Hide Templates",
+    "templateDescription": "These games were added as sample analyses. They are not included in statistics."
   },
   "portfolio": {
     "title": "{name} — PM Portfolio",
@@ -850,7 +855,12 @@
     "notFoundDescription": "No portfolio found with this username.",
     "signIn": "Sign In",
     "createOwn": "Create your own portfolio",
-    "poweredBy": "Built with GameLens"
+    "poweredBy": "Built with GameLens",
+    "templateGames": "Template Games",
+    "templateBadge": "Template",
+    "showTemplates": "Show Templates",
+    "hideTemplates": "Hide Templates",
+    "templateDescription": "These games were added as sample analyses."
   },
   "settings": {
     "title": "Settings",

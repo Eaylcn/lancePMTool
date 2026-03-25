@@ -20,6 +20,7 @@ export async function POST() {
       platform: "both" as const,
       status: "completed" as const,
       overallRating: "8.5",
+      isTemplate: true,
     },
     {
       userId: user.id,
@@ -29,6 +30,7 @@ export async function POST() {
       platform: "both" as const,
       status: "playing" as const,
       overallRating: "7.8",
+      isTemplate: true,
     },
     {
       userId: user.id,
@@ -38,6 +40,7 @@ export async function POST() {
       platform: "both" as const,
       status: "completed" as const,
       overallRating: "7.2",
+      isTemplate: true,
     },
     {
       userId: user.id,
@@ -47,6 +50,7 @@ export async function POST() {
       platform: "both" as const,
       status: "dropped" as const,
       overallRating: "5.5",
+      isTemplate: true,
     },
     {
       userId: user.id,
@@ -56,6 +60,7 @@ export async function POST() {
       platform: "both" as const,
       status: "playing" as const,
       overallRating: "6.9",
+      isTemplate: true,
     },
   ];
 
