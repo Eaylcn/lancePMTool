@@ -57,14 +57,49 @@
   },
   "dashboard": {
     "welcome": "Hoşgeldin, {name}!",
+    "subtitle": "Gaming PM yolculuğunun özeti",
     "totalGames": "Toplam Oyun",
     "totalAnalyses": "Toplam Analiz",
     "avgScore": "Ortalama Skor",
     "pmLevel": "PM Seviyesi",
+    "observationLevel": "Gözlem Seviyesi",
     "recentGames": "Son Oyunlar",
     "viewAll": "Tümünü Gör",
     "noGames": "Henüz oyun yok",
-    "noGamesDescription": "İlk oyun analizini oluşturarak PM yolculuğuna başla."
+    "noGamesDescription": "İlk oyun analizini oluşturarak PM yolculuğuna başla.",
+    "quickActions": {
+      "title": "Hızlı Aksiyonlar",
+      "newAnalysis": "Yeni Analiz",
+      "startInterview": "Mülakat Başlat",
+      "dailyTasks": "Günlük Görevler",
+      "metrics": "Metrik Analizi"
+    },
+    "interviewStats": {
+      "title": "Mülakat İstatistikleri",
+      "completedSessions": "Tamamlanan Mülakatlar",
+      "avgScore": "Ortalama Puan"
+    },
+    "taskStats": {
+      "title": "Görev İstatistikleri",
+      "streak": "Mevcut Streak",
+      "longestStreak": "En Uzun Streak",
+      "totalCompleted": "Toplam Tamamlanan"
+    },
+    "recentActivity": {
+      "noAnalysis": "Analiz yok",
+      "hasAnalysis": "AI Analiz var"
+    },
+    "levels": {
+      "beginner_pm": "Başlangıç PM",
+      "junior_pm": "Junior PM",
+      "mid_pm": "Mid PM",
+      "senior_pm": "Senior PM",
+      "lead_pm": "Lead PM",
+      "beginner": "Başlangıç",
+      "intermediate": "Orta",
+      "advanced": "İleri",
+      "professional": "Profesyonel"
+    }
   },
   "theme": { "light": "Açık Tema", "dark": "Koyu Tema", "system": "Sistem" },
   "language": { "tr": "Türkçe", "en": "English" },
@@ -615,5 +650,152 @@
     },
     "allCompleted": "Tüm görevler tamamlandı!",
     "completedCount": "{completed}/{total} tamamlandı"
+  },
+  "metrics": {
+    "title": "Metrik Analizi",
+    "subtitle": "KPI'larını öğren, hesapla ve AI ile analiz et",
+    "tabs": {
+      "education": "KPI Eğitimi",
+      "calculator": "Hesaplama",
+      "history": "Geçmiş"
+    },
+    "education": {
+      "title": "Temel KPI'lar",
+      "subtitle": "Mobil oyun endüstrisinin en önemli metriklerini öğren",
+      "dau": {
+        "name": "DAU (Daily Active Users)",
+        "definition": "Bir günde oyunu oynayan benzersiz kullanıcı sayısı.",
+        "formula": "Günlük benzersiz oturum açan kullanıcılar",
+        "why": "Oyunun günlük etkileşim gücünü gösterir. Düşen DAU, retention sorununa işaret eder.",
+        "range": "Hyper-casual: 100K-1M+ | Casual: 50K-500K | Mid-core: 10K-200K"
+      },
+      "mau": {
+        "name": "MAU (Monthly Active Users)",
+        "definition": "Bir ay içinde oyunu oynayan benzersiz kullanıcı sayısı.",
+        "formula": "Aylık benzersiz oturum açan kullanıcılar",
+        "why": "Toplam kullanıcı tabanının büyüklüğünü ölçer. Monetization ve yatırımcı metrikleri için temel.",
+        "range": "Hyper-casual: 1M-10M+ | Casual: 500K-5M | Mid-core: 100K-2M"
+      },
+      "arpdau": {
+        "name": "ARPDAU (Average Revenue Per DAU)",
+        "definition": "Günlük aktif kullanıcı başına ortalama gelir.",
+        "formula": "Günlük Gelir / DAU",
+        "why": "Monetization verimliliğinin en kritik metriği. Genre'a göre büyük farklılık gösterir.",
+        "range": "Hyper-casual: $0.02-0.10 | Casual: $0.05-0.25 | RPG: $0.10-0.70 | Strategy: $0.15-0.90"
+      },
+      "ltv": {
+        "name": "LTV (Lifetime Value)",
+        "definition": "Bir kullanıcının oyundaki yaşam boyu toplam değeri.",
+        "formula": "ARPDAU × Ortalama Kullanıcı Ömrü (gün)",
+        "why": "Kullanıcı edinim bütçesini belirler. LTV > CPI ise oyun sürdürülebilir.",
+        "range": "Hyper-casual: $0.10-1.00 | Casual: $1-10 | Mid-core: $5-50+"
+      },
+      "cpi": {
+        "name": "CPI (Cost Per Install)",
+        "definition": "Bir yeni kullanıcı edinme maliyeti.",
+        "formula": "Reklam Harcaması / Toplam Yükleme",
+        "why": "UA (User Acquisition) verimliliğini ölçer. LTV/CPI oranı > 1 olmalı.",
+        "range": "Hyper-casual: $0.05-0.50 | Casual: $0.30-3.00 | RPG: $1-8 | Strategy: $1.50-10"
+      },
+      "retention": {
+        "name": "Retention (D1/D7/D30)",
+        "definition": "Yükleme sonrası 1., 7. ve 30. günde geri dönen kullanıcı oranı.",
+        "formula": "Geri Dönen Kullanıcılar / Toplam Yükleyenler × 100",
+        "why": "Oyunun yapışkanlığını ve uzun vadeli sağlığını ölçer. D1 > 40% genellikle iyi sinyaldir.",
+        "range": "D1: 25-55% | D7: 8-32% | D30: 3-20% (genre'a göre değişir)"
+      },
+      "stickiness": {
+        "name": "Stickiness (DAU/MAU)",
+        "definition": "Aktif kullanıcıların ne kadar düzenli oynadığını ölçer.",
+        "formula": "DAU / MAU × 100",
+        "why": "Yüksek stickiness = kullanıcılar her gün dönüyor. %20+ genelde iyi.",
+        "range": "Hyper-casual: %10-28 | Casual: %12-32 | RPG: %15-40 | Strategy: %18-42"
+      },
+      "arpu": {
+        "name": "ARPU (Average Revenue Per User)",
+        "definition": "Aylık aktif kullanıcı başına ortalama gelir.",
+        "formula": "Aylık Gelir / MAU",
+        "why": "Toplam kullanıcı tabanının parasal değerini gösterir.",
+        "range": "Genre ve monetization modeline göre büyük farklılık gösterir"
+      },
+      "sessionLength": {
+        "name": "Ortalama Oturum Süresi",
+        "definition": "Kullanıcının bir oturumda ortalama oyun süresi.",
+        "formula": "Toplam Oturum Süresi / Toplam Oturum Sayısı",
+        "why": "Etkileşim derinliğini ölçer. Kısa oturumlar düşük etkileşime işaret edebilir.",
+        "range": "Hyper-casual: 2-7 dk | Casual: 5-20 dk | Mid-core: 10-40 dk"
+      },
+      "sessionsPerDay": {
+        "name": "Günlük Oturum Sayısı",
+        "definition": "Bir kullanıcının günde ortalama kaç kez oyunu açtığı.",
+        "formula": "Günlük Toplam Oturumlar / DAU",
+        "why": "Alışkanlık döngüsünün gücünü gösterir. Yüksek sayı = güçlü retention mekanikleri.",
+        "range": "Hyper-casual: 2-7 | Casual: 2-7 | RPG: 2-6 | Strategy: 2-6"
+      }
+    },
+    "calculator": {
+      "title": "Metrik Hesaplama",
+      "subtitle": "Oyunun metriklerini gir, türe göre benchmark karşılaştırması yap",
+      "selectGame": "Oyun Seç",
+      "selectGenre": "Tür Seç",
+      "rawMetrics": "Ham Metrikler",
+      "derivedMetrics": "Hesaplanan Metrikler",
+      "analyzeWithAi": "AI ile Analiz Et",
+      "analyzing": "AI analiz yapılıyor...",
+      "fields": {
+        "dau": "DAU",
+        "mau": "MAU",
+        "revenue": "Aylık Gelir ($)",
+        "downloads": "Aylık İndirme",
+        "cpi": "CPI ($)",
+        "d1Retention": "D1 Retention (%)",
+        "d7Retention": "D7 Retention (%)",
+        "d30Retention": "D30 Retention (%)",
+        "sessionLength": "Oturum Süresi (saniye)",
+        "sessionsPerDay": "Günlük Oturum Sayısı"
+      },
+      "derived": {
+        "arpdau": "ARPDAU",
+        "arpu": "ARPU",
+        "ltv": "Tahmini LTV",
+        "stickiness": "Stickiness (DAU/MAU)",
+        "dailyPlayTime": "Günlük Oynama Süresi"
+      },
+      "enterMetrics": "Hesaplanan metrikleri görmek için ham metrik girin"
+    },
+    "benchmarks": {
+      "title": "Benchmark Karşılaştırması",
+      "subtitle": "Metriklerini tür ortalamasıyla karşılaştır",
+      "metric": "Metrik",
+      "yourValue": "Senin Değerin",
+      "genreBenchmark": "Tür Ortalaması",
+      "status": "Durum",
+      "above": "Ortalamanın Üstünde",
+      "at": "Ortalamada",
+      "below": "Ortalamanın Altında",
+      "low": "Düşük",
+      "mid": "Orta",
+      "high": "Yüksek",
+      "noBenchmarks": "Benchmark karşılaştırması için metrik gir ve tür seç"
+    },
+    "analysis": {
+      "title": "AI Analiz Sonucu",
+      "healthScore": "Sağlık Skoru",
+      "summary": "Özet",
+      "benchmarkComparison": "Benchmark Karşılaştırması",
+      "insights": "Bulgular",
+      "recommendations": "Öneriler",
+      "riskFactors": "Risk Faktörleri",
+      "noAnalysis": "Henüz analiz yapılmadı. Metrikleri gir ve AI ile analiz et."
+    },
+    "history": {
+      "title": "Analiz Geçmişi",
+      "subtitle": "Önceki metrik analizlerini görüntüle",
+      "noHistory": "Henüz metrik analizi yapılmamış.",
+      "healthScore": "Sağlık Skoru",
+      "date": "Tarih",
+      "game": "Oyun",
+      "viewDetails": "Detayları Gör"
+    }
   }
 }

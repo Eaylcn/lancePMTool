@@ -57,14 +57,49 @@
   },
   "dashboard": {
     "welcome": "Welcome, {name}!",
+    "subtitle": "Your Gaming PM journey at a glance",
     "totalGames": "Total Games",
     "totalAnalyses": "Total Analyses",
     "avgScore": "Avg Score",
     "pmLevel": "PM Level",
+    "observationLevel": "Observation Level",
     "recentGames": "Recent Games",
     "viewAll": "View All",
     "noGames": "No games yet",
-    "noGamesDescription": "Start your PM journey by creating your first game analysis."
+    "noGamesDescription": "Start your PM journey by creating your first game analysis.",
+    "quickActions": {
+      "title": "Quick Actions",
+      "newAnalysis": "New Analysis",
+      "startInterview": "Start Interview",
+      "dailyTasks": "Daily Tasks",
+      "metrics": "Metric Analysis"
+    },
+    "interviewStats": {
+      "title": "Interview Stats",
+      "completedSessions": "Completed Interviews",
+      "avgScore": "Average Score"
+    },
+    "taskStats": {
+      "title": "Task Stats",
+      "streak": "Current Streak",
+      "longestStreak": "Longest Streak",
+      "totalCompleted": "Total Completed"
+    },
+    "recentActivity": {
+      "noAnalysis": "No analysis",
+      "hasAnalysis": "AI Analyzed"
+    },
+    "levels": {
+      "beginner_pm": "Beginner PM",
+      "junior_pm": "Junior PM",
+      "mid_pm": "Mid PM",
+      "senior_pm": "Senior PM",
+      "lead_pm": "Lead PM",
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced",
+      "professional": "Professional"
+    }
   },
   "theme": { "light": "Light Mode", "dark": "Dark Mode", "system": "System" },
   "language": { "tr": "Türkçe", "en": "English" },
@@ -615,5 +650,152 @@
     },
     "allCompleted": "All tasks completed!",
     "completedCount": "{completed}/{total} completed"
+  },
+  "metrics": {
+    "title": "Metric Analysis",
+    "subtitle": "Learn KPIs, calculate metrics, and analyze with AI",
+    "tabs": {
+      "education": "KPI Education",
+      "calculator": "Calculator",
+      "history": "History"
+    },
+    "education": {
+      "title": "Core KPIs",
+      "subtitle": "Learn the most important metrics in the mobile gaming industry",
+      "dau": {
+        "name": "DAU (Daily Active Users)",
+        "definition": "The number of unique users who play the game in a single day.",
+        "formula": "Daily unique logged-in users",
+        "why": "Shows the game's daily engagement strength. Declining DAU signals retention issues.",
+        "range": "Hyper-casual: 100K-1M+ | Casual: 50K-500K | Mid-core: 10K-200K"
+      },
+      "mau": {
+        "name": "MAU (Monthly Active Users)",
+        "definition": "The number of unique users who play the game within a month.",
+        "formula": "Monthly unique logged-in users",
+        "why": "Measures the total user base size. Fundamental for monetization and investor metrics.",
+        "range": "Hyper-casual: 1M-10M+ | Casual: 500K-5M | Mid-core: 100K-2M"
+      },
+      "arpdau": {
+        "name": "ARPDAU (Average Revenue Per DAU)",
+        "definition": "Average revenue per daily active user.",
+        "formula": "Daily Revenue / DAU",
+        "why": "The most critical monetization efficiency metric. Varies significantly by genre.",
+        "range": "Hyper-casual: $0.02-0.10 | Casual: $0.05-0.25 | RPG: $0.10-0.70 | Strategy: $0.15-0.90"
+      },
+      "ltv": {
+        "name": "LTV (Lifetime Value)",
+        "definition": "The total value of a user over their entire lifetime in the game.",
+        "formula": "ARPDAU × Average User Lifetime (days)",
+        "why": "Determines user acquisition budget. Game is sustainable if LTV > CPI.",
+        "range": "Hyper-casual: $0.10-1.00 | Casual: $1-10 | Mid-core: $5-50+"
+      },
+      "cpi": {
+        "name": "CPI (Cost Per Install)",
+        "definition": "The cost of acquiring a single new user.",
+        "formula": "Ad Spend / Total Installs",
+        "why": "Measures UA (User Acquisition) efficiency. LTV/CPI ratio should be > 1.",
+        "range": "Hyper-casual: $0.05-0.50 | Casual: $0.30-3.00 | RPG: $1-8 | Strategy: $1.50-10"
+      },
+      "retention": {
+        "name": "Retention (D1/D7/D30)",
+        "definition": "The percentage of users who return on day 1, 7, and 30 after install.",
+        "formula": "Returning Users / Total Installers × 100",
+        "why": "Measures game stickiness and long-term health. D1 > 40% is generally a good signal.",
+        "range": "D1: 25-55% | D7: 8-32% | D30: 3-20% (varies by genre)"
+      },
+      "stickiness": {
+        "name": "Stickiness (DAU/MAU)",
+        "definition": "Measures how regularly active users play the game.",
+        "formula": "DAU / MAU × 100",
+        "why": "High stickiness = users return daily. 20%+ is generally good.",
+        "range": "Hyper-casual: 10-28% | Casual: 12-32% | RPG: 15-40% | Strategy: 18-42%"
+      },
+      "arpu": {
+        "name": "ARPU (Average Revenue Per User)",
+        "definition": "Average revenue per monthly active user.",
+        "formula": "Monthly Revenue / MAU",
+        "why": "Shows the monetary value of the total user base.",
+        "range": "Varies significantly by genre and monetization model"
+      },
+      "sessionLength": {
+        "name": "Average Session Length",
+        "definition": "The average time a user spends playing per session.",
+        "formula": "Total Session Time / Total Sessions",
+        "why": "Measures engagement depth. Short sessions may indicate low engagement.",
+        "range": "Hyper-casual: 2-7 min | Casual: 5-20 min | Mid-core: 10-40 min"
+      },
+      "sessionsPerDay": {
+        "name": "Sessions Per Day",
+        "definition": "The average number of times a user opens the game per day.",
+        "formula": "Daily Total Sessions / DAU",
+        "why": "Shows the strength of the habit loop. Higher count = stronger retention mechanics.",
+        "range": "Hyper-casual: 2-7 | Casual: 2-7 | RPG: 2-6 | Strategy: 2-6"
+      }
+    },
+    "calculator": {
+      "title": "Metric Calculator",
+      "subtitle": "Enter your game metrics and compare against genre benchmarks",
+      "selectGame": "Select Game",
+      "selectGenre": "Select Genre",
+      "rawMetrics": "Raw Metrics",
+      "derivedMetrics": "Derived Metrics",
+      "analyzeWithAi": "Analyze with AI",
+      "analyzing": "AI is analyzing...",
+      "fields": {
+        "dau": "DAU",
+        "mau": "MAU",
+        "revenue": "Monthly Revenue ($)",
+        "downloads": "Monthly Downloads",
+        "cpi": "CPI ($)",
+        "d1Retention": "D1 Retention (%)",
+        "d7Retention": "D7 Retention (%)",
+        "d30Retention": "D30 Retention (%)",
+        "sessionLength": "Session Length (seconds)",
+        "sessionsPerDay": "Sessions Per Day"
+      },
+      "derived": {
+        "arpdau": "ARPDAU",
+        "arpu": "ARPU",
+        "ltv": "Estimated LTV",
+        "stickiness": "Stickiness (DAU/MAU)",
+        "dailyPlayTime": "Daily Play Time"
+      },
+      "enterMetrics": "Enter raw metrics to see derived metrics"
+    },
+    "benchmarks": {
+      "title": "Benchmark Comparison",
+      "subtitle": "Compare your metrics against genre averages",
+      "metric": "Metric",
+      "yourValue": "Your Value",
+      "genreBenchmark": "Genre Benchmark",
+      "status": "Status",
+      "above": "Above Average",
+      "at": "At Average",
+      "below": "Below Average",
+      "low": "Low",
+      "mid": "Mid",
+      "high": "High",
+      "noBenchmarks": "Enter metrics and select a genre for benchmark comparison"
+    },
+    "analysis": {
+      "title": "AI Analysis Result",
+      "healthScore": "Health Score",
+      "summary": "Summary",
+      "benchmarkComparison": "Benchmark Comparison",
+      "insights": "Insights",
+      "recommendations": "Recommendations",
+      "riskFactors": "Risk Factors",
+      "noAnalysis": "No analysis yet. Enter metrics and analyze with AI."
+    },
+    "history": {
+      "title": "Analysis History",
+      "subtitle": "View your previous metric analyses",
+      "noHistory": "No metric analyses yet.",
+      "healthScore": "Health Score",
+      "date": "Date",
+      "game": "Game",
+      "viewDetails": "View Details"
+    }
   }
 }
