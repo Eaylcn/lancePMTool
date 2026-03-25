@@ -851,5 +851,12 @@
     "signIn": "Sign In",
     "createOwn": "Create your own portfolio",
     "poweredBy": "Built with GameLens"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage account and app settings",
+    "profileSettings": "Profile Settings",
+    "profileSettingsDescription": "You can edit your profile information such as name, title, bio and username from the Profile page.",
+    "goToProfile": "Go to Profile"
   }
 }

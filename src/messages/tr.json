@@ -851,5 +851,12 @@
     "signIn": "Giriş Yap",
     "createOwn": "Kendi portfolyonu oluştur",
     "poweredBy": "GameLens ile oluşturuldu"
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "subtitle": "Hesap ve uygulama ayarlarını yönet",
+    "profileSettings": "Profil Ayarları",
+    "profileSettingsDescription": "İsim, başlık, bio ve kullanıcı adı gibi profil bilgilerini Profil sayfasından düzenleyebilirsin.",
+    "goToProfile": "Profile Git"
   }
 }
