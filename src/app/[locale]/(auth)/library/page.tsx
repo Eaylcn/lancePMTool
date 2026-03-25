@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { Plus, LayoutGrid, List, Library } from "lucide-react";
+import { Plus, LayoutGrid, List, Library, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useGames } from "@/hooks/use-games";
 import { GameCard } from "@/components/game/game-card";
@@ -23,6 +23,7 @@ export default function LibraryPage() {
   const [status, setStatus] = useState("all");
   const [platform, setPlatform] = useState("all");
   const [sort, setSort] = useState("created_at:desc");
+  const [showTemplates, setShowTemplates] = useState(false);
 
   const [sortField, sortOrder] = sort.split(":");
 
@@ -31,9 +32,10 @@ export default function LibraryPage() {
     ...(status !== "all" && { status }),
     ...(platform !== "all" && { platform }),
     ...(search && { search }),
+    ...(showTemplates && { includeTemplates: "true" }),
     sort: sortField,
     order: sortOrder,
-  }), [genre, status, platform, search, sortField, sortOrder]);
+  }), [genre, status, platform, search, showTemplates, sortField, sortOrder]);
 
   const { data: games, isLoading } = useGames(filters);
 
@@ -70,6 +72,14 @@ export default function LibraryPage() {
               sort={sort} onSortChange={setSort}
             />
           </div>
+          <button
+            onClick={() => setShowTemplates(!showTemplates)}
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors duration-150 shrink-0 ${showTemplates ? "bg-primary/10 text-primary border border-primary/20" : "bg-muted text-muted-foreground hover:text-foreground"}`}
+            title={showTemplates ? t("hideTemplates") : t("showTemplates")}
+          >
+            <BookOpen className="h-3.5 w-3.5" />
+            {t("templates")}
+          </button>
           <div className="flex items-center rounded-md bg-muted p-0.5 shrink-0">
             <button
               onClick={() => setViewMode("grid")}

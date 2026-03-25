@@ -138,7 +138,11 @@
       "titleZA": "Title Z-A",
       "ratingHigh": "Rating (High)",
       "ratingLow": "Rating (Low)"
-    }
+    },
+    "templates": "Templates",
+    "templateBadge": "Template",
+    "showTemplates": "Show Templates",
+    "hideTemplates": "Hide Templates"
   },
   "analyze": {
     "title": "New Analysis",

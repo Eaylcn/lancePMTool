@@ -20,8 +20,10 @@ export async function GET(request: NextRequest) {
   const sort = searchParams.get("sort") || "created_at";
   const order = searchParams.get("order") || "desc";
 
-  const notTemplate = sql`(${games.isTemplate} = false OR ${games.isTemplate} IS NULL)`;
-  const conditions = [eq(games.userId, user.id), notTemplate];
+  const includeTemplates = searchParams.get("includeTemplates") === "true";
+  const conditions = includeTemplates
+    ? [eq(games.userId, user.id)]
+    : [eq(games.userId, user.id), sql`(${games.isTemplate} = false OR ${games.isTemplate} IS NULL)`];
 
   if (status) {
     conditions.push(eq(games.status, status as "playing" | "completed" | "dropped"));

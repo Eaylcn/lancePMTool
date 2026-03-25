@@ -138,7 +138,11 @@
       "titleZA": "Başlık Z-A",
       "ratingHigh": "Puan (Yüksek)",
       "ratingLow": "Puan (Düşük)"
-    }
+    },
+    "templates": "Şablonlar",
+    "templateBadge": "Şablon",
+    "showTemplates": "Şablonları Göster",
+    "hideTemplates": "Şablonları Gizle"
   },
   "analyze": {
     "title": "Yeni Analiz",

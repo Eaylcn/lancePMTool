@@ -15,6 +15,7 @@ interface GameListItemProps {
     overallRating: string | null;
     coverImageUrl: string | null;
     createdAt: string;
+    isTemplate?: boolean | null;
   };
 }
 
@@ -35,7 +36,7 @@ export function GameListItem({ game }: GameListItemProps) {
 
   return (
     <Link href={`/game/${game.id}`}>
-      <div className="flex items-center gap-3 rounded-lg border border-border p-2.5 transition-colors duration-150 hover:bg-muted/50 hover:border-primary/20 cursor-pointer">
+      <div className={`flex items-center gap-3 rounded-lg border p-2.5 transition-colors duration-150 hover:bg-muted/50 hover:border-primary/20 cursor-pointer ${game.isTemplate ? "border-dashed border-border/60 opacity-75" : "border-border"}`}>
         {/* Thumbnail */}
         <div className="h-12 w-16 rounded-md bg-muted overflow-hidden shrink-0">
           {game.coverImageUrl ? (
@@ -54,6 +55,11 @@ export function GameListItem({ game }: GameListItemProps) {
               <div className={`h-1.5 w-1.5 rounded-full shrink-0 ${statusDots[game.status] || "bg-gray-400"}`} />
             )}
             <h3 className="text-sm font-medium truncate">{game.title}</h3>
+            {game.isTemplate && (
+              <span className="text-[10px] font-medium text-muted-foreground px-1.5 py-0 rounded border border-dashed border-border shrink-0">
+                {tLib("templateBadge")}
+              </span>
+            )}
           </div>
           <p className="text-xs text-muted-foreground truncate mt-0.5">
             {[

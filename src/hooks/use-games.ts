@@ -9,6 +9,7 @@ interface GameFilters {
   search?: string;
   sort?: string;
   order?: string;
+  includeTemplates?: string;
 }
 
 interface CreateGameInput {

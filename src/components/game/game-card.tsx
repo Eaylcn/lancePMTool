@@ -14,6 +14,7 @@ interface GameCardProps {
     status: string | null;
     overallRating: string | null;
     coverImageUrl: string | null;
+    isTemplate?: boolean | null;
   };
 }
 
@@ -40,9 +41,14 @@ export function GameCard({ game }: GameCardProps) {
 
   return (
     <Link href={`/game/${game.id}`}>
-      <div className="group overflow-hidden rounded-lg border border-border bg-card cursor-pointer transition-colors duration-150 hover:border-primary/30 hover:bg-muted/50">
+      <div className={`group overflow-hidden rounded-lg border bg-card cursor-pointer transition-colors duration-150 hover:border-primary/30 hover:bg-muted/50 ${game.isTemplate ? "border-dashed border-border/60 opacity-75" : "border-border"}`}>
         {/* Cover image */}
-        <div className="aspect-[16/10] overflow-hidden bg-muted">
+        <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+          {game.isTemplate && (
+            <span className="absolute top-1.5 left-1.5 z-10 bg-muted/90 backdrop-blur-sm text-[10px] font-medium text-muted-foreground px-1.5 py-0.5 rounded border border-dashed border-border">
+              {tLib("templateBadge")}
+            </span>
+          )}
           {game.coverImageUrl ? (
             <img src={game.coverImageUrl} alt={game.title} className="h-full w-full object-cover" />
           ) : (
