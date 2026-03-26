@@ -165,6 +165,7 @@ export default function AnalyzeNewPage() {
   const [analysisFields, setAnalysisFields] = useState<Record<string, string | number>>({});
   const [genreSpecificFields, setGenreSpecificFields] = useState<Record<string, Record<string, string>>>({});
   const [aiFilledFields, setAiFilledFields] = useState<string[]>([]);
+  const [personalObservations, setPersonalObservations] = useState<Record<string, string | null>>({});
 
   // Step 3 state
   const [kpis, setKpis] = useState<Record<string, string | number>>({});
@@ -225,11 +226,11 @@ export default function AnalyzeNewPage() {
   const saveDraft = useCallback(() => {
     const draft = {
       step, gameMode, selectedGameId, newGameTitle, newGameStudio, newGameGenre, newGamePlatform,
-      rawNotes, analysisFields, genreSpecificFields, aiFilledFields, kpis, competitors, trends,
+      rawNotes, analysisFields, genreSpecificFields, aiFilledFields, personalObservations, kpis, competitors, trends,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
   }, [step, gameMode, selectedGameId, newGameTitle, newGameStudio, newGameGenre, newGamePlatform,
-      rawNotes, analysisFields, genreSpecificFields, aiFilledFields, kpis, competitors, trends]);
+      rawNotes, analysisFields, genreSpecificFields, aiFilledFields, personalObservations, kpis, competitors, trends]);
 
   // Load draft on mount
   useEffect(() => {
@@ -248,6 +249,7 @@ export default function AnalyzeNewPage() {
         if (draft.analysisFields) setAnalysisFields(draft.analysisFields);
         if (draft.genreSpecificFields) setGenreSpecificFields(draft.genreSpecificFields);
         if (draft.aiFilledFields) setAiFilledFields(draft.aiFilledFields);
+        if (draft.personalObservations) setPersonalObservations(draft.personalObservations);
         if (draft.kpis) setKpis(draft.kpis);
         if (draft.competitors) setCompetitors(draft.competitors);
         if (draft.trends) setTrends(draft.trends);
@@ -318,6 +320,10 @@ export default function AnalyzeNewPage() {
 
       if (result.trends) {
         setTrends(result.trends);
+      }
+
+      if (result.personalObservations) {
+        setPersonalObservations(result.personalObservations as Record<string, string | null>);
       }
 
       setStep(2);
@@ -590,6 +596,7 @@ export default function AnalyzeNewPage() {
                 notesKey={cat.notesKey}
                 aiFilledFields={aiFilledFields}
                 extraNotes={cat.extraNotes}
+                personalObservation={personalObservations[cat.key]}
               />
             ))}
 

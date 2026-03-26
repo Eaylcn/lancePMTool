@@ -176,7 +176,7 @@
     "description": "Bir oyunu analiz et — ham notlarından AI ile veya manuel olarak.",
     "step1": "Not Girişi",
     "step2": "İnceleme",
-    "step3": "Kaydet",
+    "step3": "Ek Bilgiler",
     "gameSelection": "Oyun Seçimi",
     "newGame": "Yeni Oyun",
     "existingGame": "Mevcut Oyun",
@@ -202,6 +202,7 @@
     "notes": "Notlar",
     "notesPlaceholder": "Bu kategori hakkındaki ek notların...",
     "commentPlaceholder": "Kendi yorumun...",
+    "personalObservations": "Kişisel Gözlemlerim",
     "categories": {
       "ftue": "FTUE (İlk Deneyim)",
       "coreLoop": "Core Loop",

@@ -176,7 +176,7 @@
     "description": "Analyze a game — from raw notes with AI or manually.",
     "step1": "Notes",
     "step2": "Review",
-    "step3": "Save",
+    "step3": "Additional Info",
     "gameSelection": "Game Selection",
     "newGame": "New Game",
     "existingGame": "Existing Game",
@@ -202,6 +202,7 @@
     "notes": "Notes",
     "notesPlaceholder": "Additional notes about this category...",
     "commentPlaceholder": "Your commentary...",
+    "personalObservations": "My Personal Observations",
     "categories": {
       "ftue": "FTUE (First Experience)",
       "coreLoop": "Core Loop",

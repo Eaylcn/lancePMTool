@@ -27,6 +27,7 @@ interface CategoryAccordionProps {
   notesKey: string;
   aiFilledFields: string[];
   extraNotes?: { key: string; labelKey: string }[];
+  personalObservation?: string | null;
 }
 
 export function CategoryAccordion({
@@ -39,6 +40,7 @@ export function CategoryAccordion({
   notesKey,
   aiFilledFields,
   extraNotes,
+  personalObservation,
 }: CategoryAccordionProps) {
   const t = useTranslations("analyze");
 
@@ -138,6 +140,18 @@ export function CategoryAccordion({
               />
             </div>
           ))}
+
+          {/* Personal Observations */}
+          {personalObservation && (
+            <div className="rounded-lg bg-accent/10 border border-accent/20 p-3 space-y-1.5">
+              <Label className="text-sm font-medium text-accent-foreground/80">
+                {t("personalObservations")}
+              </Label>
+              <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                {personalObservation}
+              </p>
+            </div>
+          )}
         </div>
       </AccordionContent>
     </AccordionItem>

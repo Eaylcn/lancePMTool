@@ -6,6 +6,17 @@ export const draftFillResponseSchema = z.object({
   gameGenre: z.array(z.string()).optional(),
   gamePlatform: z.string().optional(),
   gameStudio: z.string().nullable().optional(),
+  gameDescription: z.string().optional(),
+  personalObservations: z.object({
+    ftue: z.string().nullable().optional(),
+    coreLoop: z.string().nullable().optional(),
+    monetization: z.string().nullable().optional(),
+    retention: z.string().nullable().optional(),
+    ux: z.string().nullable().optional(),
+    meta: z.string().nullable().optional(),
+    tech: z.string().nullable().optional(),
+    overall: z.string().nullable().optional(),
+  }).optional(),
   analysis: z.object({
     // FTUE
     ftueFirstImpression: z.string().optional(),

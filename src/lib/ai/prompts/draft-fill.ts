@@ -14,6 +14,10 @@ Your FIRST task is to extract game metadata from the notes:
 - "gameGenre": Extract or infer the game genre(s) as an array of genre keys. Use these keys: puzzle, strategy, rpg, action, simulation, casual, card, racing, sports, adventure, arcade, board, trivia, word, music, educational, sandbox, moba, battle_royale, idle, merge, match3, tower_defense, city_builder, gacha, social_casino, hyper_casual
 - "gamePlatform": Extract or infer the platform ("ios", "android", or "both"). Default to "both" if unclear.
 - "gameStudio": Extract the studio/developer name if mentioned.
+- "gameDescription": Write a 2-3 sentence professional description of the game — what it is, its core gameplay, and its market positioning.
+
+PERSONAL OBSERVATIONS:
+The user's raw notes often contain personal opinions, predictions, critiques, and subjective assessments. Extract these into "personalObservations" — an object keyed by category (ftue, coreLoop, monetization, retention, ux, meta, tech, overall). Each category's value should be a string containing the user's personal opinions/critiques for that category. Look for phrases like "bence", "tahminim", "şuna dikkat", "eleştirim", "gözlemim", "ilginç olan", "I think", "my prediction", "interesting that", etc. If the user wrote subjective comments that don't fit structured fields, capture them here. These are separate from the analytical notes — they represent the user's voice and perspective.
 
 You must output a JSON object with the following structure. Your goal is to fill EVERY SINGLE field as thoroughly as possible.
 
@@ -41,6 +45,17 @@ OUTPUT FORMAT: Valid JSON only, no markdown, no explanation.
   "gameGenre": ["genre_key1", "genre_key2"],
   "gamePlatform": "ios|android|both",
   "gameStudio": "string or null",
+  "gameDescription": "string — 2-3 sentence professional game description",
+  "personalObservations": {
+    "ftue": "string or null — user's personal opinions about FTUE",
+    "coreLoop": "string or null — user's personal opinions about core loop",
+    "monetization": "string or null — user's personal opinions about monetization",
+    "retention": "string or null — user's personal opinions about retention",
+    "ux": "string or null — user's personal opinions about UX",
+    "meta": "string or null — user's personal opinions about meta game",
+    "tech": "string or null — user's personal opinions about technical aspects",
+    "overall": "string or null — user's overall personal observations"
+  },
   "analysis": {
     "ftueFirstImpression": "string",
     "ftueOnboardingType": "string",
