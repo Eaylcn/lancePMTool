@@ -153,6 +153,10 @@
     "selectPlatform": "Platform seç",
     "gameStatus": "Durum",
     "cancel": "İptal",
+    "next": "İleri",
+    "back": "Geri",
+    "step1Description": "Oyun hakkında temel bilgileri gir.",
+    "step2Description": "Tür, platform ve durumu seç.",
     "status": {
       "playing": "Oynuyor",
       "completed": "Tamamlandı",

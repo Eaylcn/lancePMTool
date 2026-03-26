@@ -153,6 +153,10 @@
     "selectPlatform": "Select platform",
     "gameStatus": "Status",
     "cancel": "Cancel",
+    "next": "Next",
+    "back": "Back",
+    "step1Description": "Enter basic information about the game.",
+    "step2Description": "Select genre, platform and status.",
     "status": {
       "playing": "Playing",
       "completed": "Completed",
