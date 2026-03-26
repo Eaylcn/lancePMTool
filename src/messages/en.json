@@ -872,5 +872,41 @@
     "profileSettings": "Profile Settings",
     "profileSettingsDescription": "You can edit your profile information such as name, title, bio and username from the Profile page.",
     "goToProfile": "Go to Profile"
+  },
+  "survey": {
+    "title": "Gaming PM Competency Survey",
+    "subtitle": "Measure your Gaming PM knowledge level with 28 questions and discover your strengths and weaknesses.",
+    "startButton": "Start Survey",
+    "continueButton": "Continue Survey",
+    "restartButton": "Start Over",
+    "nextButton": "Next",
+    "prevButton": "Previous",
+    "submitButton": "Complete Survey",
+    "progress": "{current} / {total}",
+    "categoryProgress": "{answered}/{total} answered",
+    "questionOf": "Question {current}/{total}",
+    "selectOne": "Select one",
+    "selectMultiple": "You can select multiple",
+    "typeAnswer": "Type your answer...",
+    "resultTitle": "Your Survey Results",
+    "resultSubtitle": "See your category-based performance below. Identify your strengths and areas for improvement.",
+    "completedMessage": "You completed the survey! See your results below.",
+    "alreadyCompleted": "You have already completed this survey.",
+    "categoryLabels": {
+      "general_pm": "General PM Knowledge",
+      "monetization": "Monetization",
+      "retention": "Retention & Engagement",
+      "ux": "UX/UI & Game Design",
+      "metrics": "Metrics & KPI",
+      "market": "Market & Competition",
+      "live_ops": "Live Ops & Growth"
+    },
+    "levels": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "heroDescription": "28 questions across 7 categories await you. Each category tests a different Gaming PM competency area.",
+    "autoSaved": "Auto-saved"
   }
 }

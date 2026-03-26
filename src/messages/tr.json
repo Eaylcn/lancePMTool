@@ -872,5 +872,41 @@
     "profileSettings": "Profil Ayarları",
     "profileSettingsDescription": "İsim, başlık, bio ve kullanıcı adı gibi profil bilgilerini Profil sayfasından düzenleyebilirsin.",
     "goToProfile": "Profile Git"
+  },
+  "survey": {
+    "title": "Gaming PM Yetkinlik Anketi",
+    "subtitle": "28 soruluk anketle Gaming PM bilgi seviyeni ölç ve güçlü/zayıf yönlerini keşfet.",
+    "startButton": "Ankete Başla",
+    "continueButton": "Ankete Devam Et",
+    "restartButton": "Yeniden Başla",
+    "nextButton": "Sonraki",
+    "prevButton": "Önceki",
+    "submitButton": "Anketi Tamamla",
+    "progress": "{current} / {total}",
+    "categoryProgress": "{answered}/{total} yanıtlandı",
+    "questionOf": "Soru {current}/{total}",
+    "selectOne": "Birini seçin",
+    "selectMultiple": "Birden fazla seçebilirsiniz",
+    "typeAnswer": "Cevabınızı yazın...",
+    "resultTitle": "Anket Sonuçların",
+    "resultSubtitle": "Kategori bazlı performansın aşağıda. Güçlü ve gelişime açık alanlarını gör.",
+    "completedMessage": "Anketi tamamladın! Sonuçlarını aşağıda görebilirsin.",
+    "alreadyCompleted": "Bu anketi daha önce tamamladın.",
+    "categoryLabels": {
+      "general_pm": "Genel PM Bilgisi",
+      "monetization": "Monetization",
+      "retention": "Retention & Engagement",
+      "ux": "UX/UI & Game Design",
+      "metrics": "Metrikler & KPI",
+      "market": "Pazar & Rekabet",
+      "live_ops": "Live Ops & Growth"
+    },
+    "levels": {
+      "beginner": "Başlangıç",
+      "intermediate": "Orta",
+      "advanced": "İleri"
+    },
+    "heroDescription": "Aşağıdaki 7 kategoride toplam 28 soru seni bekliyor. Her kategori Gaming PM'in farklı bir yetkinlik alanını test eder.",
+    "autoSaved": "Otomatik kaydedildi"
   }
 }
