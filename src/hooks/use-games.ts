@@ -18,6 +18,7 @@ interface CreateGameInput {
   genre?: string[];
   platform?: string;
   status?: string;
+  description?: string | null;
   notes?: string;
 }
 

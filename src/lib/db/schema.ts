@@ -62,6 +62,7 @@ export const games = pgTable("games", {
   overallRating: decimal("overall_rating", { precision: 3, scale: 1 }),
   isTemplate: boolean("is_template").default(false),
   isHidden: boolean("is_hidden").default(false),
+  description: text("description"),
   notes: text("notes"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),

@@ -10,7 +10,6 @@ import { useGameAnalysis } from "@/hooks/use-analyses";
 import { useAiAnalyze } from "@/hooks/use-ai";
 import { AiLoadingModal } from "@/components/shared/ai-loading-modal";
 import { GameHero } from "@/components/game/game-hero";
-import { AnalysisExport } from "@/components/game/analysis-export";
 import { OverviewTab } from "@/components/game/tabs/overview-tab";
 import { CategoryTab } from "@/components/game/tabs/category-tab";
 import { KpiTab } from "@/components/game/tabs/kpi-tab";
@@ -201,20 +200,19 @@ export default function GameDetailPage({
   return (
     <div className="space-y-6">
       {/* Hero — compute overall rating from analysis if not on game */}
-      <GameHero game={game} computedRating={(() => {
-        if (game.overallRating) return null; // game already has rating
-        if (!analysis) return null;
-        const ratingKeys = ["ftueRating", "coreLoopRating", "monetizationRating", "retentionRating", "uxRating", "metaRating"];
-        const ratings = ratingKeys.map(k => Number(analysis[k])).filter(v => !isNaN(v) && v > 0);
-        return ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : null;
-      })()} />
-
-      {/* Export */}
-      {analysis && (
-        <div className="flex justify-end">
-          <AnalysisExport game={game} analysis={analysis} />
-        </div>
-      )}
+      <GameHero
+        game={game}
+        computedRating={(() => {
+          if (game.overallRating) return null;
+          if (!analysis) return null;
+          const ratingKeys = ["ftueRating", "coreLoopRating", "monetizationRating", "retentionRating", "uxRating", "metaRating"];
+          const ratings = ratingKeys.map(k => Number(analysis[k])).filter(v => !isNaN(v) && v > 0);
+          return ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : null;
+        })()}
+        analysis={analysis}
+        onReAnalyze={analysis ? handleAnalyze : undefined}
+        isAnalyzing={aiAnalyze.isPending}
+      />
 
       {/* Tabs */}
       <Tabs defaultValue="overview">

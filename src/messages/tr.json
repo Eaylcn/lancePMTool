@@ -356,6 +356,7 @@
     "deleteConfirmTitle": "Oyunu Sil",
     "deleteConfirmDescription": "Bu oyunu ve tüm analizlerini silmek istediğine emin misin? Bu işlem geri alınamaz.",
     "overallRating": "Genel Puan",
+    "addDescription": "Açıklama eklemek için tıkla...",
     "notFound": "Oyun bulunamadı.",
     "noAnalysis": "Henüz analiz yapılmamış.",
     "noKpis": "KPI verisi yok.",
