@@ -873,6 +873,14 @@
     "profileSettingsDescription": "İsim, başlık, bio ve kullanıcı adı gibi profil bilgilerini Profil sayfasından düzenleyebilirsin.",
     "goToProfile": "Profile Git"
   },
+  "guide": {
+    "title": "Gaming PM Rehberi",
+    "subtitle": "8 bölümde Gaming PM'in tüm temel konularını öğren, interaktif quizlerle bilgini test et.",
+    "progress": "{current} / {total} bölüm okundu",
+    "knowledgeCheck": "Bilgi Testi",
+    "readChapter": "Bölümü Oku",
+    "completed": "Tamamlandı"
+  },
   "survey": {
     "title": "Gaming PM Yetkinlik Anketi",
     "subtitle": "28 soruluk anketle Gaming PM bilgi seviyeni ölç ve güçlü/zayıf yönlerini keşfet.",

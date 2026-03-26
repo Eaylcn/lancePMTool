@@ -873,6 +873,14 @@
     "profileSettingsDescription": "You can edit your profile information such as name, title, bio and username from the Profile page.",
     "goToProfile": "Go to Profile"
   },
+  "guide": {
+    "title": "Gaming PM Guide",
+    "subtitle": "Learn all fundamental Gaming PM topics in 8 chapters, test your knowledge with interactive quizzes.",
+    "progress": "{current} / {total} chapters read",
+    "knowledgeCheck": "Knowledge Check",
+    "readChapter": "Read Chapter",
+    "completed": "Completed"
+  },
   "survey": {
     "title": "Gaming PM Competency Survey",
     "subtitle": "Measure your Gaming PM knowledge level with 28 questions and discover your strengths and weaknesses.",
