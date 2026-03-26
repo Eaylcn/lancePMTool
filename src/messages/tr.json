@@ -421,6 +421,60 @@
       "competitors": "Rakipler",
       "trends": "Trendler",
       "aiAnalysis": "AI Analiz"
+    },
+    "visuals": {
+      "ftue": {
+        "title": "FTUE Akışı",
+        "download": "İndirme",
+        "firstOpen": "İlk Açılış",
+        "tutorial": "Tutorial",
+        "completion": "Tamamlama",
+        "duration": "Süre",
+        "frictionPoints": "Sürtünme Noktaları"
+      },
+      "coreLoop": {
+        "title": "Core Loop Döngüsü",
+        "sessionLength": "Oturum Süresi"
+      },
+      "monetization": {
+        "title": "Monetizasyon Kanalları",
+        "iap": "IAP",
+        "ads": "Reklamlar",
+        "battlePass": "Battle Pass",
+        "vip": "VIP",
+        "noData": "Monetizasyon verisi yok."
+      },
+      "retention": {
+        "title": "Retention Mekanikleri",
+        "dailyRewards": "Günlük Ödüller",
+        "streaks": "Streak",
+        "social": "Sosyal",
+        "fomo": "FOMO",
+        "energy": "Enerji",
+        "notifications": "Bildirimler",
+        "active": "aktif"
+      },
+      "ux": {
+        "title": "UX Kontrol Listesi",
+        "menu": "Menü",
+        "buttons": "Butonlar",
+        "hud": "HUD",
+        "loading": "Yükleme",
+        "accessibility": "Erişilebilirlik",
+        "reviewed": "incelendi"
+      },
+      "meta": {
+        "title": "Meta Game İlerleme",
+        "longTermMotivation": "Uzun Vadeli Motivasyon"
+      },
+      "tech": {
+        "title": "Teknik Performans",
+        "loadTime": "Yükleme Süresi",
+        "fps": "FPS",
+        "battery": "Pil Tüketimi",
+        "appSize": "Uygulama Boyutu",
+        "offline": "Çevrimdışı Destek"
+      }
     }
   },
   "genres": {

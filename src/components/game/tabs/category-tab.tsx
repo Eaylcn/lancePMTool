@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Sparkles } from "lucide-react";
+import { CategoryVisual } from "./category-visuals";
 
 interface CategoryField {
   key: string;
@@ -17,7 +18,7 @@ interface CategoryTabProps {
   aiComment?: string | null;
 }
 
-export function CategoryTab({ fields, notesKey, analysis, aiComment }: CategoryTabProps) {
+export function CategoryTab({ categoryKey, fields, ratingKey, notesKey, analysis, aiComment }: CategoryTabProps) {
   const t = useTranslations("analyze");
   const tGame = useTranslations("game");
 
@@ -29,8 +30,36 @@ export function CategoryTab({ fields, notesKey, analysis, aiComment }: CategoryT
     );
   }
 
+  const rating = Number(analysis[ratingKey]) || 0;
+  const ratingColor = rating >= 7 ? "text-emerald-500" : rating >= 4 ? "text-yellow-500" : "text-red-500";
+  const ratingBg = rating >= 7 ? "from-emerald-500/10 to-emerald-500/5" : rating >= 4 ? "from-yellow-500/10 to-yellow-500/5" : "from-red-500/10 to-red-500/5";
+
   return (
     <div className="space-y-6">
+      {/* Gradient Header */}
+      {rating > 0 && (
+        <div className={`rounded-xl bg-gradient-to-r ${ratingBg} border border-border p-5`}>
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-semibold">{t(`categories.${categoryKey}`)}</h3>
+              <div className="flex items-center gap-2 mt-1">
+                <div className="h-1.5 w-32 rounded-full bg-muted overflow-hidden">
+                  <div
+                    className={`h-full rounded-full ${rating >= 7 ? "bg-emerald-500" : rating >= 4 ? "bg-yellow-500" : "bg-red-500"} transition-all`}
+                    style={{ width: `${rating * 10}%` }}
+                  />
+                </div>
+                <span className={`text-lg font-bold tabular-nums ${ratingColor}`}>{rating.toFixed(1)}</span>
+                <span className="text-xs text-muted-foreground">/10</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Category-specific Visual */}
+      <CategoryVisual categoryKey={categoryKey} analysis={analysis} />
+
       {/* AI Comment */}
       {aiComment && (
         <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
@@ -42,7 +71,7 @@ export function CategoryTab({ fields, notesKey, analysis, aiComment }: CategoryT
         </div>
       )}
 
-      {/* Fields — same card grid as overview */}
+      {/* Fields — card grid */}
       <div className="grid gap-4 sm:grid-cols-2">
         {fields.map(({ key, labelKey }) => {
           const value = String(analysis[key] ?? "");

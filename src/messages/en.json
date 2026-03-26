@@ -421,6 +421,60 @@
       "competitors": "Competitors",
       "trends": "Trends",
       "aiAnalysis": "AI Analysis"
+    },
+    "visuals": {
+      "ftue": {
+        "title": "FTUE Flow",
+        "download": "Download",
+        "firstOpen": "First Open",
+        "tutorial": "Tutorial",
+        "completion": "Completion",
+        "duration": "Duration",
+        "frictionPoints": "Friction Points"
+      },
+      "coreLoop": {
+        "title": "Core Loop Cycle",
+        "sessionLength": "Session Length"
+      },
+      "monetization": {
+        "title": "Monetization Channels",
+        "iap": "IAP",
+        "ads": "Ads",
+        "battlePass": "Battle Pass",
+        "vip": "VIP",
+        "noData": "No monetization data."
+      },
+      "retention": {
+        "title": "Retention Mechanics",
+        "dailyRewards": "Daily Rewards",
+        "streaks": "Streaks",
+        "social": "Social",
+        "fomo": "FOMO",
+        "energy": "Energy",
+        "notifications": "Notifications",
+        "active": "active"
+      },
+      "ux": {
+        "title": "UX Checklist",
+        "menu": "Menu",
+        "buttons": "Buttons",
+        "hud": "HUD",
+        "loading": "Loading",
+        "accessibility": "Accessibility",
+        "reviewed": "reviewed"
+      },
+      "meta": {
+        "title": "Meta Game Progression",
+        "longTermMotivation": "Long-term Motivation"
+      },
+      "tech": {
+        "title": "Technical Performance",
+        "loadTime": "Load Time",
+        "fps": "FPS",
+        "battery": "Battery Usage",
+        "appSize": "App Size",
+        "offline": "Offline Support"
+      }
     }
   },
   "genres": {
