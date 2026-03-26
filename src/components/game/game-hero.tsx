@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
-import { Gamepad2, Pencil, Trash2 } from "lucide-react";
+import { BookOpen, Gamepad2, Pencil, Trash2 } from "lucide-react";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { EditGameDialog } from "@/components/game/edit-game-dialog";
 import { useDeleteGame } from "@/hooks/use-games";
@@ -19,6 +19,7 @@ interface GameHeroProps {
     status: string | null;
     overallRating: string | null;
     coverImageUrl: string | null;
+    isTemplate?: boolean | null;
   };
   computedRating?: number | null;
 }
@@ -108,7 +109,15 @@ export function GameHero({ game, computedRating }: GameHeroProps) {
                 {/* Title + actions */}
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{game.title}</h1>
+                    <div className="flex items-center gap-2">
+                      <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{game.title}</h1>
+                      {game.isTemplate && (
+                        <span className="inline-flex items-center gap-1 rounded-full border border-dashed border-primary/40 bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+                          <BookOpen className="h-3 w-3" />
+                          {tLib("templateBadge")}
+                        </span>
+                      )}
+                    </div>
                     {game.studio && (
                       <p className="text-muted-foreground mt-1">{game.studio}</p>
                     )}
