@@ -500,161 +500,158 @@ function AnalysisAssessment({ ai }: { ai: AiAnalysisData }) {
 
 // ─── Sub-tab: PM Dersleri ───
 function PMLessons({ ai }: { ai: AiAnalysisData }) {
+  const t = useTranslations("game");
+
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <GraduationCap className="h-5 w-5 text-primary" />
-            PM Dersleri
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Accordion multiple className="space-y-2">
-            {/* PM Learnings */}
-            {ai.pmLearnings && ai.pmLearnings.length > 0 && (
-              <AccordionItem value="learnings">
-                <AccordionTrigger className="text-sm font-medium">
-                  <div className="flex items-center gap-2">
-                    <Lightbulb className="h-4 w-4 text-yellow-500" />
-                    PM Öğrenim Noktaları
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="space-y-3 pt-2">
-                    {ai.pmLearnings.map((l, i) => (
-                      <div key={i} className="rounded-lg border border-border p-3 space-y-1">
-                        <p className="text-sm font-medium">{l.topic}</p>
-                        <p className="text-sm text-muted-foreground">{l.insight}</p>
-                        <p className="text-xs text-primary">→ {l.actionable}</p>
-                      </div>
-                    ))}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+      {/* PM Learnings */}
+      {ai.pmLearnings && ai.pmLearnings.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-yellow-500" />
+              {t("pmLearningPoints")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {ai.pmLearnings.map((l, i) => (
+              <div key={i} className="rounded-lg border border-border p-4 space-y-2">
+                <p className="text-sm font-semibold">{l.topic}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{l.insight}</p>
+                <div className="flex items-start gap-2 rounded-md bg-primary/5 border border-primary/10 px-3 py-2">
+                  <span className="text-primary shrink-0 mt-0.5">→</span>
+                  <p className="text-xs text-primary">{l.actionable}</p>
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Interview Prep */}
+      {ai.interviewPrep && (ai.interviewPrep.talkingPoints?.length > 0 || ai.interviewPrep.likelyQuestions?.length > 0) && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <MessageSquare className="h-5 w-5 text-primary" />
+              {t("interviewPrep")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-5">
+            {/* Talking Points */}
+            {ai.interviewPrep.talkingPoints?.length > 0 && (
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">{t("talkingPoints")}</p>
+                <ul className="space-y-2">
+                  {ai.interviewPrep.talkingPoints.map((tp, i) => (
+                    <li key={i} className="text-sm flex gap-2 rounded-lg bg-muted/30 px-3 py-2">
+                      <span className="text-primary shrink-0">•</span>
+                      <span className="leading-relaxed">{tp}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
 
-            {/* Interview Prep */}
-            {ai.interviewPrep && (
-              <AccordionItem value="interview">
-                <AccordionTrigger className="text-sm font-medium">
-                  <div className="flex items-center gap-2">
-                    <MessageSquare className="h-4 w-4 text-primary" />
-                    Mülakat Hazırlığı
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="space-y-4 pt-2">
-                    {/* Talking Points */}
-                    {ai.interviewPrep.talkingPoints?.length > 0 && (
-                      <div>
-                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">Konuşma Noktaları</p>
-                        <ul className="space-y-1">
-                          {ai.interviewPrep.talkingPoints.map((tp, i) => (
-                            <li key={i} className="text-sm flex gap-2">
-                              <span className="text-primary shrink-0">•</span>
-                              {tp}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Likely Questions */}
-                    {ai.interviewPrep.likelyQuestions?.length > 0 && (
-                      <div>
-                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">Olası Sorular & Model Cevaplar</p>
-                        <div className="space-y-3">
-                          {ai.interviewPrep.likelyQuestions.map((q, i) => (
-                            <div key={i} className="space-y-1.5 rounded-lg border border-border p-3">
-                              <p className="text-sm font-medium">S: {q.question}</p>
-                              <p className="text-sm text-muted-foreground">{q.modelAnswer}</p>
-                            </div>
-                          ))}
+            {/* Likely Questions */}
+            {ai.interviewPrep.likelyQuestions?.length > 0 && (
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">{t("likelyQuestions")}</p>
+                <Accordion multiple className="space-y-2">
+                  {ai.interviewPrep.likelyQuestions.map((q, i) => (
+                    <AccordionItem key={i} value={`iq-${i}`} className="rounded-lg border border-border px-3">
+                      <AccordionTrigger className="text-sm font-medium py-3 hover:no-underline">
+                        {q.question}
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="rounded-lg bg-primary/5 border border-primary/10 px-3 py-2.5 mb-2">
+                          <p className="text-sm leading-relaxed">{q.modelAnswer}</p>
                         </div>
-                      </div>
-                    )}
-
-                    {/* Key Insights */}
-                    {ai.interviewPrep.keyInsights?.length > 0 && (
-                      <div>
-                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">Anahtar İçgörüler</p>
-                        <ul className="space-y-1">
-                          {ai.interviewPrep.keyInsights.map((insight, i) => (
-                            <li key={i} className="text-sm flex gap-2">
-                              <span className="text-yellow-500 shrink-0">★</span>
-                              {insight}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
             )}
 
-            {/* PM Scenario */}
-            {ai.pmScenario && (
-              <AccordionItem value="scenario">
-                <AccordionTrigger className="text-sm font-medium">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-primary" />
-                    PM Senaryosu — İlk 3 Ay
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="space-y-4 pt-2">
-                    <p className="text-sm leading-relaxed">{ai.pmScenario.summary}</p>
-
-                    {ai.pmScenario.actionItems?.length > 0 && (
-                      <div className="space-y-2">
-                        {ai.pmScenario.actionItems
-                          .sort((a, b) => a.priority - b.priority)
-                          .map((item, i) => (
-                            <div key={i} className="rounded-lg border border-border p-3 space-y-1.5">
-                              <div className="flex items-center gap-2">
-                                <Badge variant="outline" className="text-[10px] tabular-nums">
-                                  #{item.priority}
-                                </Badge>
-                                <p className="text-sm font-medium">{item.action}</p>
-                              </div>
-                              <p className="text-sm text-muted-foreground">{item.rationale}</p>
-                              <p className="text-xs text-primary">Beklenen Etki: {item.expectedImpact}</p>
-                            </div>
-                          ))}
-                      </div>
-                    )}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+            {/* Key Insights */}
+            {ai.interviewPrep.keyInsights?.length > 0 && (
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">{t("keyInsights")}</p>
+                <ul className="space-y-2">
+                  {ai.interviewPrep.keyInsights.map((insight, i) => (
+                    <li key={i} className="text-sm flex gap-2">
+                      <span className="text-yellow-500 shrink-0">★</span>
+                      <span className="leading-relaxed">{insight}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
+          </CardContent>
+        </Card>
+      )}
 
-            {/* Mechanic Suggestions */}
-            {ai.mechanicSuggestions && ai.mechanicSuggestions.length > 0 && (
-              <AccordionItem value="mechanics">
-                <AccordionTrigger className="text-sm font-medium">
-                  <div className="flex items-center gap-2">
-                    <Wrench className="h-4 w-4 text-primary" />
-                    Mekanik İyileştirme Önerileri
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="space-y-3 pt-2">
-                    {ai.mechanicSuggestions.map((m, i) => (
-                      <div key={i} className="rounded-lg border border-border p-3 space-y-1.5">
-                        <p className="text-sm font-medium">{m.mechanic}</p>
-                        <p className="text-sm text-muted-foreground">{m.reason}</p>
-                        <p className="text-xs text-primary">Uygulama: {m.implementation}</p>
+      {/* PM Scenario */}
+      {ai.pmScenario && ai.pmScenario.summary && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Calendar className="h-5 w-5 text-primary" />
+              {t("pmScenario")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm leading-relaxed">{ai.pmScenario.summary}</p>
+
+            {ai.pmScenario.actionItems?.length > 0 && (
+              <div className="space-y-2">
+                {ai.pmScenario.actionItems
+                  .sort((a, b) => a.priority - b.priority)
+                  .map((item, i) => (
+                    <div key={i} className="rounded-lg border border-border p-4 space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                          <span className="text-xs font-semibold text-primary">{item.priority}</span>
+                        </div>
+                        <p className="text-sm font-semibold">{item.action}</p>
                       </div>
-                    ))}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{item.rationale}</p>
+                      <div className="flex items-start gap-2 text-xs text-primary">
+                        <TrendingUp className="h-3 w-3 mt-0.5 shrink-0" />
+                        <span>{item.expectedImpact}</span>
+                      </div>
+                    </div>
+                  ))}
+              </div>
             )}
-          </Accordion>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Mechanic Suggestions */}
+      {ai.mechanicSuggestions && ai.mechanicSuggestions.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Wrench className="h-5 w-5 text-primary" />
+              {t("mechanicSuggestions")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {ai.mechanicSuggestions.map((m, i) => (
+              <div key={i} className="rounded-lg border border-border p-4 space-y-2">
+                <p className="text-sm font-semibold">{m.mechanic}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{m.reason}</p>
+                <div className="flex items-start gap-2 rounded-md bg-primary/5 border border-primary/10 px-3 py-2">
+                  <Wrench className="h-3 w-3 text-primary mt-0.5 shrink-0" />
+                  <p className="text-xs text-primary">{m.implementation}</p>
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

@@ -25,6 +25,8 @@ YOUR EVALUATION APPROACH:
 6. Be an EDUCATOR — explain WHY something matters, teach PM concepts through the analysis.
 7. Give SPECIFIC, ACTIONABLE feedback — not vague "do better" but "you should have analyzed X because Y".
 
+CRITICAL: ALL fields in the JSON output are MANDATORY. Do NOT leave any array empty or any object with default values. Every section must contain meaningful, detailed content. Especially pmGrowthMap and careerPrep — these are critical for PM development and must always be filled with specific, actionable content.
+
 PRIORITY ORDER:
 1. category_scores — 7 categories: game score + analysis quality score + detailed comment
 2. game_analysis — executive_summary, strengths, weaknesses, verdicts
@@ -35,8 +37,8 @@ PRIORITY ORDER:
 7. benchmark_comparison — Genre/market comparison with metrics table
 8. pm_scenario — 3-month PM action plan with prioritized items
 9. mechanic_suggestions — Mechanic improvement suggestions
-10. pm_growth_map — PM skill gaps, radar scores, growth actions
-11. career_prep — Interview questions, portfolio tips, CV highlights, industry relevance
+10. pm_growth_map — MANDATORY: PM skill gaps (at least 4-5 skills), radar scores (all 6 dimensions), growth actions (at least 3-4 items with specific timelines)
+11. career_prep — MANDATORY: Interview questions (at least 3-4 with context and sample answers), portfolio tips (at least 3), CV highlights (at least 3), industry relevance analysis
 
 CATEGORY COMMENTS (categoryScores.*.comment):
 - Each comment should be 3-5 sentences minimum.

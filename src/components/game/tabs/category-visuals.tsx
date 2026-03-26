@@ -82,11 +82,13 @@ export function CoreLoopVisual({ analysis }: { analysis: Record<string, unknown>
   const loopDef = analysis.coreLoopDefinition ? String(analysis.coreLoopDefinition) : "";
   const sessionLength = analysis.coreLoopSessionLength ? String(analysis.coreLoopSessionLength) : null;
 
-  // Extract loop steps from definition (split by → or , or ;)
-  const steps = loopDef
-    .split(/[→➜\->]+|,\s*(?=[A-ZÇĞİÖŞÜa-z])/)
-    .map(s => s.trim())
-    .filter(s => s.length > 0 && s.length < 50)
+  // Extract loop steps from definition
+  // First remove parenthetical notes like "(kaynaklar)" to avoid bad splits
+  const cleanedDef = loopDef.replace(/\([^)]*\)/g, "");
+  const steps = cleanedDef
+    .split(/[→➜]+|->|–/)
+    .map(s => s.trim().replace(/^[,;.\s]+|[,;.\s]+$/g, ""))
+    .filter(s => s.length > 2 && s.length < 60)
     .slice(0, 6);
 
   const loopColors = [
@@ -180,7 +182,7 @@ export function MonetizationVisual({ analysis }: { analysis: Record<string, unkn
                   style={{ width: `${Math.min(100, 40 + ch.value.length / 3)}%` }}
                 />
               </div>
-              <p className="text-[11px] text-muted-foreground line-clamp-2">{ch.value}</p>
+              <p className="text-[11px] text-muted-foreground leading-relaxed">{ch.value}</p>
             </div>
           ))}
         </div>
@@ -299,7 +301,7 @@ export function UxVisual({ analysis }: { analysis: Record<string, unknown> }) {
             <div className="flex-1 min-w-0">
               <p className="text-xs font-medium">{t(area.labelKey)}</p>
               {area.filled && (
-                <p className="text-[11px] text-muted-foreground line-clamp-1">{area.value}</p>
+                <p className="text-[11px] text-muted-foreground leading-relaxed">{area.value}</p>
               )}
             </div>
           </div>
@@ -430,7 +432,7 @@ export function TechVisual({ analysis }: { analysis: Record<string, unknown> }) 
                 <Icon className="h-3.5 w-3.5 text-muted-foreground" />
                 <span className="text-[10px] font-medium text-muted-foreground uppercase">{t(m.labelKey)}</span>
               </div>
-              <p className="text-sm font-medium line-clamp-2">{m.filled ? m.value : "—"}</p>
+              <p className="text-sm font-medium leading-relaxed">{m.filled ? m.value : "—"}</p>
             </div>
           );
         })}

@@ -19,7 +19,7 @@ import {
 import {
   Sparkles, ArrowLeft, ArrowRight, Save, Loader2,
   Eye, Repeat, DollarSign, Heart, Layout, Layers, Cpu, Star,
-  ChevronDown,
+  ChevronDown, BarChart3, Users, TrendingUp,
 } from "lucide-react";
 
 import { WizardSteps } from "@/components/analysis/wizard-steps";
@@ -159,6 +159,7 @@ export default function AnalyzeNewPage() {
   const [newGameStudio, setNewGameStudio] = useState("");
   const [newGameGenre, setNewGameGenre] = useState<string[]>([]);
   const [newGamePlatform, setNewGamePlatform] = useState("");
+  const [newGameDescription, setNewGameDescription] = useState("");
   const [rawNotes, setRawNotes] = useState("");
 
   // Step 2 state — analysis fields
@@ -279,12 +280,13 @@ export default function AnalyzeNewPage() {
     const title = gameMode === "new" ? newGameTitle : existingGames?.find((g: { id: string }) => g.id === selectedGameId)?.title || "";
     const genre = gameMode === "new" ? newGameGenre : existingGames?.find((g: { id: string }) => g.id === selectedGameId)?.genre || [];
 
-    startModal("AI Draft Fill", [
+    startModal("AI ile Form Doldurma", [
       "Notlar analiz ediliyor...",
       "Oyun bilgileri çıkarılıyor...",
       "Kategoriler dolduruluyor...",
+      "Rakipler ve trendler belirleniyor...",
       "Form hazırlanıyor...",
-    ], 15000);
+    ], 40000);
 
     try {
       const result = await draftFill.mutateAsync({
@@ -300,6 +302,7 @@ export default function AnalyzeNewPage() {
         if (newGameGenre.length === 0 && result.gameGenre) setNewGameGenre(result.gameGenre);
         if (!newGamePlatform && result.gamePlatform) setNewGamePlatform(result.gamePlatform);
         if (!newGameStudio && result.gameStudio) setNewGameStudio(result.gameStudio);
+        if (!newGameDescription && result.gameDescription) setNewGameDescription(result.gameDescription);
       }
 
       // Populate analysis fields
@@ -352,6 +355,7 @@ export default function AnalyzeNewPage() {
           studio: newGameStudio || undefined,
           genre: newGameGenre,
           platform: newGamePlatform || undefined,
+          description: newGameDescription || undefined,
         });
         gameId = game.id;
       }
@@ -636,7 +640,13 @@ export default function AnalyzeNewPage() {
       {/* Step 3: KPI, Competitors, Trends & Save */}
       {step === 3 && (
         <div className="space-y-5">
-          <Card className="border-border">
+          <Card className="border-border overflow-hidden">
+            <div className="bg-gradient-to-r from-primary/5 via-accent/5 to-transparent px-5 py-3 border-b border-border">
+              <h3 className="text-sm font-semibold flex items-center gap-2">
+                <BarChart3 className="h-4 w-4 text-primary" />
+                KPI
+              </h3>
+            </div>
             <CardContent className="p-5">
               <KpiForm
                 values={kpis}
@@ -646,13 +656,25 @@ export default function AnalyzeNewPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-border">
+          <Card className="border-border overflow-hidden">
+            <div className="bg-gradient-to-r from-primary/5 via-accent/5 to-transparent px-5 py-3 border-b border-border">
+              <h3 className="text-sm font-semibold flex items-center gap-2">
+                <Users className="h-4 w-4 text-primary" />
+                {t("competitors.title")}
+              </h3>
+            </div>
             <CardContent className="p-5">
               <CompetitorTable competitors={competitors} onChange={setCompetitors} />
             </CardContent>
           </Card>
 
-          <Card className="border-border">
+          <Card className="border-border overflow-hidden">
+            <div className="bg-gradient-to-r from-primary/5 via-accent/5 to-transparent px-5 py-3 border-b border-border">
+              <h3 className="text-sm font-semibold flex items-center gap-2">
+                <TrendingUp className="h-4 w-4 text-primary" />
+                {t("trends.title")}
+              </h3>
+            </div>
             <CardContent className="p-5">
               <TrendTable trends={trends} onChange={setTrends} />
             </CardContent>
