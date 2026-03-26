@@ -40,19 +40,46 @@
     "authError": "Giriş sırasında bir hata oluştu. Lütfen tekrar dene."
   },
   "landing": {
+    "nav": {
+      "survey": "Anketi Dene"
+    },
     "hero": {
       "title": "Oyun Analiz Et. AI'dan Öğren. PM Olarak Büyü.",
       "subtitle": "Mobil oyunları yapısal olarak analiz et, AI mentordan geri bildirim al ve Gaming PM kariyerinde yüksel.",
       "cta": "Hemen Başla",
-      "learnMore": "Daha Fazla Bilgi"
+      "learnMore": "Daha Fazla Bilgi",
+      "trySurvey": "Anketi Dene"
     },
     "features": {
-      "analysis": { "title": "Yapısal Oyun Analizi", "description": "8 kategoride 50+ alanda detaylı oyun analizi" },
-      "ai": { "title": "AI Mentor", "description": "Claude AI ile analiz değerlendirmesi ve PM dersleri" },
-      "growth": { "title": "PM Gelişim Takibi", "description": "Seviye sistemi, beceri radar grafiği ve eylem planı" },
-      "interview": { "title": "Mülakat Simülasyonu", "description": "7 konuda AI destekli mülakat pratiği" },
-      "metrics": { "title": "Metrik Framework", "description": "KPI eğitimi, hesaplama ve benchmark karşılaştırma" },
-      "portfolio": { "title": "PM Portfolyosu", "description": "Analizlerinden otomatik portfolyo ve timeline oluştur" }
+      "sectionTitle": "Her Şey Tek Platformda",
+      "sectionSubtitle": "Gaming PM olarak ihtiyacın olan tüm araçlar burada.",
+      "analysis": { "title": "Yapısal Oyun Analizi", "description": "8 kategoride 50+ alanda detaylı oyun analizi — FTUE'den monetization'a kadar." },
+      "ai": { "title": "AI Mentor", "description": "Claude AI ile analiz değerlendirmesi, güçlü/zayıf yön tespiti ve PM dersleri." },
+      "growth": { "title": "PM Gelişim Takibi", "description": "Seviye sistemi, beceri radar grafiği ve kişiselleştirilmiş eylem planı." },
+      "interview": { "title": "Mülakat Simülasyonu", "description": "7 konuda AI destekli mülakat pratiği ile gerçek mülakatlara hazırlan." },
+      "metrics": { "title": "Metrik Framework", "description": "KPI eğitimi, hesaplama araçları ve endüstri benchmark karşılaştırma." },
+      "portfolio": { "title": "PM Portfolyosu", "description": "Analizlerinden otomatik portfolyo oluştur, PDF olarak dışa aktar." }
+    },
+    "stats": {
+      "surveyQuestions": "Anket Sorusu",
+      "interviewTopics": "Mülakat Konusu",
+      "guideChapters": "Rehber Bölümü",
+      "analysisFields": "Analiz Alanı"
+    },
+    "useCases": {
+      "sectionTitle": "Kimler İçin?",
+      "sectionSubtitle": "Her seviyeden Gaming PM adayı için tasarlandı.",
+      "candidate": { "title": "PM Adayı", "description": "Oyun analizi yapmayı öğren, portfolyo oluştur ve mülakata hazırlan." },
+      "switcher": { "title": "Kariyer Değiştirici", "description": "Farklı bir sektörden geliyorsan, Gaming PM terminolojisi ve metriklerini öğren." },
+      "interviewer": { "title": "Mülakat Hazırlığı", "description": "7 konuda AI destekli pratik yap, güçlü ve zayıf yönlerini keşfet." }
+    },
+    "finalCta": {
+      "title": "Gaming PM Yolculuğuna Başla",
+      "subtitle": "Ücretsiz hesap oluştur, ilk oyun analizini yap ve AI mentordan geri bildirim al."
+    },
+    "footer": {
+      "tagline": "Gaming PM Analysis & Growth Platform",
+      "builtWith": "Next.js, Supabase & Claude AI ile geliştirildi"
     }
   },
   "dashboard": {

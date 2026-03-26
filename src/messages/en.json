@@ -40,19 +40,46 @@
     "authError": "An error occurred during sign in. Please try again."
   },
   "landing": {
+    "nav": {
+      "survey": "Try Survey"
+    },
     "hero": {
       "title": "Analyze Games. Learn from AI. Grow as PM.",
       "subtitle": "Structurally analyze mobile games, get AI mentor feedback, and advance your Gaming PM career.",
       "cta": "Get Started",
-      "learnMore": "Learn More"
+      "learnMore": "Learn More",
+      "trySurvey": "Try Survey"
     },
     "features": {
-      "analysis": { "title": "Structured Game Analysis", "description": "Detailed game analysis across 50+ fields in 8 categories" },
-      "ai": { "title": "AI Mentor", "description": "Analysis evaluation and PM lessons with Claude AI" },
-      "growth": { "title": "PM Growth Tracking", "description": "Level system, skill radar chart, and action plan" },
-      "interview": { "title": "Interview Simulation", "description": "AI-powered interview practice in 7 topics" },
-      "metrics": { "title": "Metric Framework", "description": "KPI education, calculation, and benchmark comparison" },
-      "portfolio": { "title": "PM Portfolio", "description": "Auto-generate portfolio and timeline from your analyses" }
+      "sectionTitle": "Everything in One Platform",
+      "sectionSubtitle": "All the tools you need as a Gaming PM, right here.",
+      "analysis": { "title": "Structured Game Analysis", "description": "Detailed game analysis across 50+ fields in 8 categories — from FTUE to monetization." },
+      "ai": { "title": "AI Mentor", "description": "Analysis evaluation with Claude AI, strength/weakness detection, and PM lessons." },
+      "growth": { "title": "PM Growth Tracking", "description": "Level system, skill radar chart, and personalized action plan." },
+      "interview": { "title": "Interview Simulation", "description": "AI-powered interview practice in 7 topics to prepare for real interviews." },
+      "metrics": { "title": "Metric Framework", "description": "KPI education, calculation tools, and industry benchmark comparison." },
+      "portfolio": { "title": "PM Portfolio", "description": "Auto-generate portfolio from your analyses and export as PDF." }
+    },
+    "stats": {
+      "surveyQuestions": "Survey Questions",
+      "interviewTopics": "Interview Topics",
+      "guideChapters": "Guide Chapters",
+      "analysisFields": "Analysis Fields"
+    },
+    "useCases": {
+      "sectionTitle": "Who Is It For?",
+      "sectionSubtitle": "Designed for Gaming PM candidates at every level.",
+      "candidate": { "title": "PM Candidate", "description": "Learn game analysis, build your portfolio, and prepare for interviews." },
+      "switcher": { "title": "Career Switcher", "description": "Coming from a different industry? Learn Gaming PM terminology and metrics." },
+      "interviewer": { "title": "Interview Prep", "description": "Practice with AI across 7 topics, discover your strengths and weaknesses." }
+    },
+    "finalCta": {
+      "title": "Start Your Gaming PM Journey",
+      "subtitle": "Create a free account, analyze your first game, and get AI mentor feedback."
+    },
+    "footer": {
+      "tagline": "Gaming PM Analysis & Growth Platform",
+      "builtWith": "Built with Next.js, Supabase & Claude AI"
     }
   },
   "dashboard": {
