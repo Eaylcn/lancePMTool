@@ -898,7 +898,17 @@
     "subtitle": "Hesap ve uygulama ayarlarını yönet",
     "profileSettings": "Profil Ayarları",
     "profileSettingsDescription": "İsim, başlık, bio ve kullanıcı adı gibi profil bilgilerini Profil sayfasından düzenleyebilirsin.",
-    "goToProfile": "Profile Git"
+    "goToProfile": "Profile Git",
+    "language": "Dil",
+    "languageDescription": "Arayüz dilini değiştir.",
+    "theme": "Tema",
+    "themeDescription": "Uygulama temasını seç.",
+    "themeLight": "Açık",
+    "themeDark": "Koyu",
+    "themeSystem": "Sistem",
+    "dataExport": "Veri Dışa Aktarma",
+    "dataExportDescription": "Tüm oyun verilerini CSV olarak indir.",
+    "exportAll": "Tümünü İndir"
   },
   "export": {
     "export": "Dışa Aktar",

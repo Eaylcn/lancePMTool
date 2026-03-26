@@ -898,7 +898,17 @@
     "subtitle": "Manage account and app settings",
     "profileSettings": "Profile Settings",
     "profileSettingsDescription": "You can edit your profile information such as name, title, bio and username from the Profile page.",
-    "goToProfile": "Go to Profile"
+    "goToProfile": "Go to Profile",
+    "language": "Language",
+    "languageDescription": "Change the interface language.",
+    "theme": "Theme",
+    "themeDescription": "Choose the app theme.",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System",
+    "dataExport": "Data Export",
+    "dataExportDescription": "Download all your game data as CSV.",
+    "exportAll": "Download All"
   },
   "export": {
     "export": "Export",
