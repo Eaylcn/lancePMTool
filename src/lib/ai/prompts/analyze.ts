@@ -35,6 +35,8 @@ PRIORITY ORDER:
 7. benchmark_comparison — Genre/market comparison with metrics table
 8. pm_scenario — 3-month PM action plan with prioritized items
 9. mechanic_suggestions — Mechanic improvement suggestions
+10. pm_growth_map — PM skill gaps, radar scores, growth actions
+11. career_prep — Interview questions, portfolio tips, CV highlights, industry relevance
 
 CATEGORY COMMENTS (categoryScores.*.comment):
 - Each comment should be 3-5 sentences minimum.
@@ -105,7 +107,31 @@ OUTPUT FORMAT: Valid JSON only, no markdown code blocks, no explanation outside 
   },
   "mechanicSuggestions": [
     { "mechanic": "specific feature or mechanic to add/improve", "reason": "data-driven reasoning why", "implementation": "concrete implementation approach" }
-  ]
+  ],
+  "pmGrowthMap": {
+    "skillGaps": [
+      { "skill": "PM skill name (e.g. Retention Analysis, Monetization Design, Data Interpretation)", "currentLevel": 1-5, "targetLevel": 1-5, "suggestion": "specific learning/practice suggestion" }
+    ],
+    "growthActions": [
+      { "action": "specific growth action", "timeline": "timeframe (e.g. 2 weeks, 1 month)", "impact": "expected skill improvement" }
+    ],
+    "radarScores": {
+      "Game Design": 1-10,
+      "Data Analysis": 1-10,
+      "Monetization": 1-10,
+      "User Psychology": 1-10,
+      "Market Knowledge": 1-10,
+      "Technical Depth": 1-10
+    }
+  },
+  "careerPrep": {
+    "interviewQuestions": [
+      { "question": "likely PM interview question based on this game analysis", "context": "why interviewer would ask this", "sampleAnswer": "strong answer that references this analysis" }
+    ],
+    "portfolioTips": ["specific tips on how to present this analysis in a PM portfolio — what to highlight, what to add"],
+    "cvHighlights": ["bullet points the PM could add to their CV based on this analysis work"],
+    "industryRelevance": "how this game analysis connects to broader industry trends and why it matters for a PM career"
+  }
 }`;
 }
 

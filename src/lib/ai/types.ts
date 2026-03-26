@@ -179,6 +179,30 @@ export const aiAnalysisResponseSchema = z.object({
     reason: z.string(),
     implementation: z.string(),
   })).default([]),
+  pmGrowthMap: z.object({
+    skillGaps: z.array(z.object({
+      skill: z.string(),
+      currentLevel: z.number().min(1).max(5),
+      targetLevel: z.number().min(1).max(5),
+      suggestion: z.string(),
+    })).default([]),
+    growthActions: z.array(z.object({
+      action: z.string(),
+      timeline: z.string(),
+      impact: z.string(),
+    })).default([]),
+    radarScores: z.record(z.string(), z.number()).default({}),
+  }).default({ skillGaps: [], growthActions: [], radarScores: {} }),
+  careerPrep: z.object({
+    interviewQuestions: z.array(z.object({
+      question: z.string(),
+      context: z.string(),
+      sampleAnswer: z.string(),
+    })).default([]),
+    portfolioTips: z.array(z.string()).default([]),
+    cvHighlights: z.array(z.string()).default([]),
+    industryRelevance: z.string().default(""),
+  }).default({ interviewQuestions: [], portfolioTips: [], cvHighlights: [], industryRelevance: "" }),
 });
 
 export type AiAnalysisResponse = z.infer<typeof aiAnalysisResponseSchema>;

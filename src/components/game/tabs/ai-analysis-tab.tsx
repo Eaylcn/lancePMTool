@@ -40,6 +40,32 @@ interface PMScenario {
   actionItems: Array<{ priority: number; action: string; rationale: string; expectedImpact: string }>;
 }
 
+interface SkillGap {
+  skill: string;
+  currentLevel: number;
+  targetLevel: number;
+  suggestion: string;
+}
+
+interface GrowthAction {
+  action: string;
+  timeline: string;
+  impact: string;
+}
+
+interface PMGrowthMapData {
+  skillGaps: SkillGap[];
+  growthActions: GrowthAction[];
+  radarScores: Record<string, number>;
+}
+
+interface CareerPrepData {
+  interviewQuestions: Array<{ question: string; context: string; sampleAnswer: string }>;
+  portfolioTips: string[];
+  cvHighlights: string[];
+  industryRelevance: string;
+}
+
 interface AiAnalysisData {
   executiveSummary: string | null;
   overallScoreJustification: string | null;
@@ -56,6 +82,8 @@ interface AiAnalysisData {
   benchmarkComparison: BenchmarkComparison | null;
   pmScenario: PMScenario | null;
   mechanicSuggestions: Array<{ mechanic: string; reason: string; implementation: string }> | null;
+  pmGrowthMap?: PMGrowthMapData | null;
+  careerPrep?: CareerPrepData | null;
 }
 
 interface AiAnalysisTabProps {
@@ -631,6 +659,235 @@ function PMLessons({ ai }: { ai: AiAnalysisData }) {
   );
 }
 
+// ─── Sub-tab: PM Gelişim Haritası ───
+function PMGrowthMap({ ai }: { ai: AiAnalysisData }) {
+  const t = useTranslations("game");
+  const growthMap = ai.pmGrowthMap;
+
+  if (!growthMap || (growthMap.skillGaps.length === 0 && growthMap.growthActions.length === 0 && Object.keys(growthMap.radarScores).length === 0)) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 text-center">
+        <Brain className="h-10 w-10 text-muted-foreground/30 mb-3" />
+        <p className="text-muted-foreground">{t("noGrowthMapData")}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Radar Scores */}
+      {Object.keys(growthMap.radarScores).length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Brain className="h-5 w-5 text-primary" />
+              {t("pmSkillRadar")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {Object.entries(growthMap.radarScores).map(([skill, score]) => {
+                const pct = (score / 10) * 100;
+                const color = score >= 7 ? "bg-emerald-500" : score >= 4 ? "bg-yellow-500" : "bg-red-500";
+                return (
+                  <div key={skill} className="flex items-center gap-3">
+                    <span className="text-xs text-muted-foreground w-32 shrink-0">{skill}</span>
+                    <div className="flex-1 h-2.5 bg-muted rounded-full overflow-hidden">
+                      <div className={`h-full rounded-full ${color} transition-all`} style={{ width: `${pct}%` }} />
+                    </div>
+                    <span className="text-xs font-semibold tabular-nums w-8 text-right">{score.toFixed(1)}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Skill Gaps */}
+      {growthMap.skillGaps.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-primary" />
+              {t("skillGaps")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {growthMap.skillGaps.map((gap, i) => (
+              <div key={i} className="rounded-lg border border-border p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">{gap.skill}</span>
+                  <div className="flex items-center gap-2 text-xs">
+                    <span className="text-muted-foreground">Seviye:</span>
+                    <Badge variant="outline" className="tabular-nums">{gap.currentLevel}</Badge>
+                    <span className="text-muted-foreground">→</span>
+                    <Badge className="bg-primary/10 text-primary tabular-nums">{gap.targetLevel}</Badge>
+                  </div>
+                </div>
+                <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-yellow-500 to-emerald-500"
+                    style={{ width: `${(gap.currentLevel / gap.targetLevel) * 100}%` }}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">{gap.suggestion}</p>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Growth Actions */}
+      {growthMap.growthActions.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Target className="h-5 w-5 text-primary" />
+              {t("growthActions")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {growthMap.growthActions.map((action, i) => (
+              <div key={i} className="flex items-start gap-3 rounded-lg border border-border p-3">
+                <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="text-xs font-semibold text-primary">{i + 1}</span>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm font-medium">{action.action}</p>
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="h-3 w-3" />
+                      {action.timeline}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <TrendingUp className="h-3 w-3" />
+                      {action.impact}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
+
+// ─── Sub-tab: Kariyer Hazırlık ───
+function CareerPrep({ ai }: { ai: AiAnalysisData }) {
+  const t = useTranslations("game");
+  const career = ai.careerPrep;
+
+  if (!career || (career.interviewQuestions.length === 0 && career.portfolioTips.length === 0 && career.cvHighlights.length === 0 && !career.industryRelevance)) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 text-center">
+        <GraduationCap className="h-10 w-10 text-muted-foreground/30 mb-3" />
+        <p className="text-muted-foreground">{t("noCareerData")}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Industry Relevance */}
+      {career.industryRelevance && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-primary" />
+              {t("industryRelevance")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm leading-relaxed text-muted-foreground">{career.industryRelevance}</p>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Interview Questions */}
+      {career.interviewQuestions.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <MessageSquare className="h-5 w-5 text-primary" />
+              {t("careerInterviewQuestions")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Accordion multiple className="space-y-2">
+              {career.interviewQuestions.map((q, i) => (
+                <AccordionItem key={i} value={`q-${i}`} className="rounded-lg border border-border px-3">
+                  <AccordionTrigger className="text-sm font-medium py-3 hover:no-underline">
+                    {q.question}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-2 pb-2">
+                      <div className="rounded-lg bg-muted/30 px-3 py-2">
+                        <p className="text-[10px] text-muted-foreground uppercase mb-1">{t("questionContext")}</p>
+                        <p className="text-xs text-muted-foreground">{q.context}</p>
+                      </div>
+                      <div className="rounded-lg bg-primary/5 border border-primary/10 px-3 py-2">
+                        <p className="text-[10px] text-primary uppercase mb-1">{t("sampleAnswer")}</p>
+                        <p className="text-sm leading-relaxed">{q.sampleAnswer}</p>
+                      </div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Portfolio Tips */}
+      {career.portfolioTips.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm flex items-center gap-2">
+              <BookOpen className="h-4 w-4 text-primary" />
+              {t("portfolioTips")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2">
+              {career.portfolioTips.map((tip, i) => (
+                <li key={i} className="text-sm flex gap-2">
+                  <span className="text-primary shrink-0">•</span>
+                  {tip}
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* CV Highlights */}
+      {career.cvHighlights.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm flex items-center gap-2">
+              <Award className="h-4 w-4 text-primary" />
+              {t("cvHighlights")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2">
+              {career.cvHighlights.map((h, i) => (
+                <li key={i} className="text-sm flex gap-2 rounded-lg border border-border p-2.5">
+                  <span className="text-emerald-500 shrink-0">✓</span>
+                  {h}
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
+
 // ─── Main Component ───
 export function AiAnalysisTab({ aiAnalysis, onAnalyze, isAnalyzing }: AiAnalysisTabProps) {
   const t = useTranslations("game");
@@ -656,22 +913,8 @@ export function AiAnalysisTab({ aiAnalysis, onAnalyze, isAnalyzing }: AiAnalysis
 
   return (
     <div className="space-y-4">
-      {/* Re-analyze button */}
-      {onAnalyze && (
-        <div className="flex justify-end">
-          <Button variant="outline" size="sm" onClick={onAnalyze} disabled={isAnalyzing} className="gap-2">
-            {isAnalyzing ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin" />
-            ) : (
-              <Sparkles className="h-3.5 w-3.5" />
-            )}
-            {t("reAnalyze")}
-          </Button>
-        </div>
-      )}
-
       <Tabs defaultValue="general">
-        <TabsList variant="line" className="flex">
+        <TabsList variant="line" className="flex flex-wrap">
           <TabsTrigger value="general" className="text-xs sm:text-sm px-3 py-2">
             {t("generalAssessment")}
           </TabsTrigger>
@@ -680,6 +923,12 @@ export function AiAnalysisTab({ aiAnalysis, onAnalyze, isAnalyzing }: AiAnalysis
           </TabsTrigger>
           <TabsTrigger value="lessons" className="text-xs sm:text-sm px-3 py-2">
             {t("pmLessons")}
+          </TabsTrigger>
+          <TabsTrigger value="growth" className="text-xs sm:text-sm px-3 py-2">
+            {t("pmGrowthMap")}
+          </TabsTrigger>
+          <TabsTrigger value="career" className="text-xs sm:text-sm px-3 py-2">
+            {t("careerPrep")}
           </TabsTrigger>
         </TabsList>
 
@@ -693,6 +942,14 @@ export function AiAnalysisTab({ aiAnalysis, onAnalyze, isAnalyzing }: AiAnalysis
 
         <TabsContent value="lessons" className="mt-4" keepMounted>
           <PMLessons ai={aiAnalysis} />
+        </TabsContent>
+
+        <TabsContent value="growth" className="mt-4" keepMounted>
+          <PMGrowthMap ai={aiAnalysis} />
+        </TabsContent>
+
+        <TabsContent value="career" className="mt-4" keepMounted>
+          <CareerPrep ai={aiAnalysis} />
         </TabsContent>
       </Tabs>
     </div>
