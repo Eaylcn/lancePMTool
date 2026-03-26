@@ -873,6 +873,14 @@
     "profileSettingsDescription": "İsim, başlık, bio ve kullanıcı adı gibi profil bilgilerini Profil sayfasından düzenleyebilirsin.",
     "goToProfile": "Profile Git"
   },
+  "export": {
+    "export": "Dışa Aktar",
+    "exportPdf": "PDF İndir",
+    "exportCsv": "CSV İndir",
+    "exporting": "Dışa aktarılıyor...",
+    "exportSuccess": "Dışa aktarma başarılı",
+    "exportError": "Dışa aktarma başarısız"
+  },
   "guide": {
     "title": "Gaming PM Rehberi",
     "subtitle": "8 bölümde Gaming PM'in tüm temel konularını öğren, interaktif quizlerle bilgini test et.",

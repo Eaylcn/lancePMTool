@@ -10,6 +10,7 @@ import { useGameAnalysis } from "@/hooks/use-analyses";
 import { useAiAnalyze } from "@/hooks/use-ai";
 import { AiLoadingModal } from "@/components/shared/ai-loading-modal";
 import { GameHero } from "@/components/game/game-hero";
+import { AnalysisExport } from "@/components/game/analysis-export";
 import { OverviewTab } from "@/components/game/tabs/overview-tab";
 import { CategoryTab } from "@/components/game/tabs/category-tab";
 import { KpiTab } from "@/components/game/tabs/kpi-tab";
@@ -207,6 +208,13 @@ export default function GameDetailPage({
         const ratings = ratingKeys.map(k => Number(analysis[k])).filter(v => !isNaN(v) && v > 0);
         return ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : null;
       })()} />
+
+      {/* Export */}
+      {analysis && (
+        <div className="flex justify-end">
+          <AnalysisExport game={game} analysis={analysis} />
+        </div>
+      )}
 
       {/* Tabs */}
       <Tabs defaultValue="overview">

@@ -873,6 +873,14 @@
     "profileSettingsDescription": "You can edit your profile information such as name, title, bio and username from the Profile page.",
     "goToProfile": "Go to Profile"
   },
+  "export": {
+    "export": "Export",
+    "exportPdf": "Download PDF",
+    "exportCsv": "Download CSV",
+    "exporting": "Exporting...",
+    "exportSuccess": "Export successful",
+    "exportError": "Export failed"
+  },
   "guide": {
     "title": "Gaming PM Guide",
     "subtitle": "Learn all fundamental Gaming PM topics in 8 chapters, test your knowledge with interactive quizzes.",
