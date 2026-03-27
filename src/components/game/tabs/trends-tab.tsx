@@ -1,9 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, Cpu, ShoppingCart, Users, CircleDot } from "lucide-react";
 
 interface TrendsTabProps {
   trends: Array<{
@@ -16,41 +15,17 @@ interface TrendsTabProps {
   }>;
 }
 
-const impactConfig: Record<string, { color: string; icon: React.ElementType }> = {
-  positive: { color: "text-emerald-500 bg-emerald-500/10", icon: TrendingUp },
-  negative: { color: "text-red-500 bg-red-500/10", icon: TrendingDown },
-  neutral: { color: "text-yellow-500 bg-yellow-500/10", icon: Minus },
+const impactConfig: Record<string, { color: string; bgColor: string; borderColor: string; icon: React.ElementType; label: string }> = {
+  positive: { color: "text-emerald-500", bgColor: "bg-emerald-500/10", borderColor: "border-emerald-500/20", icon: TrendingUp, label: "Pozitif" },
+  negative: { color: "text-red-500", bgColor: "bg-red-500/10", borderColor: "border-red-500/20", icon: TrendingDown, label: "Negatif" },
+  neutral: { color: "text-yellow-500", bgColor: "bg-yellow-500/10", borderColor: "border-yellow-500/20", icon: Minus, label: "Nötr" },
 };
 
-function TrendCard({ trend, t }: { trend: TrendsTabProps["trends"][0]; t: ReturnType<typeof useTranslations> }) {
-  const impact = impactConfig[trend.impact || "neutral"] || impactConfig.neutral;
-  const ImpactIcon = impact.icon;
-
-  return (
-    <Card>
-      <CardContent className="p-4">
-        <div className="flex items-start gap-3">
-          <div className={`p-2 rounded-lg ${impact.color}`}>
-            <ImpactIcon className="h-4 w-4" />
-          </div>
-          <div className="flex-1 space-y-1">
-            <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="font-semibold">{trend.title}</h3>
-              {trend.trendType && (
-                <Badge variant="secondary" className="text-[10px]">
-                  {t(`trendType.${trend.trendType}`)}
-                </Badge>
-              )}
-            </div>
-            {trend.description && (
-              <p className="text-sm text-muted-foreground">{trend.description}</p>
-            )}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
+const typeConfig: Record<string, { icon: React.ElementType; color: string }> = {
+  market: { icon: ShoppingCart, color: "text-blue-500" },
+  technology: { icon: Cpu, color: "text-violet-500" },
+  player_behavior: { icon: Users, color: "text-orange-500" },
+};
 
 export function TrendsTab({ trends }: TrendsTabProps) {
   const t = useTranslations("game");
@@ -67,65 +42,72 @@ export function TrendsTab({ trends }: TrendsTabProps) {
   const negative = trends.filter((tr) => tr.impact === "negative");
   const neutral = trends.filter((tr) => tr.impact !== "positive" && tr.impact !== "negative");
 
-  const hasGroups = positive.length > 0 && negative.length > 0;
+  // Summary badges
+  const summaryItems = [
+    positive.length > 0 && { count: positive.length, ...impactConfig.positive },
+    negative.length > 0 && { count: negative.length, ...impactConfig.negative },
+    neutral.length > 0 && { count: neutral.length, ...impactConfig.neutral },
+  ].filter(Boolean) as Array<{ count: number; color: string; bgColor: string; borderColor: string; icon: React.ElementType; label: string }>;
 
-  // If no clear groups, show all as a flat list
-  if (!hasGroups) {
-    return (
-      <div className="space-y-3">
-        {trends.map((trend) => (
-          <TrendCard key={trend.id} trend={trend} t={t} />
-        ))}
-      </div>
-    );
-  }
+  const hasGroups = positive.length > 0 && negative.length > 0;
 
   return (
     <div className="space-y-6">
-      {/* Positive */}
-      {positive.length > 0 && (
-        <div>
-          <h3 className="text-sm font-semibold flex items-center gap-2 mb-3 text-emerald-500">
-            <TrendingUp className="h-4 w-4" />
-            {t("positiveTrends")}
-          </h3>
-          <div className="space-y-3">
-            {positive.map((trend) => (
-              <TrendCard key={trend.id} trend={trend} t={t} />
-            ))}
+      {/* Summary */}
+      <div className="flex gap-3 flex-wrap">
+        {summaryItems.map((item) => (
+          <div key={item.label} className={`flex items-center gap-2 rounded-lg border ${item.borderColor} ${item.bgColor} px-3 py-2`}>
+            <item.icon className={`h-3.5 w-3.5 ${item.color}`} />
+            <span className="text-xs font-medium">{item.count} {item.label}</span>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
 
-      {/* Negative */}
-      {negative.length > 0 && (
-        <div>
-          <h3 className="text-sm font-semibold flex items-center gap-2 mb-3 text-red-500">
-            <TrendingDown className="h-4 w-4" />
-            {t("negativeTrends")}
-          </h3>
-          <div className="space-y-3">
-            {negative.map((trend) => (
-              <TrendCard key={trend.id} trend={trend} t={t} />
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Timeline */}
+      <div className="relative">
+        {/* Vertical timeline line */}
+        <div className="absolute left-[19px] top-3 bottom-3 w-px bg-border" />
 
-      {/* Neutral */}
-      {neutral.length > 0 && (
-        <div>
-          <h3 className="text-sm font-semibold flex items-center gap-2 mb-3 text-yellow-500">
-            <Minus className="h-4 w-4" />
-            {t("neutralTrends")}
-          </h3>
-          <div className="space-y-3">
-            {neutral.map((trend) => (
-              <TrendCard key={trend.id} trend={trend} t={t} />
-            ))}
-          </div>
+        <div className="space-y-4">
+          {trends.map((trend, idx) => {
+            const impact = impactConfig[trend.impact || "neutral"] || impactConfig.neutral;
+            const ImpactIcon = impact.icon;
+            const typeConf = typeConfig[trend.trendType || ""] || null;
+
+            return (
+              <div key={trend.id} className="relative flex gap-4 pl-0">
+                {/* Timeline dot */}
+                <div className={`relative z-10 flex-shrink-0 w-10 h-10 rounded-full border-2 ${impact.borderColor} ${impact.bgColor} flex items-center justify-center`}>
+                  <ImpactIcon className={`h-4 w-4 ${impact.color}`} />
+                </div>
+
+                {/* Content card */}
+                <div className={`flex-1 rounded-xl border ${impact.borderColor} p-4 space-y-2`}>
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-sm">{trend.title}</h3>
+                    </div>
+                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                      {trend.trendType && (
+                        <Badge variant="secondary" className="text-[10px] gap-1">
+                          {typeConf && <typeConf.icon className={`h-3 w-3 ${typeConf.color}`} />}
+                          {t(`trendType.${trend.trendType}`)}
+                        </Badge>
+                      )}
+                      <Badge variant="outline" className={`text-[10px] ${impact.color}`}>
+                        {impact.label}
+                      </Badge>
+                    </div>
+                  </div>
+                  {trend.description && (
+                    <p className="text-xs leading-relaxed text-muted-foreground">{trend.description}</p>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
-      )}
+      </div>
     </div>
   );
 }

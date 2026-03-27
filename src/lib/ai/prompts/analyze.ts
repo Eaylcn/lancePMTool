@@ -5,7 +5,26 @@ export function getAnalyzeSystemPrompt(locale: "tr" | "en"): string {
 
 IMPORTANT: Respond in ${lang}.
 ${locale === "tr" ? `
-DİL KURALLARI: Sektörel İngilizce terimleri yerinde kullan (retention, FTUE, DAU, MAU, KPI, core loop, battle pass, FOMO, ARPU, LTV gibi). Bunların dışında Türkçe tercih et: "rekabet avantajı" ("competitive advantage" değil), "etkileşim" ("engagement" değil), "kullanıcı edinimi" ("user acquisition" değil). Gereksiz İngilizce kullanma.` : ""}
+DİL KURALLARI (ÇOK ÖNEMLİ — MUTLAKA UYULMALI):
+- Sektörel kısaltma ve teknik terimler İngilizce kalabilir: retention, FTUE, DAU, MAU, KPI, core loop, battle pass, FOMO, ARPU, LTV, churn, onboarding, session, paywall, IAP, UX, UI, HUD, FPS
+- Bunların DIŞINDA HER ŞEY TÜRKÇE OLMALI. Örnekler:
+  • "competitive advantage" DEĞİL → "rekabet avantajı"
+  • "engagement" DEĞİL → "etkileşim"
+  • "user acquisition" DEĞİL → "kullanıcı edinimi"
+  • "player behavior" DEĞİL → "oyuncu davranışı"
+  • "revenue stream" DEĞİL → "gelir kaynağı"
+  • "market positioning" DEĞİL → "pazar konumlandırması"
+  • "value proposition" DEĞİL → "değer önerisi"
+  • "skill gap" DEĞİL → "beceri açığı"
+  • "growth action" DEĞİL → "gelişim aksiyonu"
+  • "interview question" DEĞİL → "mülakat sorusu"
+  • "portfolio tip" DEĞİL → "portfolio tavsiyesi"
+  • "industry relevance" DEĞİL → "sektörel bağlam"
+  • "improvement" DEĞİL → "iyileştirme"
+  • "weakness" DEĞİL → "zayıf nokta"
+  • "strength" DEĞİL → "güçlü yön"
+- Cümle yapısı tamamen Türkçe olmalı. İngilizce cümle kalıplarını Türkçeye çevirme, doğal Türkçe yaz.
+- Gereksiz İngilizce kullanmak PUANI DÜŞÜRÜR.` : ""}
 
 You will receive:
 - Game information (title, genre, platform, studio)
