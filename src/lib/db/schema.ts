@@ -25,7 +25,9 @@ export const interviewStatusEnum = pgEnum("interview_status", [
   "completed",
 ]);
 export const messageRoleEnum = pgEnum("message_role", ["assistant", "user"]);
-export const taskStatusEnum = pgEnum("task_status", ["pending", "completed"]);
+export const taskStatusEnum = pgEnum("task_status", ["pending", "completed", "expired"]);
+export const surveyStatusEnum = pgEnum("survey_status", ["draft", "active", "expired", "closed"]);
+export const surveyAnalysisTypeEnum = pgEnum("survey_analysis_type", ["normal", "cross_question", "cross_survey", "trend"]);
 
 // ============================================
 // Profiles (extends Supabase auth.users)
@@ -362,13 +364,68 @@ export const metricAnalyses = pgTable("metric_analyses", {
 });
 
 // ============================================
-// Survey Responses
+// Survey Responses (DEPRECATED — replaced by surveys + surveyResponsesV2)
 // ============================================
 export const surveyResponses = pgTable("survey_responses", {
   id: uuid("id").primaryKey().defaultRandom(),
   sessionId: text("session_id").unique().notNull(),
   responses: jsonb("responses"),
   completed: boolean("completed").default(false),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+// ============================================
+// Surveys (new system — PM creates surveys for players)
+// ============================================
+export const surveys = pgTable("surveys", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .references(() => profiles.id)
+    .notNull(),
+  gameId: uuid("game_id")
+    .references(() => games.id, { onDelete: "set null" }),
+  title: text("title").notNull(),
+  description: text("description"),
+  templateType: text("template_type"),
+  questions: jsonb("questions").notNull().default([]),
+  settings: jsonb("settings").notNull().default({}),
+  shareToken: text("share_token").unique().notNull(),
+  status: surveyStatusEnum("status").default("draft").notNull(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }),
+  responseCount: integer("response_count").default(0).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+// ============================================
+// Survey Responses V2 (player/external user responses)
+// ============================================
+export const surveyResponsesV2 = pgTable("survey_responses_v2", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  surveyId: uuid("survey_id")
+    .references(() => surveys.id, { onDelete: "cascade" })
+    .notNull(),
+  respondentId: text("respondent_id"),
+  responses: jsonb("responses").notNull().default({}),
+  metadata: jsonb("metadata").default({}),
+  completedAt: timestamp("completed_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+// ============================================
+// Survey Analyses (AI analysis results)
+// ============================================
+export const surveyAnalyses = pgTable("survey_analyses", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  surveyId: uuid("survey_id")
+    .references(() => surveys.id, { onDelete: "cascade" })
+    .notNull(),
+  userId: uuid("user_id")
+    .references(() => profiles.id)
+    .notNull(),
+  analysisType: surveyAnalysisTypeEnum("analysis_type").notNull(),
+  compareSurveyIds: jsonb("compare_survey_ids"),
+  results: jsonb("results").notNull().default({}),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
 
@@ -388,4 +445,26 @@ export const aiRecommendations = pgTable("ai_recommendations", {
   recommendations: jsonb("recommendations"),
   score: decimal("score", { precision: 4, scale: 1 }),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+// ============================================
+// GDD Sessions
+// ============================================
+export const gddStatusEnum = pgEnum("gdd_status", ["in_progress", "completed"]);
+
+export const gddSessions = pgTable("gdd_sessions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .references(() => profiles.id, { onDelete: "cascade" })
+    .notNull(),
+  title: text("title").notNull().default("İsimsiz GDD"),
+  genre: text("genre"),
+  platform: text("platform"),
+  status: gddStatusEnum("status").notNull().default("in_progress"),
+  currentPhase: integer("current_phase").notNull().default(1),
+  completedPhases: jsonb("completed_phases").notNull().default([]),
+  messages: jsonb("messages").notNull().default([]),
+  gddData: jsonb("gdd_data").notNull().default({}),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });

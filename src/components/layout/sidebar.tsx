@@ -17,6 +17,7 @@ import {
   BarChart3,
   ClipboardList,
   BookOpen,
+  FileEdit,
   User,
   Settings,
   Sun,
@@ -52,8 +53,9 @@ const growthNav: NavItem[] = [
 ];
 
 const toolsNav: NavItem[] = [
+  { href: "/gdd", icon: FileEdit, labelKey: "gdd" },
   { href: "/metrics", icon: BarChart3, labelKey: "metrics" },
-  { href: "/survey", icon: ClipboardList, labelKey: "survey" },
+  { href: "/surveys", icon: ClipboardList, labelKey: "surveys" },
 ];
 
 const learnNav: NavItem[] = [

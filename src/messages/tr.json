@@ -26,9 +26,11 @@
     "tasks": "Görevler",
     "metrics": "Metrikler",
     "survey": "Anket",
+    "surveys": "Anketler",
     "guide": "PM Rehberi",
     "profile": "Profil",
     "settings": "Ayarlar",
+    "gdd": "GDD Oluşturucu",
     "signOut": "Çıkış Yap"
   },
   "auth": {
@@ -116,6 +118,25 @@
       "noAnalysis": "Analiz yok",
       "hasAnalysis": "AI Analiz var"
     },
+    "goodMorning": "Günaydın",
+    "goodAfternoon": "İyi günler",
+    "goodEvening": "İyi akşamlar",
+    "gddStats": {
+      "title": "GDD Oluşturucu",
+      "total": "Toplam GDD",
+      "active": "Devam Eden",
+      "completed": "Tamamlanan"
+    },
+    "recentActivityTitle": "Son Aktiviteler",
+    "activityTypes": {
+      "game_added": "Oyun eklendi",
+      "analysis_completed": "Analiz tamamlandı",
+      "gdd_created": "GDD oluşturuldu",
+      "gdd_updated": "GDD güncellendi",
+      "interview_completed": "Mülakat tamamlandı"
+    },
+    "noActivity": "Henüz aktivite yok",
+    "noActivityDescription": "Son işlemleriniz burada görünecek",
     "levels": {
       "beginner_pm": "Başlangıç PM",
       "junior_pm": "Junior PM",
@@ -146,6 +167,7 @@
     "sortBy": "Sırala",
     "gameTitle": "Oyun Adı",
     "gameTitlePlaceholder": "Clash Royale, Candy Crush...",
+    "titleRequired": "Oyun adı zorunludur",
     "studio": "Stüdyo",
     "studioPlaceholder": "Supercell, King...",
     "genre": "Tür",
@@ -590,6 +612,7 @@
     "description": "Analiz kaliteni izle, PM seviyeni gör, büyüme raporu al",
     "tabs": {
       "dashboard": "Dashboard",
+      "skills": "Beceriler",
       "report": "Rapor",
       "history": "Geçmiş"
     },
@@ -662,7 +685,24 @@
       "intermediate": "Orta",
       "advanced": "İleri",
       "professional": "Profesyonel"
-    }
+    },
+    "genreDistribution": "Tür Dağılımı",
+    "activitySummary": "Aktivite Özeti",
+    "last7Days": "Son 7 Gün",
+    "last30Days": "Son 30 Gün",
+    "gamesAdded": "Eklenen Oyun",
+    "analysesCompleted": "Tamamlanan Analiz",
+    "goalMilestones": "Hedefler & Seviyeler",
+    "nextLevel": "Sonraki Seviye",
+    "gamesRequired": "Gereken Oyun",
+    "analysesRequired": "Gereken Analiz",
+    "qualityRequired": "Gereken Kalite",
+    "maxLevelReached": "Maksimum seviyeye ulaştınız!",
+    "benchmark": "Kişisel Gelişim",
+    "needMoreData": "Karşılaştırma için daha fazla analiz gerekli",
+    "skillBreakdown": "Beceri Detayları",
+    "categoryGameScore": "Oyun Puanı",
+    "categoryAnalysisQuality": "Analiz Kalitesi"
   },
   "interview": {
     "title": "Mülakat Simülasyonu",
@@ -720,7 +760,12 @@
     "completed": "Tamamlandı",
     "active": "Aktif",
     "sessionCompleted": "Mülakat tamamlandı!",
-    "backToTopics": "Konulara Dön"
+    "backToTopics": "Konulara Dön",
+    "questions": "soru",
+    "allTopics": "Tüm Konular",
+    "allStatuses": "Tüm Durumlar",
+    "progress": "İlerleme",
+    "evaluationDetails": "Değerlendirme Detayları"
   },
   "tasks": {
     "title": "Günlük Görevler",
@@ -728,8 +773,8 @@
     "todaysTasks": "Bugünün Görevleri",
     "generateTasks": "Görev Oluştur",
     "generating": "AI görev oluşturuyor...",
-    "noTasks": "Bugün için görev yok",
-    "noTasksDescription": "Görevler otomatik oluşturulacak",
+    "noTasks": "Henüz bugün için görev oluşturulmadı",
+    "noTasksDescription": "AI destekli günlük PM görevlerini oluşturmak için butona tıkla",
     "submitResponse": "Yanıtı Gönder",
     "submitting": "Değerlendiriliyor...",
     "responsePlaceholder": "Yanıtınızı buraya yazın...",
@@ -748,7 +793,8 @@
     },
     "status": {
       "pending": "Bekliyor",
-      "completed": "Tamamlandı"
+      "completed": "Tamamlandı",
+      "expired": "Süre Doldu"
     },
     "evaluation": "AI Değerlendirmesi",
     "score": "Skor",
@@ -763,6 +809,23 @@
       "days": "gün",
       "tasks": "görev"
     },
+    "tabs": {
+      "daily": "Günlük",
+      "history": "Geçmiş"
+    },
+    "history": {
+      "title": "Geçmiş Görevler",
+      "noHistory": "Henüz geçmiş görev yok",
+      "noHistoryDescription": "Tamamlanan görevlerin burada görünecek"
+    },
+    "filter": {
+      "allTypes": "Tüm Tipler",
+      "allDifficulties": "Tüm Zorluklar"
+    },
+    "expandResponse": "Yanıt Yaz",
+    "collapseResponse": "Gizle",
+    "weeklyPerformance": "Haftalık Performans",
+    "streakMilestone": "Tebrikler! {days} gün streak!",
     "allCompleted": "Tüm görevler tamamlandı!",
     "completedCount": "{completed}/{total} tamamlandı"
   },
@@ -770,8 +833,10 @@
     "title": "Metrik Analizi",
     "subtitle": "KPI'larını öğren, hesapla ve AI ile analiz et",
     "tabs": {
+      "dashboard": "Dashboard",
       "education": "KPI Eğitimi",
       "calculator": "Hesaplama",
+      "analysis": "Analiz",
       "history": "Geçmiş"
     },
     "education": {
@@ -846,6 +911,12 @@
         "formula": "Günlük Toplam Oturumlar / DAU",
         "why": "Alışkanlık döngüsünün gücünü gösterir. Yüksek sayı = güçlü retention mekanikleri.",
         "range": "Hyper-casual: 2-7 | Casual: 2-7 | RPG: 2-6 | Strategy: 2-6"
+      },
+      "categories": {
+        "all": "Tümü",
+        "engagement": "Etkileşim",
+        "monetization": "Monetizasyon",
+        "retention": "Retention"
       }
     },
     "calculator": {
@@ -903,6 +974,25 @@
       "riskFactors": "Risk Faktörleri",
       "noAnalysis": "Henüz analiz yapılmadı. Metrikleri gir ve AI ile analiz et."
     },
+    "analysisEmpty": {
+      "title": "Henüz Analiz Yok",
+      "description": "Hesaplama tabından metriklerinizi girin ve AI ile analiz edin. Sonuçlar burada görüntülenecek."
+    },
+    "dashboard": {
+      "stats": {
+        "totalAnalyses": "Toplam Analiz",
+        "avgScore": "Ort. Skor",
+        "bestScore": "En İyi Skor",
+        "worstScore": "En Düşük Skor",
+        "uniqueGames": "Oyun Sayısı",
+        "lastAnalysis": "Son Analiz"
+      },
+      "healthTrend": "Sağlık Skoru Trendi",
+      "gameDistribution": "Oyun Dağılımı",
+      "recentAnalyses": "Son Analizler",
+      "analysisCount": "Analiz Sayısı",
+      "noData": "Henüz veri yok"
+    },
     "history": {
       "title": "Analiz Geçmişi",
       "subtitle": "Önceki metrik analizlerini görüntüle",
@@ -910,7 +1000,14 @@
       "healthScore": "Sağlık Skoru",
       "date": "Tarih",
       "game": "Oyun",
-      "viewDetails": "Detayları Gör"
+      "viewDetails": "Detayları Gör",
+      "colDate": "Tarih",
+      "colGame": "Oyun",
+      "colScore": "Skor",
+      "colStatus": "Durum",
+      "statusGood": "İyi",
+      "statusWarning": "Uyarı",
+      "statusCritical": "Kritik"
     }
   },
   "profile": {
@@ -1045,5 +1142,166 @@
     },
     "heroDescription": "Aşağıdaki 7 kategoride toplam 28 soru seni bekliyor. Her kategori Gaming PM'in farklı bir yetkinlik alanını test eder.",
     "autoSaved": "Otomatik kaydedildi"
+  },
+  "gdd": {
+    "title": "GDD Oluşturucu",
+    "subtitle": "AI destekli Game Design Document oluştur",
+    "newGdd": "Yeni GDD",
+    "newGddTitle": "Yeni GDD Başlat",
+    "projectName": "Proje Adı",
+    "projectNamePlaceholder": "Örn: TimeGambit",
+    "projectNameHint": "Boş bırakırsan sonra değiştirebilirsin",
+    "startDesigning": "Tasarlamaya Başla",
+    "emptyTitle": "Henüz GDD yok",
+    "emptyDescription": "Yeni bir GDD oluşturarak oyun fikrini profesyonel bir dokümana dönüştür",
+    "phase": "Aşama",
+    "completed": "Tamamlandı",
+    "inProgress": "Devam Ediyor",
+    "view": "Görüntüle",
+    "continue": "Devam Et",
+    "deleteTitle": "GDD'yi Sil",
+    "deleteDescription": "Bu GDD kalıcı olarak silinecek. Bu işlem geri alınamaz.",
+    "thinking": "Düşünüyor...",
+    "inputPlaceholder": "Mesajınızı yazın...",
+    "preview": "GDD Önizleme",
+    "saved": "Kaydedildi",
+    "saving": "Kaydediliyor...",
+    "loading": "Yükleniyor...",
+    "notFound": "Oturum bulunamadı",
+    "exportMd": "Markdown",
+    "exportPdf": "PDF İndir",
+    "writeOwn": "Kendi cevabımı yazacağım",
+    "previewToggle": "GDD Önizleme",
+    "sectionComplete": "Bölüm Tamamlandı",
+    "confirm": "Onayla",
+    "selectOne": "Bir seçenek seçin",
+    "selectMultiple": "Birden fazla seçenek seçebilirsiniz",
+    "generatingPhases": "Oyunun için özel GDD planı oluşturuluyor...",
+    "customPlan": "Oyunun için özel plan oluşturuldu",
+    "exportAiPrompt": "AI Prompt",
+    "aiPromptDescription": "AI kodlama asistanları için prompt dokümanı indir",
+    "copied": "Kopyalandı!",
+    "helpMeDecide": "Karar vermeme yardım et",
+    "chatTab": "Sohbet",
+    "overviewTab": "Genel Bakış",
+    "gameSummary": "Oyun Özeti",
+    "phaseProgress": "Aşama İlerlemesi",
+    "getSuggestions": "Öneriler Al",
+    "noDataYet": "Oyun özetini görmek için 1. Aşamayı tamamla",
+    "gameVision": "Oyunun Vizyonu",
+    "initialIdea": "Oyun Fikrin",
+    "initialIdeaPlaceholder": "Aklındaki oyun fikrini kısaca anlat... Örn: Zombi apocalypse'de zaman yönetimine dayalı bir roguelite",
+    "initialIdeaHint": "Ham fikir yaz, AI sana özel sorular hazırlasın",
+    "suggestionsTab": "Öneriler",
+    "noSuggestionsYet": "Henüz öneri yok — bir aşamayı tamamladığında öneriler burada görünecek",
+    "suggestionsCount": "öneri",
+    "generatingSuggestions": "Öneriler oluşturuluyor...",
+    "applySuggestion": "Uygula",
+    "priority_high": "Yüksek",
+    "priority_medium": "Orta",
+    "priority_low": "Düşük",
+    "phases": {
+      "1": "Temel Fikir & Pitch",
+      "2": "Tür & Oynanış",
+      "3": "Core Loop",
+      "4": "Dünya & Atmosfer",
+      "5": "Karakter & Düşmanlar",
+      "6": "Sistemler",
+      "7": "MVP Kapsamı"
+    }
+  },
+  "surveys": {
+    "title": "Anketler",
+    "subtitle": "Anket oluşturun, oyuncu geri bildirimi toplayın ve AI destekli içgörüler elde edin",
+    "tabs": {
+      "dashboard": "Dashboard",
+      "templates": "Şablonlar",
+      "mySurveys": "Anketlerim",
+      "results": "Sonuçlar & Analiz",
+      "history": "Geçmiş"
+    },
+    "dashboard": {
+      "totalSurveys": "Toplam Anket",
+      "totalResponses": "Toplam Yanıt",
+      "activeSurveys": "Aktif Anket",
+      "avgResponses": "Ort. Yanıt",
+      "recentActivity": "Son Aktivite",
+      "noSurveys": "Henüz anket oluşturulmadı.",
+      "noGame": "Oyun bağlantısız",
+      "responses": "yanıt"
+    },
+    "templates": {
+      "title": "Anket Şablonları",
+      "subtitle": "Hazır şablonlardan birini seçin veya sıfırdan oluşturun",
+      "createManual": "Manuel Oluştur",
+      "questions": "soru",
+      "useTemplate": "Şablonu Kullan"
+    },
+    "list": {
+      "title": "Anketlerim",
+      "createNew": "Yeni Anket Oluştur",
+      "emptyTitle": "Henüz anketiniz yok",
+      "emptyDescription": "Şablonlardan birini seçerek veya sıfırdan oluşturarak başlayın.",
+      "noGame": "Oyun bağlantısız",
+      "copyLink": "Link Kopyala",
+      "copied": "Kopyalandı!",
+      "preview": "Önizle",
+      "edit": "Düzenle",
+      "activate": "Aktifleştir",
+      "close": "Kapat",
+      "deleteConfirm": "Bu anketi silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
+    },
+    "status": {
+      "draft": "Taslak",
+      "active": "Aktif",
+      "expired": "Süresi Dolmuş",
+      "closed": "Kapatıldı"
+    },
+    "create": {
+      "fromTemplate": "Şablondan Anket Oluştur",
+      "manual": "Manuel Anket Oluştur",
+      "title": "Anket Başlığı",
+      "titlePlaceholder": "Örn: Oyuncu Memnuniyeti Anketi Q1 2026",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "Anketin amacını kısaca açıklayın...",
+      "game": "Oyun (Opsiyonel)",
+      "noGame": "Oyun seçmeyin",
+      "expiresAt": "Bitiş Tarihi",
+      "maxResponses": "Maksimum Yanıt Sayısı",
+      "unlimited": "Sınırsız",
+      "cancel": "İptal",
+      "nextQuestions": "Sorulara Geç",
+      "back": "Geri",
+      "createSurvey": "Anketi Oluştur",
+      "addQuestion": "Soru Ekle",
+      "questionPlaceholder": "Soru metnini girin...",
+      "option": "Seçenek",
+      "addOption": "Seçenek Ekle",
+      "typeSingle": "Tek Seçim",
+      "typeMultiple": "Çoklu Seçim",
+      "typeScale": "Ölçek",
+      "typeText": "Metin"
+    },
+    "results": {
+      "emptyTitle": "Henüz sonuç yok",
+      "emptyDescription": "Yanıt toplandıktan sonra burada analiz yapabilirsiniz.",
+      "selectSurvey": "Anket Seçin",
+      "chooseSurvey": "Bir anket seçin...",
+      "compareTo": "Karşılaştırma için anket (opsiyonel)",
+      "noComparison": "Karşılaştırma yapma",
+      "responseSummary": "Yanıt Özeti",
+      "aiAnalysis": "AI Analiz",
+      "normalAnalysis": "Normal Analiz",
+      "crossQuestionAnalysis": "Çapraz Soru Analizi",
+      "crossSurveyAnalysis": "Anketler Arası Karşılaştırma",
+      "trendAnalysis": "Trend Analizi",
+      "analysisResults": "Analiz Sonuçları"
+    },
+    "history": {
+      "title": "Analiz Geçmişi",
+      "emptyTitle": "Henüz analiz geçmişi yok",
+      "emptyDescription": "AI analiz çalıştırdığınızda sonuçlar burada görünecektir.",
+      "unknownSurvey": "Bilinmeyen Anket"
+    }
   }
 }

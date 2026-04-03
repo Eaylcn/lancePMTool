@@ -26,9 +26,11 @@
     "tasks": "Tasks",
     "metrics": "Metrics",
     "survey": "Survey",
+    "surveys": "Surveys",
     "guide": "PM Guide",
     "profile": "Profile",
     "settings": "Settings",
+    "gdd": "GDD Builder",
     "signOut": "Sign Out"
   },
   "auth": {
@@ -116,6 +118,25 @@
       "noAnalysis": "No analysis",
       "hasAnalysis": "AI Analyzed"
     },
+    "goodMorning": "Good morning",
+    "goodAfternoon": "Good afternoon",
+    "goodEvening": "Good evening",
+    "gddStats": {
+      "title": "GDD Creator",
+      "total": "Total GDDs",
+      "active": "In Progress",
+      "completed": "Completed"
+    },
+    "recentActivityTitle": "Recent Activity",
+    "activityTypes": {
+      "game_added": "Game added",
+      "analysis_completed": "Analysis completed",
+      "gdd_created": "GDD created",
+      "gdd_updated": "GDD updated",
+      "interview_completed": "Interview completed"
+    },
+    "noActivity": "No activity yet",
+    "noActivityDescription": "Your recent actions will appear here",
     "levels": {
       "beginner_pm": "Beginner PM",
       "junior_pm": "Junior PM",
@@ -146,6 +167,7 @@
     "sortBy": "Sort By",
     "gameTitle": "Game Title",
     "gameTitlePlaceholder": "Clash Royale, Candy Crush...",
+    "titleRequired": "Game title is required",
     "studio": "Studio",
     "studioPlaceholder": "Supercell, King...",
     "genre": "Genre",
@@ -590,6 +612,7 @@
     "description": "Track your analysis quality, see your PM level, get growth reports",
     "tabs": {
       "dashboard": "Dashboard",
+      "skills": "Skills",
       "report": "Report",
       "history": "History"
     },
@@ -662,7 +685,24 @@
       "intermediate": "Intermediate",
       "advanced": "Advanced",
       "professional": "Professional"
-    }
+    },
+    "genreDistribution": "Genre Distribution",
+    "activitySummary": "Activity Summary",
+    "last7Days": "Last 7 Days",
+    "last30Days": "Last 30 Days",
+    "gamesAdded": "Games Added",
+    "analysesCompleted": "Analyses Completed",
+    "goalMilestones": "Goals & Milestones",
+    "nextLevel": "Next Level",
+    "gamesRequired": "Games Required",
+    "analysesRequired": "Analyses Required",
+    "qualityRequired": "Quality Required",
+    "maxLevelReached": "Maximum level reached!",
+    "benchmark": "Personal Growth",
+    "needMoreData": "More analyses needed for comparison",
+    "skillBreakdown": "Skill Breakdown",
+    "categoryGameScore": "Game Score",
+    "categoryAnalysisQuality": "Analysis Quality"
   },
   "interview": {
     "title": "Interview Simulation",
@@ -720,7 +760,12 @@
     "completed": "Completed",
     "active": "Active",
     "sessionCompleted": "Interview completed!",
-    "backToTopics": "Back to Topics"
+    "backToTopics": "Back to Topics",
+    "questions": "questions",
+    "allTopics": "All Topics",
+    "allStatuses": "All Statuses",
+    "progress": "Progress",
+    "evaluationDetails": "Evaluation Details"
   },
   "tasks": {
     "title": "Daily Tasks",
@@ -728,8 +773,8 @@
     "todaysTasks": "Today's Tasks",
     "generateTasks": "Generate Tasks",
     "generating": "AI is generating tasks...",
-    "noTasks": "No tasks for today",
-    "noTasksDescription": "Tasks will be auto-generated",
+    "noTasks": "No tasks generated for today yet",
+    "noTasksDescription": "Click the button to generate AI-powered daily PM tasks",
     "submitResponse": "Submit Response",
     "submitting": "Evaluating...",
     "responsePlaceholder": "Write your response here...",
@@ -748,7 +793,8 @@
     },
     "status": {
       "pending": "Pending",
-      "completed": "Completed"
+      "completed": "Completed",
+      "expired": "Expired"
     },
     "evaluation": "AI Evaluation",
     "score": "Score",
@@ -763,6 +809,23 @@
       "days": "days",
       "tasks": "tasks"
     },
+    "tabs": {
+      "daily": "Daily",
+      "history": "History"
+    },
+    "history": {
+      "title": "Past Tasks",
+      "noHistory": "No past tasks yet",
+      "noHistoryDescription": "Completed tasks will appear here"
+    },
+    "filter": {
+      "allTypes": "All Types",
+      "allDifficulties": "All Difficulties"
+    },
+    "expandResponse": "Write Response",
+    "collapseResponse": "Collapse",
+    "weeklyPerformance": "Weekly Performance",
+    "streakMilestone": "Congratulations! {days} day streak!",
     "allCompleted": "All tasks completed!",
     "completedCount": "{completed}/{total} completed"
   },
@@ -770,8 +833,10 @@
     "title": "Metric Analysis",
     "subtitle": "Learn KPIs, calculate metrics, and analyze with AI",
     "tabs": {
+      "dashboard": "Dashboard",
       "education": "KPI Education",
       "calculator": "Calculator",
+      "analysis": "Analysis",
       "history": "History"
     },
     "education": {
@@ -846,6 +911,12 @@
         "formula": "Daily Total Sessions / DAU",
         "why": "Shows the strength of the habit loop. Higher count = stronger retention mechanics.",
         "range": "Hyper-casual: 2-7 | Casual: 2-7 | RPG: 2-6 | Strategy: 2-6"
+      },
+      "categories": {
+        "all": "All",
+        "engagement": "Engagement",
+        "monetization": "Monetization",
+        "retention": "Retention"
       }
     },
     "calculator": {
@@ -903,6 +974,25 @@
       "riskFactors": "Risk Factors",
       "noAnalysis": "No analysis yet. Enter metrics and analyze with AI."
     },
+    "analysisEmpty": {
+      "title": "No Analysis Yet",
+      "description": "Enter your metrics in the Calculator tab and analyze with AI. Results will be displayed here."
+    },
+    "dashboard": {
+      "stats": {
+        "totalAnalyses": "Total Analyses",
+        "avgScore": "Avg. Score",
+        "bestScore": "Best Score",
+        "worstScore": "Lowest Score",
+        "uniqueGames": "Games",
+        "lastAnalysis": "Last Analysis"
+      },
+      "healthTrend": "Health Score Trend",
+      "gameDistribution": "Game Distribution",
+      "recentAnalyses": "Recent Analyses",
+      "analysisCount": "Analysis Count",
+      "noData": "No data yet"
+    },
     "history": {
       "title": "Analysis History",
       "subtitle": "View your previous metric analyses",
@@ -910,7 +1000,14 @@
       "healthScore": "Health Score",
       "date": "Date",
       "game": "Game",
-      "viewDetails": "View Details"
+      "viewDetails": "View Details",
+      "colDate": "Date",
+      "colGame": "Game",
+      "colScore": "Score",
+      "colStatus": "Status",
+      "statusGood": "Good",
+      "statusWarning": "Warning",
+      "statusCritical": "Critical"
     }
   },
   "profile": {
@@ -1045,5 +1142,166 @@
     },
     "heroDescription": "28 questions across 7 categories await you. Each category tests a different Gaming PM competency area.",
     "autoSaved": "Auto-saved"
+  },
+  "gdd": {
+    "title": "GDD Builder",
+    "subtitle": "Create AI-powered Game Design Documents",
+    "newGdd": "New GDD",
+    "newGddTitle": "Start New GDD",
+    "projectName": "Project Name",
+    "projectNamePlaceholder": "E.g.: TimeGambit",
+    "projectNameHint": "You can change this later if left empty",
+    "startDesigning": "Start Designing",
+    "emptyTitle": "No GDDs yet",
+    "emptyDescription": "Create a new GDD to transform your game idea into a professional document",
+    "phase": "Phase",
+    "completed": "Completed",
+    "inProgress": "In Progress",
+    "view": "View",
+    "continue": "Continue",
+    "deleteTitle": "Delete GDD",
+    "deleteDescription": "This GDD will be permanently deleted. This action cannot be undone.",
+    "thinking": "Thinking...",
+    "inputPlaceholder": "Type your message...",
+    "preview": "GDD Preview",
+    "saved": "Saved",
+    "saving": "Saving...",
+    "loading": "Loading...",
+    "notFound": "Session not found",
+    "exportMd": "Markdown",
+    "exportPdf": "Download PDF",
+    "writeOwn": "Write my own answer",
+    "previewToggle": "GDD Preview",
+    "sectionComplete": "Section Complete",
+    "confirm": "Confirm",
+    "selectOne": "Select one option",
+    "selectMultiple": "You can select multiple options",
+    "generatingPhases": "Generating a custom GDD plan for your game...",
+    "customPlan": "Custom plan generated for your game",
+    "exportAiPrompt": "AI Prompt",
+    "aiPromptDescription": "Download a prompt document for AI coding assistants",
+    "copied": "Copied!",
+    "helpMeDecide": "Help me decide",
+    "chatTab": "Chat",
+    "overviewTab": "Overview",
+    "gameSummary": "Game Summary",
+    "phaseProgress": "Phase Progress",
+    "getSuggestions": "Get Suggestions",
+    "noDataYet": "Complete Phase 1 to see your game summary",
+    "gameVision": "Game Vision",
+    "initialIdea": "Your Game Idea",
+    "initialIdeaPlaceholder": "Briefly describe your game idea... E.g.: A roguelite based on time management in a zombie apocalypse",
+    "initialIdeaHint": "Write a raw idea, AI will prepare customized questions for you",
+    "suggestionsTab": "Suggestions",
+    "noSuggestionsYet": "No suggestions yet — they'll appear here after you complete a phase",
+    "suggestionsCount": "suggestions",
+    "generatingSuggestions": "Generating suggestions...",
+    "applySuggestion": "Apply",
+    "priority_high": "High",
+    "priority_medium": "Medium",
+    "priority_low": "Low",
+    "phases": {
+      "1": "Core Idea & Pitch",
+      "2": "Genre & Gameplay",
+      "3": "Core Loop",
+      "4": "World & Atmosphere",
+      "5": "Characters & Enemies",
+      "6": "Systems",
+      "7": "MVP Scope"
+    }
+  },
+  "surveys": {
+    "title": "Surveys",
+    "subtitle": "Create surveys, collect player feedback, and gain AI-powered insights",
+    "tabs": {
+      "dashboard": "Dashboard",
+      "templates": "Templates",
+      "mySurveys": "My Surveys",
+      "results": "Results & Analysis",
+      "history": "History"
+    },
+    "dashboard": {
+      "totalSurveys": "Total Surveys",
+      "totalResponses": "Total Responses",
+      "activeSurveys": "Active Surveys",
+      "avgResponses": "Avg. Responses",
+      "recentActivity": "Recent Activity",
+      "noSurveys": "No surveys created yet.",
+      "noGame": "No game linked",
+      "responses": "responses"
+    },
+    "templates": {
+      "title": "Survey Templates",
+      "subtitle": "Choose a ready-made template or create from scratch",
+      "createManual": "Create Manually",
+      "questions": "questions",
+      "useTemplate": "Use Template"
+    },
+    "list": {
+      "title": "My Surveys",
+      "createNew": "Create New Survey",
+      "emptyTitle": "No surveys yet",
+      "emptyDescription": "Get started by choosing a template or creating from scratch.",
+      "noGame": "No game linked",
+      "copyLink": "Copy Link",
+      "copied": "Copied!",
+      "preview": "Preview",
+      "edit": "Edit",
+      "activate": "Activate",
+      "close": "Close",
+      "deleteConfirm": "Are you sure you want to delete this survey? This action cannot be undone."
+    },
+    "status": {
+      "draft": "Draft",
+      "active": "Active",
+      "expired": "Expired",
+      "closed": "Closed"
+    },
+    "create": {
+      "fromTemplate": "Create Survey from Template",
+      "manual": "Create Manual Survey",
+      "title": "Survey Title",
+      "titlePlaceholder": "E.g.: Player Satisfaction Survey Q1 2026",
+      "description": "Description",
+      "descriptionPlaceholder": "Briefly describe the purpose of this survey...",
+      "game": "Game (Optional)",
+      "noGame": "No game selected",
+      "expiresAt": "Expiration Date",
+      "maxResponses": "Maximum Response Count",
+      "unlimited": "Unlimited",
+      "cancel": "Cancel",
+      "nextQuestions": "Next: Questions",
+      "back": "Back",
+      "createSurvey": "Create Survey",
+      "addQuestion": "Add Question",
+      "questionPlaceholder": "Enter question text...",
+      "option": "Option",
+      "addOption": "Add Option",
+      "typeSingle": "Single Choice",
+      "typeMultiple": "Multiple Choice",
+      "typeScale": "Scale",
+      "typeText": "Text"
+    },
+    "results": {
+      "emptyTitle": "No results yet",
+      "emptyDescription": "You can run analysis here once responses are collected.",
+      "selectSurvey": "Select Survey",
+      "chooseSurvey": "Choose a survey...",
+      "compareTo": "Survey for comparison (optional)",
+      "noComparison": "No comparison",
+      "responseSummary": "Response Summary",
+      "aiAnalysis": "AI Analysis",
+      "normalAnalysis": "Normal Analysis",
+      "crossQuestionAnalysis": "Cross-Question Analysis",
+      "crossSurveyAnalysis": "Cross-Survey Comparison",
+      "trendAnalysis": "Trend Analysis",
+      "analysisResults": "Analysis Results"
+    },
+    "history": {
+      "title": "Analysis History",
+      "emptyTitle": "No analysis history yet",
+      "emptyDescription": "Results will appear here when you run AI analysis.",
+      "unknownSurvey": "Unknown Survey"
+    }
   }
 }
