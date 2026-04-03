@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
-import { TrendingUp, Sparkles, FileText, History } from "lucide-react";
+import { TrendingUp, Sparkles, FileText, History, Crosshair } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGrowthDashboard, useGrowthReports, useGenerateGrowthReport } from "@/hooks/use-growth";
@@ -13,6 +13,11 @@ import { ObservationTrend } from "@/components/growth/observation-trend";
 import { EvaluationHistory } from "@/components/growth/evaluation-history";
 import { GrowthReport } from "@/components/growth/growth-report";
 import { AnalysisHistoryTable } from "@/components/growth/analysis-history-table";
+import { GenreDistribution } from "@/components/growth/genre-distribution";
+import { WeeklyMonthlySummary } from "@/components/growth/weekly-monthly-summary";
+import { GoalMilestones } from "@/components/growth/goal-milestones";
+import { ComparisonBenchmark } from "@/components/growth/comparison-benchmark";
+import { SkillCategoryCards } from "@/components/growth/skill-category-cards";
 import { EmptyState } from "@/components/shared/empty-state";
 import { AiLoadingModal } from "@/components/shared/ai-loading-modal";
 import { PmLevelBadge } from "@/components/growth/pm-level-badge";
@@ -82,21 +87,21 @@ export default function GrowthPage() {
 
   if (dashboardLoading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-5">
         <Skeleton className="h-8 w-48" />
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-20" />
+            <Skeleton key={i} className="h-20 rounded-xl" />
           ))}
         </div>
-        <Skeleton className="h-64" />
+        <Skeleton className="h-64 rounded-xl" />
       </div>
     );
   }
 
   if (!dashboard || dashboard.stats.totalGames === 0) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-5">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
           <p className="text-sm text-muted-foreground mt-1">{t("description")}</p>
@@ -111,7 +116,7 @@ export default function GrowthPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -125,37 +130,57 @@ export default function GrowthPage() {
         </div>
       </div>
 
-      {/* Tabs */}
+      {/* Tabs — 4 tabs, line variant */}
       <Tabs defaultValue="dashboard">
-        <TabsList>
-          <TabsTrigger value="dashboard" className="gap-1.5">
+        <TabsList variant="line" className="flex flex-wrap gap-1">
+          <TabsTrigger value="dashboard" className="gap-1.5 text-xs sm:text-sm px-3.5 py-2">
             <TrendingUp className="h-3.5 w-3.5" />
             {t("tabs.dashboard")}
           </TabsTrigger>
-          <TabsTrigger value="report" className="gap-1.5">
+          <TabsTrigger value="skills" className="gap-1.5 text-xs sm:text-sm px-3.5 py-2">
+            <Crosshair className="h-3.5 w-3.5" />
+            {t("tabs.skills")}
+          </TabsTrigger>
+          <TabsTrigger value="report" className="gap-1.5 text-xs sm:text-sm px-3.5 py-2">
             <FileText className="h-3.5 w-3.5" />
             {t("tabs.report")}
           </TabsTrigger>
-          <TabsTrigger value="history" className="gap-1.5">
+          <TabsTrigger value="history" className="gap-1.5 text-xs sm:text-sm px-3.5 py-2">
             <History className="h-3.5 w-3.5" />
             {t("tabs.history")}
           </TabsTrigger>
         </TabsList>
 
         {/* Dashboard Tab */}
-        <TabsContent value="dashboard" className="space-y-4 mt-4">
+        <TabsContent value="dashboard" className="space-y-5 mt-4">
           <GrowthStats stats={dashboard.stats} />
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <ObservationTrend data={dashboard.observationTrend} />
-            <SkillRadar data={dashboard.skillRadar} />
+            <GenreDistribution data={dashboard.genreDistribution} />
           </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <WeeklyMonthlySummary analysisHistory={dashboard.analysisHistory} />
+            <GoalMilestones
+              stats={dashboard.stats}
+              currentLevel={latestReport?.currentLevel as string | undefined}
+            />
+          </div>
+
+          <ComparisonBenchmark evaluationHistory={dashboard.evaluationHistory} />
 
           <EvaluationHistory data={dashboard.evaluationHistory} />
         </TabsContent>
 
+        {/* Skills Tab */}
+        <TabsContent value="skills" className="space-y-5 mt-4">
+          <SkillRadar data={dashboard.skillRadar} />
+          <SkillCategoryCards data={dashboard.skillRadar} />
+        </TabsContent>
+
         {/* Report Tab */}
-        <TabsContent value="report" className="space-y-4 mt-4">
+        <TabsContent value="report" className="space-y-5 mt-4">
           <div className="flex justify-end">
             <Button
               onClick={handleGenerateReport}
@@ -196,7 +221,7 @@ export default function GrowthPage() {
         </TabsContent>
 
         {/* History Tab */}
-        <TabsContent value="history" className="space-y-4 mt-4">
+        <TabsContent value="history" className="space-y-5 mt-4">
           <AnalysisHistoryTable data={dashboard.analysisHistory} />
         </TabsContent>
       </Tabs>

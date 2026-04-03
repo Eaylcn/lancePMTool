@@ -2,23 +2,31 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import { BarChart3, GraduationCap, Calculator, History } from "lucide-react";
+import {
+  BarChart3, GraduationCap, Calculator, History,
+  LayoutDashboard, FlaskConical,
+} from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGames } from "@/hooks/use-games";
 import { useMetricAnalyses, useRunMetricAnalysis } from "@/hooks/use-metrics";
 import { calculateDerivedMetrics, compareWithBenchmarks } from "@/lib/metrics/calculator";
+import { MetricDashboard } from "@/components/metrics/metric-dashboard";
 import { KpiEducation } from "@/components/metrics/kpi-education";
 import { MetricCalculator } from "@/components/metrics/metric-calculator";
 import { MetricBenchmarks } from "@/components/metrics/metric-benchmarks";
 import { MetricAnalysisResult } from "@/components/metrics/metric-analysis-result";
 import { MetricHistory } from "@/components/metrics/metric-history";
+import { EmptyState } from "@/components/shared/empty-state";
 import { AiLoadingModal } from "@/components/shared/ai-loading-modal";
 import type { RawMetrics, MetricAiAnalysis } from "@/lib/metrics/types";
 
 export default function MetricsPage() {
   const t = useTranslations("metrics");
   const locale = useLocale();
+
+  // Tab state — controlled for programmatic switching
+  const [activeTab, setActiveTab] = useState("dashboard");
 
   // Data hooks
   const { data: gamesData = [], isLoading: gamesLoading } = useGames();
@@ -70,6 +78,17 @@ export default function MetricsPage() {
     [gamesData]
   );
 
+  // Typed analyses for reuse
+  const typedAnalyses = analysesData as Array<{
+    id: string;
+    gameId: string;
+    gameTitle: string | null;
+    rawMetrics: unknown;
+    derivedMetrics: unknown;
+    aiAnalysis: MetricAiAnalysis | null;
+    createdAt: string;
+  }>;
+
   // Handle raw metric change
   const handleRawChange = useCallback(
     (field: string, value: number | undefined) => {
@@ -78,7 +97,7 @@ export default function MetricsPage() {
     []
   );
 
-  // Handle AI analyze
+  // Handle AI analyze — auto-switch to analysis tab on completion
   const handleAnalyze = async () => {
     if (!genre || !gameId) return;
 
@@ -105,6 +124,8 @@ export default function MetricsPage() {
       });
       setCurrentAnalysis(result.aiAnalysis as MetricAiAnalysis);
       setAiStep(4);
+      // Auto-switch to analysis tab after completion
+      setTimeout(() => setActiveTab("analysis"), 600);
     } catch {
       // error handled by mutation
     } finally {
@@ -113,7 +134,7 @@ export default function MetricsPage() {
     }
   };
 
-  // Handle history item selection
+  // Handle history item selection — load data and switch to analysis tab
   const handleHistorySelect = useCallback(
     (item: { rawMetrics: unknown; aiAnalysis: MetricAiAnalysis | null }) => {
       if (item.rawMetrics) {
@@ -121,6 +142,7 @@ export default function MetricsPage() {
       }
       if (item.aiAnalysis) {
         setCurrentAnalysis(item.aiAnalysis);
+        setActiveTab("analysis");
       }
     },
     []
@@ -160,29 +182,42 @@ export default function MetricsPage() {
         <div className="absolute -right-4 -bottom-4 h-24 w-24 rounded-full bg-primary/10 blur-xl" />
       </div>
 
-      {/* Tabs */}
-      <Tabs defaultValue="education">
-        <TabsList>
-          <TabsTrigger value="education" className="gap-1.5">
+      {/* Tabs — 5 tab with line variant */}
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList variant="line" className="flex flex-wrap gap-1">
+          <TabsTrigger value="dashboard" className="gap-1.5 text-xs sm:text-sm px-3.5 py-2">
+            <LayoutDashboard className="h-3.5 w-3.5" />
+            {t("tabs.dashboard")}
+          </TabsTrigger>
+          <TabsTrigger value="education" className="gap-1.5 text-xs sm:text-sm px-3.5 py-2">
             <GraduationCap className="h-3.5 w-3.5" />
             {t("tabs.education")}
           </TabsTrigger>
-          <TabsTrigger value="calculator" className="gap-1.5">
+          <TabsTrigger value="calculator" className="gap-1.5 text-xs sm:text-sm px-3.5 py-2">
             <Calculator className="h-3.5 w-3.5" />
             {t("tabs.calculator")}
           </TabsTrigger>
-          <TabsTrigger value="history" className="gap-1.5">
+          <TabsTrigger value="analysis" className="gap-1.5 text-xs sm:text-sm px-3.5 py-2">
+            <FlaskConical className="h-3.5 w-3.5" />
+            {t("tabs.analysis")}
+          </TabsTrigger>
+          <TabsTrigger value="history" className="gap-1.5 text-xs sm:text-sm px-3.5 py-2">
             <History className="h-3.5 w-3.5" />
             {t("tabs.history")}
           </TabsTrigger>
         </TabsList>
+
+        {/* Dashboard Tab */}
+        <TabsContent value="dashboard" className="mt-4">
+          <MetricDashboard analyses={typedAnalyses} />
+        </TabsContent>
 
         {/* Education Tab */}
         <TabsContent value="education" className="mt-4">
           <KpiEducation />
         </TabsContent>
 
-        {/* Calculator Tab */}
+        {/* Calculator Tab — only calculator, no benchmarks/analysis */}
         <TabsContent value="calculator" className="space-y-6 mt-4">
           <MetricCalculator
             rawMetrics={rawMetrics}
@@ -196,29 +231,33 @@ export default function MetricsPage() {
             onAnalyze={handleAnalyze}
             isAnalyzing={runAnalysis.isPending}
           />
+        </TabsContent>
 
-          {benchmarkComparisons.length > 0 && (
-            <MetricBenchmarks
-              comparisons={benchmarkComparisons}
-              genre={genre}
+        {/* Analysis Tab — benchmarks + AI analysis result */}
+        <TabsContent value="analysis" className="space-y-6 mt-4">
+          {!currentAnalysis && benchmarkComparisons.length === 0 ? (
+            <EmptyState
+              icon={FlaskConical}
+              title={t("analysisEmpty.title")}
+              description={t("analysisEmpty.description")}
             />
+          ) : (
+            <>
+              {benchmarkComparisons.length > 0 && (
+                <MetricBenchmarks
+                  comparisons={benchmarkComparisons}
+                  genre={genre}
+                />
+              )}
+              <MetricAnalysisResult analysis={currentAnalysis} />
+            </>
           )}
-
-          <MetricAnalysisResult analysis={currentAnalysis} />
         </TabsContent>
 
         {/* History Tab */}
         <TabsContent value="history" className="mt-4">
           <MetricHistory
-            analyses={analysesData as Array<{
-              id: string;
-              gameId: string;
-              gameTitle: string | null;
-              rawMetrics: unknown;
-              derivedMetrics: unknown;
-              aiAnalysis: MetricAiAnalysis | null;
-              createdAt: string;
-            }>}
+            analyses={typedAnalyses}
             onSelect={handleHistorySelect}
           />
         </TabsContent>

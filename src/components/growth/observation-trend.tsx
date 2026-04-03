@@ -7,6 +7,7 @@ import {
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp } from "lucide-react";
+import { useChartColors } from "@/hooks/use-chart-colors";
 
 interface ObservationTrendProps {
   data: {
@@ -26,6 +27,7 @@ const LEVEL_LABELS: Record<number, string> = {
 
 export function ObservationTrend({ data }: ObservationTrendProps) {
   const t = useTranslations("growth");
+  const { mutedFg, borderColor, cardBg, cardFg, themeKey } = useChartColors();
 
   const chartData = data.map((d, i) => ({
     index: i + 1,
@@ -49,12 +51,12 @@ export function ObservationTrend({ data }: ObservationTrendProps) {
           </div>
         ) : (
           <div className="h-[200px]">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer key={themeKey} width="100%" height="100%">
               <LineChart data={chartData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <CartesianGrid strokeDasharray="3 3" stroke={borderColor} />
                 <XAxis
                   dataKey="gameTitle"
-                  tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }}
+                  tick={{ fontSize: 10, fill: mutedFg }}
                   interval={0}
                   angle={-20}
                   textAnchor="end"
@@ -64,15 +66,16 @@ export function ObservationTrend({ data }: ObservationTrendProps) {
                   domain={[0, 4]}
                   ticks={[1, 2, 3, 4]}
                   tickFormatter={(val: number) => LEVEL_LABELS[val] || ""}
-                  tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }}
+                  tick={{ fontSize: 10, fill: mutedFg }}
                   width={80}
                 />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "hsl(var(--card))",
-                    border: "1px solid hsl(var(--border))",
+                    backgroundColor: cardBg,
+                    border: `1px solid ${borderColor}`,
                     borderRadius: "8px",
                     fontSize: "12px",
+                    color: cardFg,
                   }}
                   formatter={(value) => [LEVEL_LABELS[value as number] || value, t("observationLevel")]}
                   labelFormatter={(label) => String(label)}

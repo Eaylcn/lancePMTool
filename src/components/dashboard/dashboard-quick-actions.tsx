@@ -17,7 +17,7 @@ export function DashboardQuickActions() {
   const locale = useLocale();
 
   return (
-    <Card className="p-4 space-y-3">
+    <Card className="p-4 space-y-3 rounded-xl border-border/60">
       <h3 className="font-semibold text-sm">{t("title")}</h3>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         {ACTIONS.map(({ key, icon: Icon, href, color, bg }) => (

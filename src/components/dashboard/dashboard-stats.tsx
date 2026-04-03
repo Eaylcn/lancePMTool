@@ -50,14 +50,14 @@ export function DashboardStats({ stats }: DashboardStatsProps) {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
       {items.map((item) => (
-        <Card key={item.label} className="p-4">
+        <Card key={item.label} className="p-4 rounded-xl border-border/60 hover:shadow-md hover:border-primary/20 transition-all duration-200">
           <div className="flex items-center gap-3">
-            <div className={`p-2 rounded-lg ${item.bg}`}>
+            <div className={`p-2.5 rounded-xl ${item.bg}`}>
               <item.icon className={`h-4 w-4 ${item.color}`} />
             </div>
             <div>
               <p className="text-xs text-muted-foreground">{item.label}</p>
-              <p className="text-lg font-bold">{item.value}</p>
+              <p className="text-2xl font-bold">{item.value}</p>
             </div>
           </div>
         </Card>

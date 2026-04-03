@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   Users,
@@ -20,21 +21,35 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+type Category = "all" | "engagement" | "monetization" | "retention";
+
 const KPI_ITEMS = [
-  { key: "dau", icon: Users, color: "text-blue-500" },
-  { key: "mau", icon: Users, color: "text-indigo-500" },
-  { key: "arpdau", icon: DollarSign, color: "text-emerald-500" },
-  { key: "ltv", icon: Wallet, color: "text-amber-500" },
-  { key: "cpi", icon: Target, color: "text-red-500" },
-  { key: "retention", icon: TrendingUp, color: "text-purple-500" },
-  { key: "stickiness", icon: Repeat, color: "text-cyan-500" },
-  { key: "arpu", icon: BarChart3, color: "text-pink-500" },
-  { key: "sessionLength", icon: Timer, color: "text-orange-500" },
-  { key: "sessionsPerDay", icon: CalendarDays, color: "text-teal-500" },
+  { key: "dau", icon: Users, color: "text-blue-500", category: "engagement" as const },
+  { key: "mau", icon: Users, color: "text-indigo-500", category: "engagement" as const },
+  { key: "arpdau", icon: DollarSign, color: "text-emerald-500", category: "monetization" as const },
+  { key: "ltv", icon: Wallet, color: "text-amber-500", category: "monetization" as const },
+  { key: "cpi", icon: Target, color: "text-red-500", category: "monetization" as const },
+  { key: "retention", icon: TrendingUp, color: "text-purple-500", category: "retention" as const },
+  { key: "stickiness", icon: Repeat, color: "text-cyan-500", category: "engagement" as const },
+  { key: "arpu", icon: BarChart3, color: "text-pink-500", category: "monetization" as const },
+  { key: "sessionLength", icon: Timer, color: "text-orange-500", category: "engagement" as const },
+  { key: "sessionsPerDay", icon: CalendarDays, color: "text-teal-500", category: "engagement" as const },
 ] as const;
+
+const CATEGORIES: { key: Category; count: number }[] = [
+  { key: "all", count: KPI_ITEMS.length },
+  { key: "engagement", count: KPI_ITEMS.filter(i => i.category === "engagement").length },
+  { key: "monetization", count: KPI_ITEMS.filter(i => i.category === "monetization").length },
+  { key: "retention", count: KPI_ITEMS.filter(i => i.category === "retention").length },
+];
 
 export function KpiEducation() {
   const t = useTranslations("metrics.education");
+  const [activeCategory, setActiveCategory] = useState<Category>("all");
+
+  const filteredItems = activeCategory === "all"
+    ? KPI_ITEMS
+    : KPI_ITEMS.filter(item => item.category === activeCategory);
 
   return (
     <div className="space-y-4">
@@ -43,8 +58,25 @@ export function KpiEducation() {
         <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
       </div>
 
+      {/* Category Filters */}
+      <div className="flex flex-wrap gap-2">
+        {CATEGORIES.map(({ key, count }) => (
+          <button
+            key={key}
+            onClick={() => setActiveCategory(key)}
+            className={`text-xs px-2.5 py-1 rounded-full border transition-all ${
+              activeCategory === key
+                ? "bg-primary text-primary-foreground border-primary"
+                : "bg-background text-muted-foreground border-border hover:border-primary/50"
+            }`}
+          >
+            {t(`categories.${key}`)} ({count})
+          </button>
+        ))}
+      </div>
+
       <Accordion className="space-y-2">
-        {KPI_ITEMS.map(({ key, icon: Icon, color }) => (
+        {filteredItems.map(({ key, icon: Icon, color }) => (
           <AccordionItem
             key={key}
             value={key}

@@ -69,11 +69,11 @@ export default function InterviewPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [localMessages]);
 
-  const handleStartInterview = async (topic: InterviewTopic) => {
+  const handleStartInterview = async (topic: InterviewTopic, difficulty: string = "intermediate") => {
     try {
       const result = await startInterview.mutateAsync({
         topic,
-        difficulty: "intermediate",
+        difficulty,
         locale,
       });
       setSelectedSessionId(result.session.id);

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { dailyTasks } from "@/lib/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, lt, sql } from "drizzle-orm";
 import { getAnthropicClient } from "@/lib/ai/client";
 import { getTaskGenerationSystemPrompt, getTaskGenerationUserPrompt } from "@/lib/ai/prompts/tasks";
 import { taskGenerationResultSchema } from "@/lib/ai/types";
@@ -36,17 +36,78 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const date = searchParams.get("date") || new Date().toISOString().split("T")[0];
   const locale = searchParams.get("locale") === "en" ? "en" : "tr";
+  const range = searchParams.get("range"); // "week" | "month" | null
 
   try {
-    // Check if tasks exist for this date
-    const tasks = await db.select().from(dailyTasks)
-      .where(and(eq(dailyTasks.userId, user.id), eq(dailyTasks.date, date)));
+    // Lazy expiration: mark old pending tasks as expired (safe — ignores if enum doesn't exist yet)
+    const today = new Date().toISOString().split("T")[0];
+    try {
+      await db.update(dailyTasks)
+        .set({ status: "expired" })
+        .where(
+          and(
+            eq(dailyTasks.userId, user.id),
+            eq(dailyTasks.status, "pending"),
+            lt(dailyTasks.date, today)
+          )
+        );
+    } catch {
+      // expired enum may not exist in DB yet — skip silently
+    }
 
-    if (tasks.length > 0) {
+    // If range is specified, return historical tasks
+    if (range === "week" || range === "month") {
+      const daysBack = range === "week" ? 7 : 30;
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - daysBack);
+      const startDateStr = startDate.toISOString().split("T")[0];
+
+      const tasks = await db.select().from(dailyTasks)
+        .where(
+          and(
+            eq(dailyTasks.userId, user.id),
+            sql`${dailyTasks.date} >= ${startDateStr}`,
+            sql`${dailyTasks.date} < ${today}`
+          )
+        )
+        .orderBy(sql`${dailyTasks.date} DESC`);
+
       return NextResponse.json(tasks);
     }
 
-    // No tasks for today — auto-generate
+    // Return tasks for this date (no auto-generation — use POST to generate)
+    const tasks = await db.select().from(dailyTasks)
+      .where(and(eq(dailyTasks.userId, user.id), eq(dailyTasks.date, date)));
+
+    return NextResponse.json(tasks);
+  } catch (error) {
+    console.error("Tasks fetch error:", error);
+    const msg = error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json({ error: `Failed to get tasks: ${msg}` }, { status: 500 });
+  }
+}
+
+export async function POST(request: NextRequest) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const body = await request.json();
+  const date = body.date || new Date().toISOString().split("T")[0];
+  const locale = body.locale === "en" ? "en" : "tr";
+
+  try {
+    // Check if tasks already exist for this date
+    const existing = await db.select().from(dailyTasks)
+      .where(and(eq(dailyTasks.userId, user.id), eq(dailyTasks.date, date)));
+
+    if (existing.length > 0) {
+      return NextResponse.json(existing);
+    }
+
     if (!process.env.ANTHROPIC_API_KEY) {
       return NextResponse.json(
         { error: "AI service is not configured. Please set ANTHROPIC_API_KEY in .env.local" },
@@ -111,8 +172,8 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(newTasks, { status: 201 });
   } catch (error) {
-    console.error("Tasks fetch/generate error:", error);
+    console.error("Tasks generation error:", error);
     const msg = error instanceof Error ? error.message : "Unknown error";
-    return NextResponse.json({ error: `Failed to get tasks: ${msg}` }, { status: 500 });
+    return NextResponse.json({ error: `Failed to generate tasks: ${msg}` }, { status: 500 });
   }
 }

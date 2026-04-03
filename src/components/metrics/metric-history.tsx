@@ -1,8 +1,9 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { History, Heart, Calendar, Gamepad2 } from "lucide-react";
+import { History, Heart, Gamepad2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import type { MetricAiAnalysis } from "@/lib/metrics/types";
 
 interface MetricHistoryItem {
@@ -41,6 +42,18 @@ export function MetricHistory({ analyses, onSelect }: MetricHistoryProps) {
     );
   }
 
+  const getScoreColor = (score: number) => {
+    if (score >= 70) return "text-emerald-500";
+    if (score >= 40) return "text-yellow-500";
+    return "text-red-500";
+  };
+
+  const getStatusBadge = (score: number) => {
+    if (score >= 70) return { label: t("statusGood"), variant: "default" as const, className: "bg-emerald-500/15 text-emerald-500 border-emerald-500/30" };
+    if (score >= 40) return { label: t("statusWarning"), variant: "default" as const, className: "bg-yellow-500/15 text-yellow-500 border-yellow-500/30" };
+    return { label: t("statusCritical"), variant: "default" as const, className: "bg-red-500/15 text-red-500 border-red-500/30" };
+  };
+
   return (
     <div className="space-y-4">
       <div>
@@ -51,62 +64,65 @@ export function MetricHistory({ analyses, onSelect }: MetricHistoryProps) {
         <p className="text-sm text-muted-foreground">{t("subtitle")}</p>
       </div>
 
-      <div className="space-y-3">
-        {analyses.map((item) => {
-          const healthScore = item.aiAnalysis?.healthScore ?? 0;
-          const scoreColor =
-            healthScore >= 70
-              ? "text-emerald-500"
-              : healthScore >= 40
-              ? "text-yellow-500"
-              : "text-red-500";
-          const scoreBg =
-            healthScore >= 70
-              ? "bg-emerald-500/20"
-              : healthScore >= 40
-              ? "bg-yellow-500/20"
-              : "bg-red-500/20";
+      <Card className="overflow-hidden border-border/60">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border/50 bg-muted/30">
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground text-xs">
+                  {t("colDate")}
+                </th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground text-xs">
+                  {t("colGame")}
+                </th>
+                <th className="text-center py-3 px-4 font-medium text-muted-foreground text-xs hidden sm:table-cell">
+                  {t("colScore")}
+                </th>
+                <th className="text-center py-3 px-4 font-medium text-muted-foreground text-xs hidden sm:table-cell">
+                  {t("colStatus")}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {analyses.map((item) => {
+                const score = item.aiAnalysis?.healthScore ?? 0;
+                const status = getStatusBadge(score);
 
-          return (
-            <Card
-              key={item.id}
-              className="p-4 cursor-pointer hover:border-primary/50 transition-colors"
-              onClick={() => onSelect(item)}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg ${scoreBg}`}>
-                    <Heart className={`h-4 w-4 ${scoreColor}`} />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <Gamepad2 className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span className="font-medium text-sm">
-                        {item.gameTitle || "—"}
+                return (
+                  <tr
+                    key={item.id}
+                    onClick={() => onSelect(item)}
+                    className="border-b border-border/30 last:border-0 hover:bg-muted/40 cursor-pointer transition-colors"
+                  >
+                    <td className="py-3 px-4 text-xs text-muted-foreground whitespace-nowrap">
+                      {new Date(item.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="py-3 px-4">
+                      <div className="flex items-center gap-2">
+                        <Gamepad2 className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                        <span className="font-medium text-sm truncate max-w-[200px]">
+                          {item.gameTitle || "—"}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 text-center hidden sm:table-cell">
+                      <span className={`text-lg font-bold ${getScoreColor(score)}`}>
+                        {score}
                       </span>
-                    </div>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <Calendar className="h-3 w-3 text-muted-foreground" />
-                      <span className="text-xs text-muted-foreground">
-                        {new Date(item.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="text-right">
-                  <p className="text-xs text-muted-foreground">
-                    {t("healthScore")}
-                  </p>
-                  <p className={`text-2xl font-bold ${scoreColor}`}>
-                    {healthScore}
-                  </p>
-                </div>
-              </div>
-            </Card>
-          );
-        })}
-      </div>
+                      <span className="text-xs text-muted-foreground">/100</span>
+                    </td>
+                    <td className="py-3 px-4 text-center hidden sm:table-cell">
+                      <Badge variant={status.variant} className={status.className}>
+                        {status.label}
+                      </Badge>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </Card>
     </div>
   );
 }

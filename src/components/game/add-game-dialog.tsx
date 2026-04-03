@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import { GenreSelect } from "@/components/shared/genre-select";
 import { useCreateGame } from "@/hooks/use-games";
 import {
@@ -53,6 +54,7 @@ export function AddGameDialog({ open, onOpenChange }: AddGameDialogProps) {
   const [genre, setGenre] = useState<string[]>([]);
   const [platform, setPlatform] = useState("");
   const [status, setStatus] = useState("playing");
+  const [titleError, setTitleError] = useState(false);
 
   const resetForm = () => {
     setStep(1);
@@ -61,6 +63,15 @@ export function AddGameDialog({ open, onOpenChange }: AddGameDialogProps) {
     setGenre([]);
     setPlatform("");
     setStatus("playing");
+    setTitleError(false);
+  };
+
+  const handleNextStep = () => {
+    if (!title.trim()) {
+      setTitleError(true);
+      return;
+    }
+    setStep(2);
   };
 
   const handleSubmit = async () => {
@@ -116,11 +127,14 @@ export function AddGameDialog({ open, onOpenChange }: AddGameDialogProps) {
                 <Input
                   id="title"
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={(e) => { setTitle(e.target.value); setTitleError(false); }}
                   placeholder={t("gameTitlePlaceholder")}
-                  className="h-11"
+                  className={cn("h-11", titleError && "border-destructive ring-destructive/20 ring-2")}
                   autoFocus
                 />
+                {titleError && (
+                  <p className="text-xs text-destructive">{t("titleRequired")}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -201,8 +215,7 @@ export function AddGameDialog({ open, onOpenChange }: AddGameDialogProps) {
               </Button>
               <Button
                 size="sm"
-                onClick={() => setStep(2)}
-                disabled={!title.trim()}
+                onClick={handleNextStep}
                 className="gap-1.5"
               >
                 {t("next") || "İleri"}

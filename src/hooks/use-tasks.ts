@@ -14,6 +14,17 @@ export function useDailyTasks(date: string, locale: string) {
   });
 }
 
+export function usePastTasks(range: "week" | "month", locale: string) {
+  return useQuery({
+    queryKey: ["past-tasks", range],
+    queryFn: async () => {
+      const res = await fetch(`/api/tasks?range=${range}&locale=${locale}`);
+      if (!res.ok) throw new Error("Failed to fetch past tasks");
+      return res.json();
+    },
+  });
+}
+
 export function useTaskStreak() {
   return useQuery({
     queryKey: ["task-streak"],
@@ -21,6 +32,27 @@ export function useTaskStreak() {
       const res = await fetch("/api/tasks/streak");
       if (!res.ok) throw new Error("Failed to fetch streak");
       return res.json();
+    },
+  });
+}
+
+export function useGenerateTasks() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: { date: string; locale: string }) => {
+      const res = await fetch("/api/tasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ date: input.date, locale: input.locale }),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Failed to generate tasks");
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["daily-tasks"] });
     },
   });
 }

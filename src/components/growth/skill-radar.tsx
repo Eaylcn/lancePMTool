@@ -7,6 +7,7 @@ import {
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Target } from "lucide-react";
+import { useChartColors } from "@/hooks/use-chart-colors";
 
 interface SkillRadarProps {
   data: {
@@ -18,6 +19,7 @@ interface SkillRadarProps {
 
 export function SkillRadar({ data }: SkillRadarProps) {
   const t = useTranslations("growth");
+  const { mutedFg, borderColor, cardBg, cardFg, themeKey } = useChartColors();
 
   const chartData = data.map(d => ({
     category: t(`categories.${d.category}`),
@@ -35,19 +37,20 @@ export function SkillRadar({ data }: SkillRadarProps) {
       </CardHeader>
       <CardContent>
         <div className="h-[280px] select-none pointer-events-none">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer key={themeKey} width="100%" height="100%">
             <RadarChart data={chartData} outerRadius="70%">
-              <PolarGrid stroke="hsl(var(--border))" />
+              <PolarGrid stroke={borderColor} />
               <PolarAngleAxis
                 dataKey="category"
-                tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                tick={{ fontSize: 11, fill: mutedFg }}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "hsl(var(--card))",
-                  border: "1px solid hsl(var(--border))",
+                  backgroundColor: cardBg,
+                  border: `1px solid ${borderColor}`,
                   borderRadius: "8px",
                   fontSize: "12px",
+                  color: cardFg,
                 }}
               />
               <Radar

@@ -22,7 +22,7 @@ export function DashboardFeatureStats({ interviewStats, taskStats }: DashboardFe
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
       {/* Interview Stats */}
-      <Card className="p-4 space-y-3">
+      <Card className="p-4 space-y-3 rounded-xl border-border/60">
         <h3 className="font-semibold text-sm flex items-center gap-2">
           <MessageSquare className="h-4 w-4 text-purple-500" />
           {t("interviewStats.title")}
@@ -42,7 +42,7 @@ export function DashboardFeatureStats({ interviewStats, taskStats }: DashboardFe
       </Card>
 
       {/* Task Stats */}
-      <Card className="p-4 space-y-3">
+      <Card className="p-4 space-y-3 rounded-xl border-border/60">
         <h3 className="font-semibold text-sm flex items-center gap-2">
           <CheckSquare className="h-4 w-4 text-amber-500" />
           {t("taskStats.title")}

@@ -25,7 +25,7 @@ export function DashboardRecentGames({ games }: DashboardRecentGamesProps) {
 
   if (games.length === 0) {
     return (
-      <Card className="p-6 text-center border-dashed">
+      <Card className="p-6 text-center border-dashed rounded-xl border-border/60">
         <Gamepad2 className="h-8 w-8 mx-auto text-muted-foreground/40 mb-2" />
         <h3 className="font-semibold mb-1">{t("noGames")}</h3>
         <p className="text-sm text-muted-foreground">{t("noGamesDescription")}</p>
@@ -34,7 +34,7 @@ export function DashboardRecentGames({ games }: DashboardRecentGamesProps) {
   }
 
   return (
-    <Card className="p-4 space-y-3">
+    <Card className="p-4 space-y-3 rounded-xl border-border/60">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold text-sm flex items-center gap-2">
           <Gamepad2 className="h-4 w-4 text-primary" />
