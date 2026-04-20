@@ -39,20 +39,26 @@
     "signOut": "Sign Out",
     "welcomeBack": "Welcome Back",
     "signInDescription": "Continue your Gaming PM journey",
-    "authError": "An error occurred during sign in. Please try again."
+    "authError": "An error occurred during sign in. Please try again.",
+    "backHome": "Home",
+    "secureNotice": "Your account is secured via OAuth — we don't store passwords.",
+    "termsNotice": "By continuing you agree to the privacy policy."
   },
   "landing": {
     "nav": {
-      "survey": "Try Survey"
+      "survey": "Try Survey",
+      "premium": "Premium"
     },
     "hero": {
       "title": "Analyze Games. Learn from AI. Grow as PM.",
       "subtitle": "Structurally analyze mobile games, get AI mentor feedback, and advance your Gaming PM career.",
       "cta": "Get Started",
       "learnMore": "Learn More",
-      "trySurvey": "Try Survey"
+      "trySurvey": "Try Survey",
+      "freeNotice": "Free account — no credit card required."
     },
     "features": {
+      "tag": "Features",
       "sectionTitle": "Everything in One Platform",
       "sectionSubtitle": "All the tools you need as a Gaming PM, right here.",
       "analysis": { "title": "Structured Game Analysis", "description": "Detailed game analysis across 50+ fields in 8 categories — from FTUE to monetization." },
@@ -79,10 +85,44 @@
       "title": "Start Your Gaming PM Journey",
       "subtitle": "Create a free account, analyze your first game, and get AI mentor feedback."
     },
+    "premium": {
+      "badge": "Premium Access",
+      "sectionTitle": "Go Premium for AI Features",
+      "sectionDescription": "All advanced Claude AI-powered features — game analysis, interview coaching, GDD builder, metric analysis, and daily PM tasks — are available to Premium members. Reach out directly for Premium access.",
+      "premiumFeat1": "Unlimited AI analysis and comparison for all games",
+      "premiumFeat2": "AI interview simulation with detailed feedback",
+      "premiumFeat3": "GDD Builder + metric analysis + AI survey insights",
+      "premiumFeat4": "Daily PM tasks + personalized growth reports",
+      "contactLabel": "Contact",
+      "contactTitle": "Email for Premium Access",
+      "contactDescription": "Once you email me, your account will be upgraded to Premium within 24 hours. Just tell me briefly who you are and why you want Premium.",
+      "copy": "Copy",
+      "copied": "Copied",
+      "sendMail": "Send Email",
+      "mailSubject": "Lance Premium Access Request",
+      "mailBody": "Hello,\n\nI'd like to request Premium access on the Lance platform.\n\nAbout me: \nWhy I want Premium: \nMy account email: \n\nThanks."
+    },
     "footer": {
       "tagline": "Gaming PM Analysis & Growth Platform",
       "builtWith": "Built with Next.js, Supabase & Claude AI"
     }
+  },
+  "welcome": {
+    "title": "Welcome to Lance!",
+    "subtitle": "Your Gaming PM journey starts here",
+    "intro": "Lance helps you structurally analyze mobile games, get AI mentor feedback, and grow as a Gaming PM. Core features are open to everyone — AI-powered advanced features are exclusive to Premium.",
+    "feature": {
+      "analyze": "Game Analysis",
+      "ai": "AI Mentor",
+      "growth": "PM Growth"
+    },
+    "premium": {
+      "title": "Go Premium to use AI features",
+      "description": "AI-powered analysis, interview coaching, GDD builder, and metric analysis are exclusive to Premium members. For Premium access, email me at this address — I'll upgrade your account within 24 hours.",
+      "copy": "Copy",
+      "copied": "Copied ✓"
+    },
+    "cta": "Let's start"
   },
   "dashboard": {
     "welcome": "Welcome, {name}!",

@@ -39,20 +39,26 @@
     "signOut": "Çıkış Yap",
     "welcomeBack": "Tekrar Hoşgeldin",
     "signInDescription": "Gaming PM yolculuğuna devam et",
-    "authError": "Giriş sırasında bir hata oluştu. Lütfen tekrar dene."
+    "authError": "Giriş sırasında bir hata oluştu. Lütfen tekrar dene.",
+    "backHome": "Ana Sayfa",
+    "secureNotice": "Hesabın OAuth ile güvenli şekilde korunuyor — şifre tutmuyoruz.",
+    "termsNotice": "Devam ederek gizlilik politikasını kabul etmiş olursun."
   },
   "landing": {
     "nav": {
-      "survey": "Anketi Dene"
+      "survey": "Anketi Dene",
+      "premium": "Premium"
     },
     "hero": {
       "title": "Oyun Analiz Et. AI'dan Öğren. PM Olarak Büyü.",
       "subtitle": "Mobil oyunları yapısal olarak analiz et, AI mentordan geri bildirim al ve Gaming PM kariyerinde yüksel.",
       "cta": "Hemen Başla",
       "learnMore": "Daha Fazla Bilgi",
-      "trySurvey": "Anketi Dene"
+      "trySurvey": "Anketi Dene",
+      "freeNotice": "Ücretsiz hesap — kredi kartı gerekmez."
     },
     "features": {
+      "tag": "Özellikler",
       "sectionTitle": "Her Şey Tek Platformda",
       "sectionSubtitle": "Gaming PM olarak ihtiyacın olan tüm araçlar burada.",
       "analysis": { "title": "Yapısal Oyun Analizi", "description": "8 kategoride 50+ alanda detaylı oyun analizi — FTUE'den monetization'a kadar." },
@@ -79,10 +85,44 @@
       "title": "Gaming PM Yolculuğuna Başla",
       "subtitle": "Ücretsiz hesap oluştur, ilk oyun analizini yap ve AI mentordan geri bildirim al."
     },
+    "premium": {
+      "badge": "Premium Erişim",
+      "sectionTitle": "AI Özellikleri İçin Premium'a Geç",
+      "sectionDescription": "Claude AI destekli tüm gelişmiş özellikler — oyun analizi, mülakat koçluğu, GDD oluşturucu, metrik analizi ve günlük PM görevleri — Premium üyelere açıktır. Premium erişim için doğrudan benimle iletişime geç.",
+      "premiumFeat1": "Tüm oyunlar için sınırsız AI analizi ve karşılaştırma",
+      "premiumFeat2": "AI mülakat simülasyonu ve detaylı geri bildirim",
+      "premiumFeat3": "GDD Builder + metrik analizi + anket AI yorumu",
+      "premiumFeat4": "Günlük PM görevleri + kişisel gelişim raporu",
+      "contactLabel": "İletişim",
+      "contactTitle": "Premium Erişim İçin Mail At",
+      "contactDescription": "Mail atınca 24 saat içinde hesabını Premium'a yükseltirim. Kısaca kimsin ve neden Premium istiyorsun yazman yeterli.",
+      "copy": "Kopyala",
+      "copied": "Kopyalandı",
+      "sendMail": "Mail Gönder",
+      "mailSubject": "Lance Premium Erişim Talebi",
+      "mailBody": "Merhaba,\n\nLance platformunda Premium erişim talep ediyorum.\n\nKimim: \nNeden Premium istiyorum: \nHesap e-postam: \n\nTeşekkürler."
+    },
     "footer": {
       "tagline": "Gaming PM Analysis & Growth Platform",
       "builtWith": "Next.js, Supabase & Claude AI ile geliştirildi"
     }
+  },
+  "welcome": {
+    "title": "Lance'e Hoşgeldin!",
+    "subtitle": "Gaming PM yolculuğun başlıyor",
+    "intro": "Lance, mobil oyunları yapısal şekilde analiz etmeni, AI mentordan geri bildirim almanı ve Gaming PM olarak gelişmeni sağlayan bir platform. Temel özellikler herkese açık — AI destekli gelişmiş özellikler Premium'a özeldir.",
+    "feature": {
+      "analyze": "Oyun Analizi",
+      "ai": "AI Mentor",
+      "growth": "PM Gelişim"
+    },
+    "premium": {
+      "title": "AI özelliklerini kullanmak için Premium'a geç",
+      "description": "AI destekli analiz, mülakat koçluğu, GDD oluşturucu ve metrik analizi Premium üyelere özeldir. Premium erişim için bu adrese mail at — 24 saat içinde hesabını yükseltirim.",
+      "copy": "Kopyala",
+      "copied": "Kopyalandı ✓"
+    },
+    "cta": "Başlayalım"
   },
   "dashboard": {
     "welcome": "Hoşgeldin, {name}!",
