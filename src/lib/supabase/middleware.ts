@@ -29,10 +29,20 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  // Refreshing the auth token
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Refreshing the auth token. If the refresh token is expired/invalid,
+  // clear the Supabase auth cookies so the user is treated as logged out
+  // instead of crashing the middleware.
+  let user = null;
+  try {
+    const { data, error } = await supabase.auth.getUser();
+    if (error) {
+      await supabase.auth.signOut();
+    } else {
+      user = data.user;
+    }
+  } catch {
+    await supabase.auth.signOut().catch(() => {});
+  }
 
   return { supabaseResponse, user };
 }
