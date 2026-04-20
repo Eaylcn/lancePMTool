@@ -62,3 +62,22 @@ export async function requirePro(): Promise<RequireAuthResult> {
 
   return result;
 }
+
+export async function requireAdmin(): Promise<RequireAuthResult> {
+  const result = await requireUser();
+  if (!result.ok) return result;
+
+  if (result.user.role !== "admin") {
+    return {
+      ok: false,
+      response: NextResponse.json({ error: "Forbidden" }, { status: 403 }),
+    };
+  }
+
+  return result;
+}
+
+export async function isAdmin(): Promise<boolean> {
+  const result = await requireUser();
+  return result.ok && result.user.role === "admin";
+}
