@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { dailyTasks, taskStreaks } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { getAnthropicClient } from "@/lib/ai/client";
 import { getTaskEvaluationSystemPrompt, getTaskEvaluationUserPrompt } from "@/lib/ai/prompts/tasks";
 import { taskEvaluationResultSchema } from "@/lib/ai/types";
+import { requirePro } from "@/lib/auth/require-pro";
 
 function parseAiJson(rawText: string): unknown {
   try {
@@ -29,12 +29,9 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requirePro();
+  if (!auth.ok) return auth.response;
+  const user = auth.user;
 
   const { id: taskId } = await params;
   const body = await request.json();

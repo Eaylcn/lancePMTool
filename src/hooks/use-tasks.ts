@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { aiFetch } from "@/lib/auth/premium-error";
 
 export function useDailyTasks(date: string, locale: string) {
   return useQuery({
@@ -40,7 +41,7 @@ export function useGenerateTasks() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (input: { date: string; locale: string }) => {
-      const res = await fetch("/api/tasks", {
+      const res = await aiFetch("/api/tasks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ date: input.date, locale: input.locale }),
@@ -61,7 +62,7 @@ export function useSubmitTask() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (input: { taskId: string; response: string; locale: string }) => {
-      const res = await fetch(`/api/tasks/${input.taskId}`, {
+      const res = await aiFetch(`/api/tasks/${input.taskId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ response: input.response, locale: input.locale }),

@@ -2,6 +2,7 @@
 
 import { Sidebar } from "./sidebar";
 import { MobileSidebar } from "./mobile-sidebar";
+import { PremiumListener } from "@/components/premium/premium-listener";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
@@ -29,6 +30,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </main>
       </div>
+
+      <PremiumListener />
     </div>
   );
 }

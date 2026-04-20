@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { aiFetch } from "@/lib/auth/premium-error";
 
 export function useInterviewSessions() {
   return useQuery({
@@ -29,7 +30,7 @@ export function useStartInterview() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (input: { topic: string; difficulty?: string; locale: string }) => {
-      const res = await fetch("/api/interview/sessions", {
+      const res = await aiFetch("/api/interview/sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(input),
@@ -64,7 +65,7 @@ export function useSendMessage() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (input: { sessionId: string; content: string; locale: string }) => {
-      const res = await fetch(`/api/interview/sessions/${input.sessionId}/messages`, {
+      const res = await aiFetch(`/api/interview/sessions/${input.sessionId}/messages`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: input.content, locale: input.locale }),

@@ -7,6 +7,7 @@ import { getAnthropicClient } from "@/lib/ai/client";
 import { getInterviewSystemPrompt, getInterviewUserPrompt } from "@/lib/ai/prompts/interview";
 import { interviewResponseSchema } from "@/lib/ai/types";
 import type { InterviewTopic } from "@/lib/ai/prompts/interview";
+import { requirePro } from "@/lib/auth/require-pro";
 
 export async function GET(_request: NextRequest) {
   const supabase = await createClient();
@@ -24,12 +25,9 @@ export async function GET(_request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requirePro();
+  if (!auth.ok) return auth.response;
+  const user = auth.user;
 
   const body = await request.json();
   const { topic, difficulty, locale } = body;

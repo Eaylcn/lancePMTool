@@ -295,7 +295,13 @@ export default function SettingsPage() {
             <InfoTile
               icon={Mail}
               label={t("account.plan")}
-              value={profile?.profile?.role === "pro" ? "Pro" : "Free"}
+              value={
+                profile?.profile?.role === "admin"
+                  ? "Admin"
+                  : profile?.profile?.role === "premium"
+                    ? "Premium"
+                    : "Free"
+              }
               color="text-emerald-500"
               bg="bg-emerald-500/10"
             />

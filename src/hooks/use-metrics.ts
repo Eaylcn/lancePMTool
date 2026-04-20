@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { aiFetch } from "@/lib/auth/premium-error";
 
 async function fetchMetricAnalyses() {
   const res = await fetch("/api/metrics");
@@ -24,7 +25,7 @@ export function useRunMetricAnalysis() {
       gameId: string;
       locale: string;
     }) => {
-      const res = await fetch("/api/ai/metrics", {
+      const res = await aiFetch("/api/ai/metrics", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(input),

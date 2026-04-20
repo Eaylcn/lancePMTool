@@ -6,6 +6,7 @@ import { eq, and, lt, sql } from "drizzle-orm";
 import { getAnthropicClient } from "@/lib/ai/client";
 import { getTaskGenerationSystemPrompt, getTaskGenerationUserPrompt } from "@/lib/ai/prompts/tasks";
 import { taskGenerationResultSchema } from "@/lib/ai/types";
+import { requirePro } from "@/lib/auth/require-pro";
 
 function parseAiJson(rawText: string): unknown {
   try {
@@ -88,12 +89,9 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requirePro();
+  if (!auth.ok) return auth.response;
+  const user = auth.user;
 
   const body = await request.json();
   const date = body.date || new Date().toISOString().split("T")[0];

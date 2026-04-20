@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { interviewSessions, interviewMessages } from "@/lib/db/schema";
 import { eq, and, asc } from "drizzle-orm";
@@ -10,6 +9,7 @@ import {
 } from "@/lib/ai/prompts/interview";
 import { interviewResponseSchema, interviewFinalFeedbackSchema } from "@/lib/ai/types";
 import type { InterviewTopic } from "@/lib/ai/prompts/interview";
+import { requirePro } from "@/lib/auth/require-pro";
 
 function parseAiJson(rawText: string): unknown {
   try {
@@ -33,12 +33,9 @@ export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requirePro();
+  if (!auth.ok) return auth.response;
+  const user = auth.user;
 
   const { id: sessionId } = await params;
   const body = await request.json();

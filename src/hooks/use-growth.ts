@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { aiFetch } from "@/lib/auth/premium-error";
 
 async function fetchGrowthDashboard() {
   const res = await fetch("/api/growth");
@@ -32,7 +33,7 @@ export function useGenerateGrowthReport() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (input: { locale: string }) => {
-      const res = await fetch("/api/ai/growth", {
+      const res = await aiFetch("/api/ai/growth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(input),

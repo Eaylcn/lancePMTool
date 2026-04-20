@@ -2,6 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { DraftFillResponse } from "@/lib/ai/types";
+import { aiFetch } from "@/lib/auth/premium-error";
 
 interface DraftFillInput {
   notes: string;
@@ -18,7 +19,7 @@ interface AiAnalyzeInput {
 export function useDraftFill() {
   return useMutation({
     mutationFn: async (input: DraftFillInput): Promise<DraftFillResponse> => {
-      const res = await fetch("/api/ai/draft-fill", {
+      const res = await aiFetch("/api/ai/draft-fill", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(input),
@@ -36,7 +37,7 @@ export function useAiAnalyze() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (input: AiAnalyzeInput) => {
-      const res = await fetch("/api/ai/analyze", {
+      const res = await aiFetch("/api/ai/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(input),

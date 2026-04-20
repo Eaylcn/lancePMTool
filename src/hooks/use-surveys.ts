@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { aiFetch } from "@/lib/auth/premium-error";
 
 // ============================================
 // Types for API responses
@@ -209,7 +210,7 @@ export function useRunSurveyAnalysis() {
       compareSurveyIds?: string[];
       locale?: string;
     }) => {
-      const res = await fetch("/api/ai/survey-analyze", {
+      const res = await aiFetch("/api/ai/survey-analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

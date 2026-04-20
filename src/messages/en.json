@@ -1091,6 +1091,19 @@
     "hideTemplates": "Hide Templates",
     "templateDescription": "These games were added as sample analyses."
   },
+  "premium": {
+    "title": "Premium Feature",
+    "subtitle": "Upgrade to Premium to use this feature",
+    "description": "AI-powered analysis, coaching, and content generation features are exclusive to Premium members. Upgrade to unlock unlimited access to all AI tools.",
+    "feature1": "AI-powered analysis for all games",
+    "feature2": "AI interview simulation and coaching",
+    "feature3": "GDD builder and metric analysis",
+    "feature4": "Daily PM tasks and growth reports",
+    "upgradeCta": "Upgrade to Premium",
+    "maybeLater": "Maybe Later",
+    "lockedBadge": "Premium",
+    "upgradeToUse": "Upgrade to Premium to use"
+  },
   "settings": {
     "title": "Settings",
     "subtitle": "Manage your account, appearance, and data.",

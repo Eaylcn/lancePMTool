@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { aiFetch } from "@/lib/auth/premium-error";
 
 async function fetchComparisons() {
   const res = await fetch("/api/comparisons");
@@ -68,7 +69,7 @@ export function useAiCompare() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (input: { comparisonId?: string; game1Id?: string; game2Id?: string; locale: string }) => {
-      const res = await fetch("/api/ai/compare", {
+      const res = await aiFetch("/api/ai/compare", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(input),

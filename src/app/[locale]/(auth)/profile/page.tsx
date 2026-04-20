@@ -25,7 +25,6 @@ import { ProfileActivity } from "@/components/profile/profile-activity";
 import { ProfileEditForm } from "@/components/profile/profile-edit-form";
 import { SkillRadar } from "@/components/growth/skill-radar";
 import { SkillCategoryCards } from "@/components/growth/skill-category-cards";
-import { TemplateGames } from "@/components/profile/template-games";
 import { PmLevelBadge } from "@/components/growth/pm-level-badge";
 
 export default function ProfilePage() {
@@ -73,7 +72,6 @@ export default function ProfilePage() {
   const hasSkills =
     data.skillRadar &&
     data.skillRadar.some((s: { avgGameScore: number }) => s.avgGameScore > 0);
-  const hasTemplates = data.templateGames && data.templateGames.length > 0;
 
   return (
     <div className="space-y-6">
@@ -277,15 +275,6 @@ export default function ProfilePage() {
             <Target className="h-3.5 w-3.5" />
             {t("tabs.skills")}
           </TabsTrigger>
-          {hasTemplates && (
-            <TabsTrigger
-              value="templates"
-              className="gap-1.5 text-xs sm:text-sm px-3.5 py-2"
-            >
-              <Sparkles className="h-3.5 w-3.5" />
-              {t("tabs.templates")}
-            </TabsTrigger>
-          )}
         </TabsList>
 
         <TabsContent value="activity" className="mt-4 space-y-5">
@@ -296,12 +285,6 @@ export default function ProfilePage() {
           <TabsContent value="skills" className="mt-4 space-y-5">
             <SkillRadar data={data.skillRadar} />
             <SkillCategoryCards data={data.skillRadar} />
-          </TabsContent>
-        )}
-
-        {hasTemplates && (
-          <TabsContent value="templates" className="mt-4">
-            <TemplateGames games={data.templateGames} namespace="profile" />
           </TabsContent>
         )}
       </Tabs>

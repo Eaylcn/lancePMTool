@@ -1,18 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { gddSessions } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { getAnthropicClient } from "@/lib/ai/client";
 import { getPhaseGenerationPrompt, getGameVisionPrompt } from "@/lib/ai/prompts/gdd";
+import { requirePro } from "@/lib/auth/require-pro";
 
 export async function POST(request: NextRequest) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requirePro();
+  if (!auth.ok) return auth.response;
+  const user = auth.user;
 
   if (!process.env.ANTHROPIC_API_KEY) {
     return NextResponse.json(

@@ -1091,6 +1091,19 @@
     "hideTemplates": "Şablonları Gizle",
     "templateDescription": "Bu oyunlar örnek analiz olarak eklenmiştir."
   },
+  "premium": {
+    "title": "Premium Özellik",
+    "subtitle": "Bu özelliği kullanmak için Premium'a geç",
+    "description": "AI destekli analiz, koçluk ve içerik üretimi özellikleri Premium üyelere özeldir. Premium'a geçerek tüm AI araçlarına sınırsız erişim kazanırsın.",
+    "feature1": "Tüm oyunlarda AI destekli analiz",
+    "feature2": "AI mülakat simülasyonu ve koçluk",
+    "feature3": "GDD oluşturucu ve metrik analizi",
+    "feature4": "Günlük PM görevleri ve gelişim raporu",
+    "upgradeCta": "Premium'a Geç",
+    "maybeLater": "Belki Sonra",
+    "lockedBadge": "Premium",
+    "upgradeToUse": "Kullanmak için Premium'a geç"
+  },
   "settings": {
     "title": "Ayarlar",
     "subtitle": "Hesap, görünüm ve veri ayarlarını yönet.",

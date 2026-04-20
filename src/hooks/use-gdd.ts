@@ -2,6 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef } from "react";
+import { aiFetch } from "@/lib/auth/premium-error";
 
 // Types
 export interface GDDMessage {
@@ -172,7 +173,7 @@ export function useSendGDDMessage() {
       messageHistory: GDDMessage[];
       locale: string;
     }) => {
-      const res = await fetch("/api/ai/gdd", {
+      const res = await aiFetch("/api/ai/gdd", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(input),
@@ -255,7 +256,7 @@ export function useGenerateGDDPhaseSuggestions() {
       phaseTitle: string;
       locale: string;
     }) => {
-      const res = await fetch("/api/ai/gdd/phase-suggestions", {
+      const res = await aiFetch("/api/ai/gdd/phase-suggestions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(input),
@@ -282,7 +283,7 @@ export function useGenerateGDDPhases() {
       sessionId: string;
       locale: string;
     }) => {
-      const res = await fetch("/api/ai/gdd/generate-phases", {
+      const res = await aiFetch("/api/ai/gdd/generate-phases", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(input),

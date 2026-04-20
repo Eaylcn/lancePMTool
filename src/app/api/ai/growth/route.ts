@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { db } from "@/lib/db";
 import { games, aiAnalyses, growthReports } from "@/lib/db/schema";
 import { eq, desc, and, or, isNull } from "drizzle-orm";
 import { getAnthropicClient } from "@/lib/ai/client";
 import { getGrowthSystemPrompt, getGrowthUserPrompt } from "@/lib/ai/prompts/growth";
 import { growthReportAiResultSchema } from "@/lib/ai/types";
+import { requirePro } from "@/lib/auth/require-pro";
 
 interface CategoryScore {
   gameScore: number;
@@ -13,12 +13,9 @@ interface CategoryScore {
 }
 
 export async function POST(request: NextRequest) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const auth = await requirePro();
+  if (!auth.ok) return auth.response;
+  const user = auth.user;
 
   const body = await request.json();
   const { locale } = body;
