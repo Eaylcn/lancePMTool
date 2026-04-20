@@ -5,7 +5,6 @@ import { createClient } from "@/lib/supabase/client";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import {
-  Zap,
   Sparkles,
   Gamepad2,
   Brain,
@@ -56,10 +55,8 @@ export default function LoginPage() {
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-purple-500 shadow-lg">
-                <Zap className="h-5 w-5 text-white" />
-              </div>
+            <div className="flex items-center gap-2.5">
+              <img src="/icon.svg" alt="Lance" className="h-10 w-10 shrink-0" />
               <span className="text-3xl font-bold tracking-tight">Lance</span>
             </div>
             <h1 className="text-3xl lg:text-4xl font-bold tracking-tight leading-tight">
@@ -86,9 +83,7 @@ export default function LoginPage() {
             <div className="p-8 space-y-6">
               {/* Mobile brand */}
               <div className="lg:hidden flex flex-col items-center gap-2">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-purple-500 shadow-lg">
-                  <Zap className="h-6 w-6 text-white" />
-                </div>
+                <img src="/icon.svg" alt="Lance" className="h-12 w-12 shrink-0" />
                 <span className="text-xl font-bold">Lance</span>
               </div>
 

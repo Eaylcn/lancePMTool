@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
@@ -23,15 +23,15 @@ import {
   Sun,
   Moon,
   PanelLeftClose,
-  PanelLeftOpen,
+  LogOut,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Separator } from "@/components/ui/separator";
+import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 
 interface NavItem {
   href: string;
@@ -69,15 +69,29 @@ const accountNav: NavItem[] = [
 
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
+  const [signOutOpen, setSignOutOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
   const pathname = usePathname();
+  const locale = useLocale();
   const t = useTranslations("nav");
   const tTheme = useTranslations("theme");
+  const tSettings = useTranslations("settings");
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const handleSignOut = async () => {
+    setSigningOut(true);
+    try {
+      await fetch("/api/auth/signout", { method: "POST" });
+      window.location.assign(`/${locale}/login`);
+    } catch {
+      setSigningOut(false);
+    }
+  };
 
   const isActive = (href: string) => {
     const pathWithoutLocale = pathname.replace(/^\/(tr|en)/, "");
@@ -216,7 +230,41 @@ export function Sidebar() {
             )}
           </Tooltip>
         )}
+
+        {/* Quick Sign Out */}
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <button
+                onClick={() => setSignOutOpen(true)}
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all duration-200 w-full",
+                  collapsed && "justify-center px-2"
+                )}
+              >
+                <LogOut className="h-4 w-4 shrink-0" />
+                {!collapsed && <span>{tSettings("signOut")}</span>}
+              </button>
+            }
+          />
+          {collapsed && (
+            <TooltipContent side="right" sideOffset={10}>
+              {tSettings("signOut")}
+            </TooltipContent>
+          )}
+        </Tooltip>
       </div>
+
+      <ConfirmDialog
+        open={signOutOpen}
+        onOpenChange={setSignOutOpen}
+        title={tSettings("signOutConfirmTitle")}
+        description={tSettings("signOutConfirmDescription")}
+        confirmLabel={tSettings("signOut")}
+        onConfirm={handleSignOut}
+        loading={signingOut}
+        variant="destructive"
+      />
     </aside>
   );
 }

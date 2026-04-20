@@ -6,7 +6,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { LandingPremiumCard } from "@/components/landing/landing-premium-card";
 import { LandingHeroPreview } from "@/components/landing/landing-hero-preview";
 import {
-  Zap,
   Gamepad2,
   Brain,
   TrendingUp,
@@ -80,9 +79,7 @@ function LandingContent() {
         <nav className="mx-auto max-w-3xl rounded-full border border-border/60 bg-background/70 backdrop-blur-xl shadow-lg shadow-black/5">
           <div className="flex items-center justify-between h-12 pl-4 pr-2">
             <Link href="/" className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-purple-500 shadow-sm">
-                <Zap className="h-3.5 w-3.5 text-white" />
-              </div>
+              <img src="/icon.svg" alt="Lance" className="h-6 w-6 shrink-0" />
               <span className="text-sm font-bold tracking-tight">Lance</span>
             </Link>
 
@@ -351,9 +348,7 @@ function LandingContent() {
         <div className="mx-auto max-w-6xl px-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
-              <div className="flex h-5 w-5 items-center justify-center rounded-md bg-gradient-to-br from-primary to-purple-500">
-                <Zap className="h-3 w-3 text-white" />
-              </div>
+              <img src="/icon.svg" alt="Lance" className="h-5 w-5 shrink-0" />
               <span className="font-medium text-foreground">Lance</span>
               <span className="text-muted-foreground/50">·</span>
               <span>{t("footer.tagline")}</span>
