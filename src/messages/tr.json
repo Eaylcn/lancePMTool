@@ -47,7 +47,8 @@
   "landing": {
     "nav": {
       "survey": "Anketi Dene",
-      "premium": "Premium"
+      "premium": "Premium",
+      "how": "Nasıl Çalışır"
     },
     "hero": {
       "title": "Oyun Analiz Et. AI'dan Öğren. PM Olarak Büyü.",
@@ -56,6 +57,23 @@
       "learnMore": "Daha Fazla Bilgi",
       "trySurvey": "Anketi Dene",
       "freeNotice": "Ücretsiz hesap — kredi kartı gerekmez."
+    },
+    "how": {
+      "tag": "Nasıl Çalışır",
+      "sectionTitle": "3 Adımda Gaming PM Ol",
+      "sectionSubtitle": "Kayıt olduktan sonra hemen başlayabilirsin.",
+      "analyze": {
+        "title": "Oyun Analiz Et",
+        "description": "Oynadığın mobil oyunları 8 kategori ve 50+ alanda yapısal olarak analiz et."
+      },
+      "feedback": {
+        "title": "AI Geri Bildirimi Al",
+        "description": "Claude AI analizini değerlendirir, güçlü/zayıf yönlerini tespit eder, PM dersleri çıkarır."
+      },
+      "grow": {
+        "title": "Gelişimini İzle",
+        "description": "PM seviyen, beceri radarın ve kişiselleştirilmiş eylem planın ile kariyer yolculuğunu takip et."
+      }
     },
     "features": {
       "tag": "Özellikler",
@@ -82,6 +100,7 @@
       "interviewer": { "title": "Mülakat Hazırlığı", "description": "7 konuda AI destekli pratik yap, güçlü ve zayıf yönlerini keşfet." }
     },
     "finalCta": {
+      "tag": "Hazır mısın?",
       "title": "Gaming PM Yolculuğuna Başla",
       "subtitle": "Ücretsiz hesap oluştur, ilk oyun analizini yap ve AI mentordan geri bildirim al."
     },

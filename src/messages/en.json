@@ -47,7 +47,8 @@
   "landing": {
     "nav": {
       "survey": "Try Survey",
-      "premium": "Premium"
+      "premium": "Premium",
+      "how": "How it works"
     },
     "hero": {
       "title": "Analyze Games. Learn from AI. Grow as PM.",
@@ -56,6 +57,23 @@
       "learnMore": "Learn More",
       "trySurvey": "Try Survey",
       "freeNotice": "Free account — no credit card required."
+    },
+    "how": {
+      "tag": "How it works",
+      "sectionTitle": "Become a Gaming PM in 3 Steps",
+      "sectionSubtitle": "Sign up and start right away.",
+      "analyze": {
+        "title": "Analyze Games",
+        "description": "Structurally analyze the mobile games you play across 8 categories and 50+ fields."
+      },
+      "feedback": {
+        "title": "Get AI Feedback",
+        "description": "Claude AI evaluates your analysis, surfaces strengths/weaknesses, and extracts PM lessons."
+      },
+      "grow": {
+        "title": "Track Your Growth",
+        "description": "Follow your PM level, skill radar, and personalized action plan on your career path."
+      }
     },
     "features": {
       "tag": "Features",
@@ -82,6 +100,7 @@
       "interviewer": { "title": "Interview Prep", "description": "Practice with AI across 7 topics, discover your strengths and weaknesses." }
     },
     "finalCta": {
+      "tag": "Ready?",
       "title": "Start Your Gaming PM Journey",
       "subtitle": "Create a free account, analyze your first game, and get AI mentor feedback."
     },
